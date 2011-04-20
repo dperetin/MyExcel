@@ -1,0 +1,9 @@
+MyExcel
+Napravite aplikaciju za rad s proracunskim tablicama. List se sastoji od 
+redaka i stupaca koji se sastoje od celija. Program treba izvrsavati 
+operacije kao sto su unos podataka u celije, odabir stupaca, redaka i 
+celija (i susjednih i odvojenih), zbrajanje podataka u odabranim celijama, 
+ili zadanih nekim rasponom. Omogucite rad s funkcijama po vlastitom izboru 
+koje se mogu unositi ili direktno ili preko alatne trake. Moguce je dodavati 
+vise listova te crtati jednostavne stupcane i linijske dijagrame za zadani 
+niz podataka.
