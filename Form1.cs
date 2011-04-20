@@ -11,6 +11,8 @@ namespace MyExcel
 {
     public partial class Form1 : Form
     {
+        Celije ListaCelija = new Celije();
+
         public Form1()
         {
             InitializeComponent();
@@ -32,6 +34,11 @@ namespace MyExcel
         private void tablica_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
 
+        }
+
+        private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            ListaCelija.Dodaj(e.ColumnIndex.ToString(), e.RowIndex);
         }
 
        
