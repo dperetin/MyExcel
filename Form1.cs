@@ -14,6 +14,13 @@ namespace MyExcel
         public Form1()
         {
             InitializeComponent();
+            // popunjavam tablicu praznom redovima
+            string[] red = {};
+            for (int i = 1; i < 100; i++)
+            {
+                tablica.Rows.Add(red);
+                tablica.Rows[i-1].HeaderCell.Value = i.ToString();
+            }
             
         }
 
@@ -21,5 +28,13 @@ namespace MyExcel
         {
 
         }
+
+        private void tablica_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        {
+
+        }
+
+       
+
     }
 }
