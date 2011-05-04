@@ -38,7 +38,26 @@ namespace MyExcel
 
         private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            ListaCelija.Dodaj(e.ColumnIndex.ToString(), e.RowIndex);
+            if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                ListaCelija.Dodaj(e.ColumnIndex.ToString(), e.RowIndex);
+                //statusLabel.Text = tablica[e.ColumnIndex, e.RowIndex].Value.ToString();
+            }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            return;
+        }
+
+        private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            statusLabel.Text = "Koordinate celije: (" + e.ColumnIndex.ToString() + ", " + e.RowIndex.ToString() + ")";
+        }
+
+        private void tablica_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
        
