@@ -40,7 +40,7 @@ namespace MyExcel
         {
             if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                ListaCelija.Dodaj(e.ColumnIndex.ToString(), e.RowIndex);
+                ListaCelija.Dodaj(e.ColumnIndex, e.RowIndex);
                 //statusLabel.Text = tablica[e.ColumnIndex, e.RowIndex].Value.ToString();
             }
         }
