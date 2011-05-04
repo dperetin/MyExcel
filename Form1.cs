@@ -57,7 +57,7 @@ namespace MyExcel
 
         private void tablica_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+            ///blablabla
         }
 
        
