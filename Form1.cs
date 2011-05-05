@@ -36,13 +36,13 @@ namespace MyExcel
            
         }
 
-        private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex != -1 && e.ColumnIndex != -1)
-            {
-                ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
-            }
-        }
+        //private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.RowIndex != -1 && e.ColumnIndex != -1)
+        //    {
+        //        ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
+        //    }
+        //}
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
@@ -66,6 +66,12 @@ namespace MyExcel
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (!ListaCelija.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
+            }
+           
             //spremam podatke upisane u celiju
             string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
             ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);

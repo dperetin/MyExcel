@@ -113,7 +113,7 @@
             this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.tablica.Size = new System.Drawing.Size(653, 421);
             this.tablica.TabIndex = 0;
-            this.tablica.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
+            //this.tablica.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             this.tablica.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.tablica_CellValueNeeded);
             this.tablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             this.tablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
