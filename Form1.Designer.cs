@@ -67,6 +67,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Z = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablica)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -104,7 +105,8 @@
             this.V,
             this.W,
             this.X,
-            this.Y});
+            this.Y,
+            this.Z});
             this.tablica.EnableHeadersVisualStyles = false;
             this.tablica.Location = new System.Drawing.Point(0, 52);
             this.tablica.Name = "tablica";
@@ -113,8 +115,8 @@
             this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.tablica.Size = new System.Drawing.Size(653, 421);
             this.tablica.TabIndex = 0;
-            //this.tablica.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             this.tablica.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.tablica_CellValueNeeded);
+            this.tablica.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.tablica_RowsAdded);
             this.tablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             this.tablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             // 
@@ -334,6 +336,11 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
+            // Z
+            // 
+            this.Z.HeaderText = "Z";
+            this.Z.Name = "Z";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -398,6 +405,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z;
 
     }
 }

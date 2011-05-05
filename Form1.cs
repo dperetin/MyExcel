@@ -12,6 +12,7 @@ namespace MyExcel
     public partial class Form1 : Form
     {
         Celije ListaCelija = new Celije();
+        int brojRedaka = 1;
 
         public Form1()
         {
@@ -36,14 +37,6 @@ namespace MyExcel
            
         }
 
-        //private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex != -1 && e.ColumnIndex != -1)
-        //    {
-        //        ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
-        //    }
-        //}
-
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             return;
@@ -66,6 +59,7 @@ namespace MyExcel
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            //stvori novu celiju ako vec ne postoji
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (!ListaCelija.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
             {
@@ -77,9 +71,19 @@ namespace MyExcel
             ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
         }
 
+        private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            //kad se doda novi redak, ispisi redni broj u header
+            tablica.Rows[brojRedaka - 1].HeaderCell.Value = brojRedaka.ToString();
+            brojRedaka++;
+        }
+
+       
 
     }
 }
 
 //ovo mi treba
 //string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+
