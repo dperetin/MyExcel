@@ -56,6 +56,7 @@
             this.W = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Y = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,7 +68,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Z = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablica)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -115,10 +115,13 @@
             this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.tablica.Size = new System.Drawing.Size(653, 421);
             this.tablica.TabIndex = 0;
+            this.tablica.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_ColumnHeaderMouseClick);
             this.tablica.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.tablica_CellValueNeeded);
             this.tablica.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.tablica_RowsAdded);
             this.tablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             this.tablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
+            this.tablica.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.tablica_RowsRemoved);
+            this.tablica.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_RowHeaderMouseClick);
             // 
             // A
             // 
@@ -245,6 +248,11 @@
             this.Y.HeaderText = "Y";
             this.Y.Name = "Y";
             // 
+            // Z
+            // 
+            this.Z.HeaderText = "Z";
+            this.Z.Name = "Z";
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -335,11 +343,6 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // Z
-            // 
-            this.Z.HeaderText = "Z";
-            this.Z.Name = "Z";
             // 
             // Form1
             // 
