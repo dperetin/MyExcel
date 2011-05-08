@@ -65,7 +65,9 @@ namespace MyExcel
                 tablica.Columns[i].HeaderCell.Style.BackColor = Control.DefaultBackColor;
             for (int j = 0; j < brojRedaka; j++)
                 tablica.Rows[j].HeaderCell.Style.BackColor = Control.DefaultBackColor;
-        
+            if ((e.ColumnIndex != -1) && (e.RowIndex != -1))
+            tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightSteelBlue;
+            
         }
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -122,7 +124,7 @@ namespace MyExcel
     }
 }
 
-//ovo mi treba
-//string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-
+// ovo mi treba
+// string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+// tablica.Columns[i].HeaderCell.Style.BackColor = Control.DefaultBackColor;
 
