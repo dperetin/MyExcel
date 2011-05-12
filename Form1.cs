@@ -13,6 +13,7 @@ namespace MyExcel
     public partial class Form1 : Form
     {
         Celije ListaCelija = new Celije();
+        Funkcije fje = new Funkcije();
         int brojRedaka = 1; //ima ih n, od 0 do n-1
         int brojStupaca = 25; //isto od 0
 
@@ -41,7 +42,12 @@ namespace MyExcel
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            return;
+            string s = "";
+            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+            {
+                s += c.Value.sadrzaj + " ";
+            }
+            MessageBox.Show(s);
         }
 
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -50,6 +56,8 @@ namespace MyExcel
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (ListaCelija.sveCelije.ContainsKey(index))
             {
+                toolStripTextBox1.Text = ListaCelija.sveCelije[index].formula;
+
                 if (ListaCelija.sveCelije[index].DajVrijednostCelije() != "")
                     statusLabel.Text = "Sadrzaj celije (" + e.RowIndex.ToString() + ", " 
                         + e.ColumnIndex.ToString() + "): " + ListaCelija.sveCelije[index].DajVrijednostCelije();
@@ -136,7 +144,12 @@ namespace MyExcel
             int redak = tablica.SelectedCells[0].RowIndex;
 
             KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
-            
+
+            if (!ListaCelija.sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
+            {
+                ListaCelija.Dodaj(redak, stupac);
+            }
+
             Cell celija = ListaCelija.sveCelije[koordinate];
 
             //tablica.SelectedCells[0].Value = celija.sadrzaj;
@@ -155,8 +168,8 @@ namespace MyExcel
             b = fja.TrimEnd('(');
             b = b.TrimStart('=');
 
-            MessageBox.Show(a + "\n" + b);
-
+            celija.sadrzaj = fje.SveFunkcije[b](ListaCelija.parsiraj(a)).ToString();
+            tablica.SelectedCells[0].Value = celija.sadrzaj;
         }
 
     
