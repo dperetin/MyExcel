@@ -5,11 +5,12 @@ using System.Text;
 
 namespace MyExcel
 {
-    class Cell
+    public class Cell
     {
         private int red;
         private int stupac;
-        private string sadrzaj;
+        public string sadrzaj;
+        public string formula;
 
         private Cell(int r, int s)
         {
@@ -50,4 +51,27 @@ namespace MyExcel
         }
 
     }
+
+    class Funkcije
+    {
+        public static Dictionary<string, izracunaj> SveFunkcije = new Dictionary<string, izracunaj>();
+        Funkcije()
+        {
+            izracunaj a = new izracunaj(Average);
+            SveFunkcije.Add("AVERAGE", a);
+        }
+
+        private static double Average(List<Cell> celije)
+        {
+            double suma = 0;
+
+            foreach (Cell c in celije)
+            {
+                suma += Double.Parse(c.sadrzaj);
+            }
+            return suma / celije.Count;
+        }
+
+    }
+    public delegate double izracunaj(List<Cell> o);
 }
