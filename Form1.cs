@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing; 
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MyExcel
@@ -117,6 +118,45 @@ namespace MyExcel
                 for (int j = 0; j < brojRedaka; j++)
                     if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
                     else tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
+        }
+
+        private void toolStripTextBox1_Validated(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            int stupac = tablica.SelectedCells[0].ColumnIndex;
+            int redak = tablica.SelectedCells[0].RowIndex;
+
+            KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
+            
+            Cell celija = ListaCelija.sveCelije[koordinate];
+
+            //tablica.SelectedCells[0].Value = celija.sadrzaj;
+
+
+
+            string formula = toolStripTextBox1.Text;
+
+            celija.formula = formula;
+
+            string fja = Regex.Match(formula, @"=\w*[(]").Value;
+            string rje = Regex.Match(formula, "[(].*[)]").Value;
+            string a, b;
+            a = rje.TrimEnd(')');
+            a = a.TrimStart('(');
+            b = fja.TrimEnd('(');
+            b = b.TrimStart('=');
+
+            MessageBox.Show(a + "\n" + b);
+
         }
 
     
