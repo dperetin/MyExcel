@@ -156,7 +156,7 @@ namespace MyExcel
 
 
 
-            string formula = toolStripTextBox1.Text;
+            string formula = toolStripTextBox1.Text.ToLower();
 
             celija.formula = formula;
 

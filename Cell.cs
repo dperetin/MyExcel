@@ -54,6 +54,7 @@ namespace MyExcel
         //public  parsiraj(string s)
         public List<Cell> parsiraj(string s)
         {
+            
             string slovo, broj;
 
             List<Cell> celije = new List<Cell>();
@@ -112,12 +113,11 @@ namespace MyExcel
         public Dictionary<string, izracunaj> SveFunkcije = new Dictionary<string, izracunaj>();
         public Funkcije()
         {
-            izracunaj a = new izracunaj(Average);
-            izracunaj b = new izracunaj(Minimum);
-            izracunaj c = new izracunaj(Maximum);
-            SveFunkcije.Add("average", a);
-            SveFunkcije.Add("max", c);
-            SveFunkcije.Add("min", b);
+           
+            SveFunkcije.Add("average", new izracunaj(Average));
+            SveFunkcije.Add("min", new izracunaj(Minimum));
+            SveFunkcije.Add("max", new izracunaj(Maximum));
+            SveFunkcije.Add("sum", new izracunaj(Suma));
         }
 
         private static double Average(List<Cell> celije)
@@ -151,6 +151,16 @@ namespace MyExcel
                     min = Double.Parse(c.sadrzaj);
             }
             return min;
+        }
+        private static double Suma(List<Cell> celije)
+        {
+            double suma = 0;
+
+            foreach (Cell c in celije)
+            {
+                suma += Double.Parse(c.sadrzaj);
+            }
+            return suma;
         }
 
     }
