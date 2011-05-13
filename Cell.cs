@@ -61,14 +61,46 @@ namespace MyExcel
             foreach (string k in koordinate)
             {
 
-                
-                slovo = Regex.Match(k, @"[a-z]+").Value;
-                broj = Regex.Match(k, "[0-9]+").Value;
-                //celije.Add(sveCelije[])
-                int c = slovo[0] - 97;
-                int r = Convert.ToInt32(broj) - 1;
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, c);
-                celije.Add(sveCelije[index]);
+                if (k.Contains(":"))
+                {
+                    string[] oddo = s.Split(':');
+                    slovo = Regex.Match(oddo[0], @"[a-z]+").Value;
+                    broj = Regex.Match(oddo[0], "[0-9]+").Value;
+                    int c1 = slovo[0] - 97;
+                    int r1 = Convert.ToInt32(broj) - 1;
+
+                    slovo = Regex.Match(oddo[1], @"[a-z]+").Value;
+                    broj = Regex.Match(oddo[1], "[0-9]+").Value;
+                    int c2 = slovo[0] - 97;
+                    int r2 = Convert.ToInt32(broj) - 1;
+
+                    if (c1 == c2)
+                    {
+                        for (int i = r1; i <= r2; i++)
+                        {
+                            KeyValuePair<int, int> index = new KeyValuePair<int, int>(i, c1);
+                            celije.Add(sveCelije[index]);
+                        }
+                    }
+                    else if (r1 == r2)
+                    {
+                        for (int i = c1; i <= c2; i++)
+                        {
+                            KeyValuePair<int, int> index = new KeyValuePair<int, int>(r1, i);
+                            celije.Add(sveCelije[index]);
+                        }
+                    }
+                }
+                else
+                {
+                    slovo = Regex.Match(k, @"[a-z]+").Value;
+                    broj = Regex.Match(k, "[0-9]+").Value;
+                    //celije.Add(sveCelije[])
+                    int c = slovo[0] - 97;
+                    int r = Convert.ToInt32(broj) - 1;
+                    KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, c);
+                    celije.Add(sveCelije[index]);
+                }
             }
             return celije;
         }

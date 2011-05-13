@@ -172,6 +172,11 @@ namespace MyExcel
             tablica.SelectedCells[0].Value = celija.sadrzaj;
         }
 
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
     
 
     }
