@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tablica = new System.Windows.Forms.DataGridView();
             this.A = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,6 +63,7 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -70,18 +71,48 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tablica2 = new System.Windows.Forms.DataGridView();
+            this.A2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.B2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.C2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.D2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.E2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.F2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.G2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.H2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.I2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.J2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.K2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.L2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.M2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.N2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.O2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.P2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Q2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.R2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.S2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.U2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.V2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.W2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.X2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Y2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Z2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablica)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablica2)).BeginInit();
             this.SuspendLayout();
             // 
             // tablica
             // 
-            this.tablica.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tablica.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.tablica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablica.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -111,21 +142,17 @@
             this.X,
             this.Y,
             this.Z});
+            this.tablica.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablica.EnableHeadersVisualStyles = false;
-            this.tablica.Location = new System.Drawing.Point(0, 52);
+            this.tablica.Location = new System.Drawing.Point(3, 3);
             this.tablica.Name = "tablica";
             this.tablica.RowHeadersWidth = 60;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle8;
-            this.tablica.Size = new System.Drawing.Size(653, 421);
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.tablica.Size = new System.Drawing.Size(639, 395);
             this.tablica.TabIndex = 0;
-            this.tablica.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_ColumnHeaderMouseClick);
-            this.tablica.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.tablica_CellValueNeeded);
-            this.tablica.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.tablica_RowsAdded);
             this.tablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             this.tablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
-            this.tablica.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.tablica_RowsRemoved);
-            this.tablica.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_RowHeaderMouseClick);
             // 
             // A
             // 
@@ -307,8 +334,16 @@
             this.toolStripTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(500, 25);
-            this.toolStripTextBox1.Validated += new System.EventHandler(this.toolStripTextBox1_Validated);
-            this.toolStripTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripTextBox1_KeyUp);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 22);
+            this.toolStripButton1.Text = "GO";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // statusStrip1
             // 
@@ -365,29 +400,223 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // toolStripButton1
+            // tabControl1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(28, 22);
-            this.toolStripButton1.Text = "GO";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 49);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(653, 427);
+            this.tabControl1.TabIndex = 4;
+            this.tabControl1.DoubleClick += new System.EventHandler(this.tabControl1_DoubleClick);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.tablica);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(645, 401);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Sheet1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.tablica2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(645, 401);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Sheet2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tablica2
+            // 
+            this.tablica2.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.tablica2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablica2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.A2,
+            this.B2,
+            this.C2,
+            this.D2,
+            this.E2,
+            this.F2,
+            this.G2,
+            this.H2,
+            this.I2,
+            this.J2,
+            this.K2,
+            this.L2,
+            this.M2,
+            this.N2,
+            this.O2,
+            this.P2,
+            this.Q2,
+            this.R2,
+            this.S2,
+            this.T2,
+            this.U2,
+            this.V2,
+            this.W2,
+            this.X2,
+            this.Y2,
+            this.Z2});
+            this.tablica2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablica2.EnableHeadersVisualStyles = false;
+            this.tablica2.Location = new System.Drawing.Point(3, 3);
+            this.tablica2.Name = "tablica2";
+            this.tablica2.RowHeadersWidth = 60;
+            this.tablica2.Size = new System.Drawing.Size(639, 395);
+            this.tablica2.TabIndex = 1;
+            this.tablica2.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellEndEdit);
+            this.tablica2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellClick);
+            // 
+            // A2
+            // 
+            this.A2.HeaderText = "A";
+            this.A2.Name = "A2";
+            // 
+            // B2
+            // 
+            this.B2.HeaderText = "B";
+            this.B2.Name = "B2";
+            // 
+            // C2
+            // 
+            this.C2.HeaderText = "C";
+            this.C2.Name = "C2";
+            // 
+            // D2
+            // 
+            this.D2.HeaderText = "D";
+            this.D2.Name = "D2";
+            // 
+            // E2
+            // 
+            this.E2.HeaderText = "E";
+            this.E2.Name = "E2";
+            // 
+            // F2
+            // 
+            this.F2.HeaderText = "F";
+            this.F2.Name = "F2";
+            // 
+            // G2
+            // 
+            this.G2.HeaderText = "G";
+            this.G2.Name = "G2";
+            // 
+            // H2
+            // 
+            this.H2.HeaderText = "H";
+            this.H2.Name = "H2";
+            // 
+            // I2
+            // 
+            this.I2.HeaderText = "I";
+            this.I2.Name = "I2";
+            // 
+            // J2
+            // 
+            this.J2.HeaderText = "J";
+            this.J2.Name = "J2";
+            // 
+            // K2
+            // 
+            this.K2.HeaderText = "K";
+            this.K2.Name = "K2";
+            // 
+            // L2
+            // 
+            this.L2.HeaderText = "L";
+            this.L2.Name = "L2";
+            // 
+            // M2
+            // 
+            this.M2.HeaderText = "M";
+            this.M2.Name = "M2";
+            // 
+            // N2
+            // 
+            this.N2.HeaderText = "N";
+            this.N2.Name = "N2";
+            // 
+            // O2
+            // 
+            this.O2.HeaderText = "O";
+            this.O2.Name = "O2";
+            // 
+            // P2
+            // 
+            this.P2.HeaderText = "P";
+            this.P2.Name = "P2";
+            // 
+            // Q2
+            // 
+            this.Q2.HeaderText = "Q";
+            this.Q2.Name = "Q2";
+            // 
+            // R2
+            // 
+            this.R2.HeaderText = "R";
+            this.R2.Name = "R2";
+            // 
+            // S2
+            // 
+            this.S2.HeaderText = "S";
+            this.S2.Name = "S2";
+            // 
+            // T2
+            // 
+            this.T2.HeaderText = "T";
+            this.T2.Name = "T2";
+            // 
+            // U2
+            // 
+            this.U2.HeaderText = "U";
+            this.U2.Name = "U2";
+            // 
+            // V2
+            // 
+            this.V2.HeaderText = "V";
+            this.V2.Name = "V2";
+            // 
+            // W2
+            // 
+            this.W2.HeaderText = "W";
+            this.W2.Name = "W2";
+            // 
+            // X2
+            // 
+            this.X2.HeaderText = "X";
+            this.X2.Name = "X2";
+            // 
+            // Y2
+            // 
+            this.Y2.HeaderText = "Y";
+            this.Y2.Name = "Y2";
+            // 
+            // Z2
+            // 
+            this.Z2.HeaderText = "Z";
+            this.Z2.Name = "Z2";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(653, 498);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.tablica);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "MyExcel";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tablica)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -395,6 +624,10 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tablica2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,14 +669,45 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn W;
         private System.Windows.Forms.DataGridViewTextBoxColumn X;
         private System.Windows.Forms.DataGridViewTextBoxColumn Y;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Z;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridView tablica2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn A2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn B2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn C2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn D2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn E2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn F2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn G2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn H2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn I2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn J2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn K2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn L2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn M2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn O2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn P2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Q2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn R2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn S2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn T2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn U2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn V2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn W2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z2;
 
+            
     }
 }
 

@@ -37,6 +37,11 @@ namespace MyExcel
 
     class Celije
     {
+        public int brojRedaka = 100; //trenutno rjesenje
+        //treba vratiti na 1 kad se popravi event rowsAdded
+        //ima ih n, od 0 do n-1
+        public int brojStupaca = 25; //isto od 0
+        
         public Dictionary<KeyValuePair<int, int>, Cell> sveCelije = new Dictionary<KeyValuePair<int, int>, Cell>();
 
         public void Dodaj(int r, int s)

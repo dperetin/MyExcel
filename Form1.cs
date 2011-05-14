@@ -12,10 +12,40 @@ namespace MyExcel
 {
     public partial class Form1 : Form
     {
+        List<Celije> ListaTablica = new List<Celije>();
         Celije ListaCelija = new Celije();
         Funkcije fje = new Funkcije();
-        int brojRedaka = 1; //ima ih n, od 0 do n-1
-        int brojStupaca = 25; //isto od 0
+        int brojTabova = 2;
+        private TabControl tabControlNew;
+        private TabPage tabPageNew;
+        private DataGridView novaTablica;
+
+        private System.Windows.Forms.DataGridViewTextBoxColumn A1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn B1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn C1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn D1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn E1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn F1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn G1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn H1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn I1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn J1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn K1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn L1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn M1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn O1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn P1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Q1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn R1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn S1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn T1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn U1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn V1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn W1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z1;
 
         public Form1()
         {
@@ -25,25 +55,23 @@ namespace MyExcel
             for (int i = 1; i < 100; i++)
             {
                 tablica.Rows.Add(red);
-                tablica.Rows[i-1].HeaderCell.Value = i.ToString();
+                tablica.Rows[i - 1].HeaderCell.Value = i.ToString(); 
+                tablica2.Rows.Add(red);
+                tablica2.Rows[i - 1].HeaderCell.Value = i.ToString();
             }
-            
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tablica_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-           
+            ListaTablica.Add(ListaCelija); //za prvi tab
+            ListaTablica.Add(ListaCelija); //za drugi tab
+            tablica2.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellEndEdit);
+            tablica2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellClick);
+        
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             string s = "";
-            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaTablica[indexTaba].sveCelije)
             {
                 s += c.Value.sadrzaj + " ";
             }
@@ -52,114 +80,174 @@ namespace MyExcel
 
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
             //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (ListaCelija.sveCelije.ContainsKey(index))
+            if (ListaTablica[indexTaba].sveCelije.ContainsKey(index))
             {
-                toolStripTextBox1.Text = ListaCelija.sveCelije[index].formula;
+                toolStripTextBox1.Text = ListaTablica[indexTaba].sveCelije[index].formula;
 
-                if (ListaCelija.sveCelije[index].DajVrijednostCelije() != "")
-                    statusLabel.Text = "Sadrzaj celije (" + e.RowIndex.ToString() + ", " 
-                        + e.ColumnIndex.ToString() + "): " + ListaCelija.sveCelije[index].DajVrijednostCelije();
+                if (ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije() != "")
+                    statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", "
+                        + e.ColumnIndex.ToString() + "); Sadrzaj celije: " + ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije();
                 else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + 
                     ", " + e.ColumnIndex.ToString() + ")";
             }
             else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
 
             //izbrisi boju svih celija koje su prije bile kliknute
-            for (int i = 0; i < brojStupaca; i++)
-                for (int j = 0; j < brojRedaka; j++) 
-                    tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
-            for (int i = 0; i < brojStupaca; i++)
-                tablica.Columns[i].HeaderCell.Style.BackColor = Control.DefaultBackColor;
-            for (int j = 0; j < brojRedaka; j++)
-                tablica.Rows[j].HeaderCell.Style.BackColor = Control.DefaultBackColor;
-            if ((e.ColumnIndex != -1) && (e.RowIndex != -1))
-            tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightSteelBlue;
+            //for (int i = 0; i < ListaCelija.brojStupaca; i++)
+            //    for (int j = 0; j < ListaCelija.brojRedaka; j++) 
+            //        tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
+            //for (int i = 0; i < ListaCelija.brojStupaca; i++)
+            //    tablica.Columns[i].HeaderCell.Style.BackColor = Control.DefaultBackColor;
+            //for (int j = 0; j < ListaCelija.brojRedaka; j++)
+            //    tablica.Rows[j].HeaderCell.Style.BackColor = Control.DefaultBackColor;
+            //if ((e.ColumnIndex != -1) && (e.RowIndex != -1))
+            //tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightSteelBlue;
             
+        }
+
+        private void tablica2_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (ListaTablica[indexTaba].sveCelije.ContainsKey(index))
+            {
+                toolStripTextBox1.Text = ListaTablica[indexTaba].sveCelije[index].formula;
+
+                if (ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije() != "")
+                    statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", "
+                       + e.ColumnIndex.ToString() + "); Sadrzaj celije: " + ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije();
+                else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() +
+                    ", " + e.ColumnIndex.ToString() + ")";
+            }
+            else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
+        }
+
+        private void novaTablica_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (ListaTablica[indexTaba].sveCelije.ContainsKey(index))
+            {
+                toolStripTextBox1.Text = ListaTablica[indexTaba].sveCelije[index].formula;
+
+                if (ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije() != "")
+                    statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", "
+                        + e.ColumnIndex.ToString() + "); Sadrzaj celije: " + ListaTablica[indexTaba].sveCelije[index].DajVrijednostCelije();
+                else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() +
+                    ", " + e.ColumnIndex.ToString() + ")";
+            }
+            else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
         }
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
-
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            if ( indexTaba == 0 && tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+            
             //stvori novu celiju ako vec ne postoji
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (!ListaCelija.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+            if (!ListaTablica[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
+                ListaTablica[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
             }
            
             //spremam podatke upisane u celiju
             string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
+            ListaTablica[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
         }
 
-        private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        void tablica2_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            //kad se doda novi redak, ispisi redni broj u header
-            tablica.Rows[brojRedaka - 1].HeaderCell.Value = brojRedaka.ToString();
-            brojRedaka++;
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            if (indexTaba == 1 && tablica2.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+
+            //stvori novu celiju ako vec ne postoji
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (!ListaTablica[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                ListaTablica[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
+            }
+
+            //spremam podatke upisane u celiju
+            string s = tablica2.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            ListaTablica[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
         }
 
-        private void tablica_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        void novaTablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            //ako izbacimo i-ti redak, moramo promijeniti brojeve headera od i+1 nadalje
-            brojRedaka--;
-            for (int j = 0; j < brojRedaka - 1; j++)
-                tablica.Rows[j].HeaderCell.Value = Convert.ToString(j + 1);
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+            if (indexTaba == 0 && tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+
+            //stvori novu celiju ako vec ne postoji
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (!ListaTablica[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                ListaTablica[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
+            }
+
+            //spremam podatke upisane u celiju
+            string s = novaTablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(); // !!!!! null string
+            ListaTablica[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
         }
+        //private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        //{
+        //    //kad se doda novi redak, ispisi redni broj u header
+        //    tablica.Rows[ListaCelija.brojRedaka - 1].HeaderCell.Value = ListaCelija.brojRedaka.ToString();
+        //    ListaCelija.brojRedaka++;
+        //}
 
-        private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            tablica.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < brojRedaka; i++)
-                for (int j = 0; j < brojStupaca; j++)
-                    if (j == e.ColumnIndex) tablica.Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[i].Cells[j].Style.BackColor = Color.White;
-        }
+        //private void tablica_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        //{
+        //    //ako izbacimo i-ti redak, moramo promijeniti brojeve headera od i+1 nadalje
+        //    ListaCelija.brojRedaka--;
+        //    for (int j = 0; j < ListaCelija.brojRedaka - 1; j++)
+        //        tablica.Rows[j].HeaderCell.Value = Convert.ToString(j + 1);
+        //}
 
-        private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < brojStupaca; i++)
-                for (int j = 0; j < brojRedaka; j++)
-                    if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
-        }
+        //private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        //{
+        //    tablica.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+        //    for (int i = 0; i < ListaCelija.brojRedaka; i++)
+        //        for (int j = 0; j < ListaCelija.brojStupaca; j++)
+        //            if (j == e.ColumnIndex) tablica.Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
+        //            else tablica.Rows[i].Cells[j].Style.BackColor = Color.White;
+        //}
 
-        private void toolStripTextBox1_Validated(object sender, EventArgs e)
-        {
-            
-        }
+        //private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        //{
+        //    tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+        //    for (int i = 0; i < ListaCelija.brojStupaca; i++)
+        //        for (int j = 0; j < ListaCelija.brojRedaka; j++)
+        //            if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
+        //            else tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
+        //}
 
-        private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
+       
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            int indexTaba = this.tabControl1.SelectedTab.TabIndex;
+           
             int stupac = tablica.SelectedCells[0].ColumnIndex;
             int redak = tablica.SelectedCells[0].RowIndex;
 
             KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
 
-            if (!ListaCelija.sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
+            if (!ListaTablica[indexTaba].sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
             {
-                ListaCelija.Dodaj(redak, stupac);
+                ListaTablica[indexTaba].Dodaj(redak, stupac);
             }
 
-            Cell celija = ListaCelija.sveCelije[koordinate];
+            Cell celija = ListaTablica[indexTaba].sveCelije[koordinate];
 
             //tablica.SelectedCells[0].Value = celija.sadrzaj;
 
-
-
             string formula = toolStripTextBox1.Text;
-
             celija.formula = formula;
-
             string fja = Regex.Match(formula, @"=\w*[(]").Value;
             string rje = Regex.Match(formula, "[(].*[)]").Value;
             string a, b;
@@ -167,10 +255,104 @@ namespace MyExcel
             a = a.TrimStart('(');
             b = fja.TrimEnd('(');
             b = b.TrimStart('=');
+            celija.sadrzaj = fje.SveFunkcije[b](ListaTablica[indexTaba].parsiraj(a)).ToString();
 
-            celija.sadrzaj = fje.SveFunkcije[b](ListaCelija.parsiraj(a)).ToString();
-            tablica.SelectedCells[0].Value = celija.sadrzaj;
+            tablica.SelectedCells[0].Value = celija.sadrzaj; // ovo ce raditi samo za prvu tablicu
         }
+
+        private void tabControl1_DoubleClick(object sender, EventArgs e)
+        {
+            //dodaj novi tab 
+            tabPageNew = new TabPage();
+            tabControlNew = new TabControl();
+            tabControl1.TabPages.Add(tabPageNew);
+            Controls.Add(tabControlNew);
+            brojTabova++;
+            
+            tabPageNew.Controls.Add(novaTablica);
+            tabPageNew.Location = new System.Drawing.Point(4, 22);
+            tabPageNew.Name = "tabPage" + brojTabova;
+            tabPageNew.Padding = new System.Windows.Forms.Padding(3);
+            tabPageNew.Size = new System.Drawing.Size(645, 401);
+            tabPageNew.TabIndex = brojTabova - 1;
+            tabPageNew.Text = "Sheet" + brojTabova;
+            tabPageNew.UseVisualStyleBackColor = true;
+            
+            // ubaci novu tablicu u tab
+            A1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            B1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            C1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            D1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            E1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            F1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            G1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            H1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            I1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            J1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            K1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            L1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            M1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            N1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            O1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            P1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Q1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            R1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            S1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            T1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            U1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            V1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            W1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            X1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Y1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Z1 = new System.Windows.Forms.DataGridViewTextBoxColumn();   
+
+            novaTablica = new System.Windows.Forms.DataGridView();
+            novaTablica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            novaTablica.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            A1, B1, C1, D1, E1, F1, G1, H1, I1, J1, K1, L1, M1, N1, O1, P1, Q1, R1, S1, T1, U1, V1, W1 ,X1, Y1, Z1});
+            novaTablica.Dock = DockStyle.Fill;
+            novaTablica.Name = "tablica" + brojTabova;
+            novaTablica.Location = new System.Drawing.Point(3, 3);
+            novaTablica.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            novaTablica.Size = new System.Drawing.Size(639, 395);
+            novaTablica.TabIndex = brojTabova - 1; 
+
+            A1.Name = "A";            A1.HeaderText = "A";            B1.Name = "B";            B1.HeaderText = "B"; 
+            C1.Name = "C";            C1.HeaderText = "C";            D1.Name = "D";            D1.HeaderText = "D";
+            E1.Name = "E";            E1.HeaderText = "E";            F1.Name = "F";            F1.HeaderText = "F";
+            G1.Name = "G";            G1.HeaderText = "G";            H1.Name = "H";            H1.HeaderText = "H";
+            I1.Name = "I";            I1.HeaderText = "I";            J1.Name = "J";            J1.HeaderText = "J";
+            K1.Name = "K";            K1.HeaderText = "K";            L1.Name = "L";            L1.HeaderText = "L";
+            M1.Name = "M";            M1.HeaderText = "M";            N1.Name = "N";            N1.HeaderText = "N";
+            O1.Name = "O";            O1.HeaderText = "O";            P1.Name = "P";            P1.HeaderText = "P";
+            Q1.Name = "Q";            Q1.HeaderText = "Q";            R1.Name = "R";            R1.HeaderText = "R";
+            S1.Name = "S";            S1.HeaderText = "S";            T1.Name = "T";            T1.HeaderText = "T";
+            U1.Name = "U";            U1.HeaderText = "U";            V1.Name = "V";            V1.HeaderText = "V";
+            W1.Name = "W";            W1.HeaderText = "W";            X1.Name = "X";            X1.HeaderText = "X";
+            Y1.Name = "Y";            Y1.HeaderText = "Y";            Z1.Name = "Z";            Z1.HeaderText = "Z";
+
+            novaTablica.EnableHeadersVisualStyles = false;
+            novaTablica.RowHeadersWidth = 60;
+            Controls.Add(novaTablica);
+            //novaTablica.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_ColumnHeaderMouseClick);
+            //novaTablica.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.tablica_RowsAdded);
+            novaTablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.novaTablica_CellEndEdit);
+            novaTablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.novaTablica_CellClick);
+            //novaTablica.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.tablica_RowsRemoved);
+            //novaTablica.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tablica_RowHeaderMouseClick);
+
+            string[] red = { };
+            for (int i = 1; i < 100; i++)
+            {
+                novaTablica.Rows.Add(red);
+                novaTablica.Rows[i - 1].HeaderCell.Value = i.ToString();
+            }
+            Celije ListaCelija = new Celije();
+            ListaTablica.Add(ListaCelija);
+            novaTablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(tablica2_CellEndEdit);
+           
+        }
+
 
     
 
