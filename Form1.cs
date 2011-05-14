@@ -16,7 +16,7 @@ namespace MyExcel
         Funkcije fje = new Funkcije();
         int brojRedaka = 1; //ima ih n, od 0 do n-1
         int brojStupaca = 25; //isto od 0
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -58,14 +58,19 @@ namespace MyExcel
             {
                 toolStripTextBox1.Text = ListaCelija.sveCelije[index].formula;
 
+
                 if (ListaCelija.sveCelije[index].DajVrijednostCelije() != "")
-                    statusLabel.Text = "Sadrzaj celije (" + e.RowIndex.ToString() + ", " 
+                    statusLabel.Text = "Sadrzaj celije (" + e.RowIndex.ToString() + ", "
                         + e.ColumnIndex.ToString() + "): " + ListaCelija.sveCelije[index].DajVrijednostCelije();
-                else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + 
+                else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() +
                     ", " + e.ColumnIndex.ToString() + ")";
             }
-            else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
+            else
+            {
+                statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
 
+                toolStripTextBox1.Text = "";
+            }
             //izbrisi boju svih celija koje su prije bile kliknute
             for (int i = 0; i < brojStupaca; i++)
                 for (int j = 0; j < brojRedaka; j++) 
