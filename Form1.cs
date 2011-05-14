@@ -52,7 +52,6 @@ namespace MyExcel
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (ListaTablica[indexTaba].sveCelije.ContainsKey(index))
             {
-                //toolStripTextBox1.Text = ListaTablica[indexTaba].sveCelije[index].formula;
                 if (ListaTablica[indexTaba].sveCelije[index].DajFormulu() != null)
                     statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", "
                         + e.ColumnIndex.ToString() + "); Formula " + ListaTablica[indexTaba].sveCelije[index].DajFormulu();
@@ -197,6 +196,10 @@ namespace MyExcel
 
             tablica1.SelectedCells[0].Value = celija.sadrzaj; // ovo ce raditi samo za prvu tablicu
         }
+
+
+        //dupli klik na neki od tabova stvara novi
+        //iz nekog razloga na drugi tab ne stavi tablicu, tek na treci i dalje
 
         private void tabControl1_DoubleClick(object sender, EventArgs e)
         {
