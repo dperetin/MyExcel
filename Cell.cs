@@ -33,6 +33,10 @@ namespace MyExcel
         {
             return sadrzaj;
         }
+        public string DajFormulu()
+        {
+            return formula;
+        }
     }
 
     class Celije

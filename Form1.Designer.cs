@@ -73,42 +73,12 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tablica2 = new System.Windows.Forms.DataGridView();
-            this.A2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.B2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.C2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.D2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.E2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.F2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.G2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.H2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.I2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.J2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.K2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.L2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.M2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.N2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.O2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.P2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Q2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.R2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.S2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.T2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.U2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.V2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.W2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.X2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Y2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Z2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablica)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tablica2)).BeginInit();
             this.SuspendLayout();
             // 
             // tablica
@@ -403,7 +373,6 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 49);
             this.tabControl1.Name = "tabControl1";
@@ -422,188 +391,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sheet1";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.tablica2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(645, 401);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Sheet2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tablica2
-            // 
-            this.tablica2.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.tablica2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tablica2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.A2,
-            this.B2,
-            this.C2,
-            this.D2,
-            this.E2,
-            this.F2,
-            this.G2,
-            this.H2,
-            this.I2,
-            this.J2,
-            this.K2,
-            this.L2,
-            this.M2,
-            this.N2,
-            this.O2,
-            this.P2,
-            this.Q2,
-            this.R2,
-            this.S2,
-            this.T2,
-            this.U2,
-            this.V2,
-            this.W2,
-            this.X2,
-            this.Y2,
-            this.Z2});
-            this.tablica2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablica2.EnableHeadersVisualStyles = false;
-            this.tablica2.Location = new System.Drawing.Point(3, 3);
-            this.tablica2.Name = "tablica2";
-            this.tablica2.RowHeadersWidth = 60;
-            this.tablica2.Size = new System.Drawing.Size(639, 395);
-            this.tablica2.TabIndex = 1;
-            this.tablica2.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellEndEdit);
-            this.tablica2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica2_CellClick);
-            // 
-            // A2
-            // 
-            this.A2.HeaderText = "A";
-            this.A2.Name = "A2";
-            // 
-            // B2
-            // 
-            this.B2.HeaderText = "B";
-            this.B2.Name = "B2";
-            // 
-            // C2
-            // 
-            this.C2.HeaderText = "C";
-            this.C2.Name = "C2";
-            // 
-            // D2
-            // 
-            this.D2.HeaderText = "D";
-            this.D2.Name = "D2";
-            // 
-            // E2
-            // 
-            this.E2.HeaderText = "E";
-            this.E2.Name = "E2";
-            // 
-            // F2
-            // 
-            this.F2.HeaderText = "F";
-            this.F2.Name = "F2";
-            // 
-            // G2
-            // 
-            this.G2.HeaderText = "G";
-            this.G2.Name = "G2";
-            // 
-            // H2
-            // 
-            this.H2.HeaderText = "H";
-            this.H2.Name = "H2";
-            // 
-            // I2
-            // 
-            this.I2.HeaderText = "I";
-            this.I2.Name = "I2";
-            // 
-            // J2
-            // 
-            this.J2.HeaderText = "J";
-            this.J2.Name = "J2";
-            // 
-            // K2
-            // 
-            this.K2.HeaderText = "K";
-            this.K2.Name = "K2";
-            // 
-            // L2
-            // 
-            this.L2.HeaderText = "L";
-            this.L2.Name = "L2";
-            // 
-            // M2
-            // 
-            this.M2.HeaderText = "M";
-            this.M2.Name = "M2";
-            // 
-            // N2
-            // 
-            this.N2.HeaderText = "N";
-            this.N2.Name = "N2";
-            // 
-            // O2
-            // 
-            this.O2.HeaderText = "O";
-            this.O2.Name = "O2";
-            // 
-            // P2
-            // 
-            this.P2.HeaderText = "P";
-            this.P2.Name = "P2";
-            // 
-            // Q2
-            // 
-            this.Q2.HeaderText = "Q";
-            this.Q2.Name = "Q2";
-            // 
-            // R2
-            // 
-            this.R2.HeaderText = "R";
-            this.R2.Name = "R2";
-            // 
-            // S2
-            // 
-            this.S2.HeaderText = "S";
-            this.S2.Name = "S2";
-            // 
-            // T2
-            // 
-            this.T2.HeaderText = "T";
-            this.T2.Name = "T2";
-            // 
-            // U2
-            // 
-            this.U2.HeaderText = "U";
-            this.U2.Name = "U2";
-            // 
-            // V2
-            // 
-            this.V2.HeaderText = "V";
-            this.V2.Name = "V2";
-            // 
-            // W2
-            // 
-            this.W2.HeaderText = "W";
-            this.W2.Name = "W2";
-            // 
-            // X2
-            // 
-            this.X2.HeaderText = "X";
-            this.X2.Name = "X2";
-            // 
-            // Y2
-            // 
-            this.Y2.HeaderText = "Y";
-            this.Y2.Name = "Y2";
-            // 
-            // Z2
-            // 
-            this.Z2.HeaderText = "Z";
-            this.Z2.Name = "Z2";
             // 
             // Form1
             // 
@@ -626,8 +413,6 @@
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tablica2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -678,36 +463,34 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView tablica2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn A2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn B2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn C2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn D2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn E2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn F2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn G2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn H2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn I2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn J2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn K2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn L2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn M2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn N2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn O2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn P2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Q2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn R2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn S2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn T2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn U2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn V2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn W2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn X2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Y2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Z2;
 
-            
+        private System.Windows.Forms.DataGridViewTextBoxColumn A1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn B1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn C1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn D1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn E1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn F1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn G1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn H1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn I1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn J1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn K1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn L1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn M1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn O1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn P1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Q1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn R1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn S1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn T1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn U1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn V1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn W1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn X1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Y1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Z1;
+    
     }
 }
 
