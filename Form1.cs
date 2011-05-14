@@ -182,6 +182,24 @@ namespace MyExcel
 
         }
 
+        private void tablica_SelectionChanged(object sender, EventArgs e)
+        {
+            List<Cell> argument = new List<Cell>();
+
+            for (int c = 0; c < tablica.SelectedCells.Count; c++ )
+            {
+                KeyValuePair<int, int> index =
+                    new KeyValuePair<int, int>(tablica.SelectedCells[c].RowIndex,
+                                                tablica.SelectedCells[c].ColumnIndex);
+                if (ListaCelija.sveCelije.ContainsKey(index))
+                {
+                    argument.Add(ListaCelija.sveCelije[index]);
+                }
+
+            }
+            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString();
+        }
+
     
 
     }
