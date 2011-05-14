@@ -30,7 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tablica = new System.Windows.Forms.DataGridView();
+            this.tablica1 = new System.Windows.Forms.DataGridView();
             this.A = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.B = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.C = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -73,7 +73,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            ((System.ComponentModel.ISupportInitialize)(this.tablica)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablica1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -81,11 +81,11 @@
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tablica
+            // tablica1
             // 
-            this.tablica.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.tablica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tablica.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.tablica1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.tablica1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablica1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.A,
             this.B,
             this.C,
@@ -112,17 +112,17 @@
             this.X,
             this.Y,
             this.Z});
-            this.tablica.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablica.EnableHeadersVisualStyles = false;
-            this.tablica.Location = new System.Drawing.Point(3, 3);
-            this.tablica.Name = "tablica";
-            this.tablica.RowHeadersWidth = 60;
+            this.tablica1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablica1.EnableHeadersVisualStyles = false;
+            this.tablica1.Location = new System.Drawing.Point(3, 3);
+            this.tablica1.Name = "tablica1";
+            this.tablica1.RowHeadersWidth = 60;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.tablica.RowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.tablica.Size = new System.Drawing.Size(639, 395);
-            this.tablica.TabIndex = 0;
-            this.tablica.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
-            this.tablica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
+            this.tablica1.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.tablica1.Size = new System.Drawing.Size(639, 395);
+            this.tablica1.TabIndex = 0;
+            this.tablica1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica1_CellEndEdit);
+            this.tablica1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica1_CellClick);
             // 
             // A
             // 
@@ -383,7 +383,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.tablica);
+            this.tabPage1.Controls.Add(this.tablica1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -404,7 +404,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "MyExcel";
-            ((System.ComponentModel.ISupportInitialize)(this.tablica)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablica1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -420,7 +420,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView tablica;
+        private System.Windows.Forms.DataGridView tablica1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
