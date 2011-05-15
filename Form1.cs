@@ -12,6 +12,9 @@ namespace MyExcel
 {
     public partial class Form1 : Form
     {
+        List<DataGrid> gridovi = new List<DataGrid>();
+        int broj_gridova = 0;
+
         Celije ListaCelija = new Celije();
         Funkcije fje = new Funkcije();
         int brojRedaka = 1; //ima ih n, od 0 do n-1
@@ -21,13 +24,13 @@ namespace MyExcel
         {
             InitializeComponent();
             // popunjavam tablicu praznom redovima
-            string[] red = {};
+      /*      string[] red = {};
             for (int i = 1; i < 100; i++)
             {
                 tablica.Rows.Add(red);
                 tablica.Rows[i-1].HeaderCell.Value = i.ToString();
             }
-            
+            */
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -53,7 +56,7 @@ namespace MyExcel
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
-            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+           /* KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (ListaCelija.sveCelije.ContainsKey(index))
             {
                 toolStripTextBox1.Text = ListaCelija.sveCelije[index].formula;
@@ -81,12 +84,12 @@ namespace MyExcel
                 tablica.Rows[j].HeaderCell.Style.BackColor = Control.DefaultBackColor;
             if ((e.ColumnIndex != -1) && (e.RowIndex != -1))
             tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightSteelBlue;
-            
+            */
         }
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+          /*  if (tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
 
             //stvori novu celiju ako vec ne postoji
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
@@ -97,40 +100,40 @@ namespace MyExcel
            
             //spremam podatke upisane u celiju
             string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
+            ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);*/
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             //kad se doda novi redak, ispisi redni broj u header
-            tablica.Rows[brojRedaka - 1].HeaderCell.Value = brojRedaka.ToString();
-            brojRedaka++;
+          /*  tablica.Rows[brojRedaka - 1].HeaderCell.Value = brojRedaka.ToString();
+            brojRedaka++;*/
         }
 
         private void tablica_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             //ako izbacimo i-ti redak, moramo promijeniti brojeve headera od i+1 nadalje
-            brojRedaka--;
+         /*   brojRedaka--;
             for (int j = 0; j < brojRedaka - 1; j++)
-                tablica.Rows[j].HeaderCell.Value = Convert.ToString(j + 1);
+                tablica.Rows[j].HeaderCell.Value = Convert.ToString(j + 1);*/
         }
 
         private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            tablica.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+        /*    tablica.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
             for (int i = 0; i < brojRedaka; i++)
                 for (int j = 0; j < brojStupaca; j++)
                     if (j == e.ColumnIndex) tablica.Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[i].Cells[j].Style.BackColor = Color.White;
+                    else tablica.Rows[i].Cells[j].Style.BackColor = Color.White;*/
         }
 
         private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+         /*   tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
             for (int i = 0; i < brojStupaca; i++)
                 for (int j = 0; j < brojRedaka; j++)
                     if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[j].Cells[i].Style.BackColor = Color.White;
+                    else tablica.Rows[j].Cells[i].Style.BackColor = Color.White; */
         }
 
         private void toolStripTextBox1_Validated(object sender, EventArgs e)
@@ -145,7 +148,7 @@ namespace MyExcel
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            int stupac = tablica.SelectedCells[0].ColumnIndex;
+          /*  int stupac = tablica.SelectedCells[0].ColumnIndex;
             int redak = tablica.SelectedCells[0].RowIndex;
 
             KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
@@ -174,7 +177,7 @@ namespace MyExcel
             b = b.TrimStart('=');
 
             celija.sadrzaj = fje.SveFunkcije[b](ListaCelija.parsiraj(a)).ToString();
-            tablica.SelectedCells[0].Value = celija.sadrzaj;
+            tablica.SelectedCells[0].Value = celija.sadrzaj; */
         }
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -184,7 +187,7 @@ namespace MyExcel
 
         private void tablica_SelectionChanged(object sender, EventArgs e)
         {
-            List<Cell> argument = new List<Cell>();
+       /*     List<Cell> argument = new List<Cell>();
 
             for (int c = 0; c < tablica.SelectedCells.Count; c++ )
             {
@@ -197,7 +200,12 @@ namespace MyExcel
                 }
 
             }
-            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString();
+            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); */
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+
         }
 
     
