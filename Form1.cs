@@ -12,7 +12,7 @@ namespace MyExcel
 {
     public partial class Form1 : Form
     {
-        List<DataGrid> gridovi = new List<DataGrid>();
+        List<DataGridView> gridovi = new List<DataGridView>();
         int broj_gridova = 0;
 
         Celije ListaCelija = new Celije();
@@ -23,6 +23,31 @@ namespace MyExcel
         public Form1()
         {
             InitializeComponent();
+
+            gridovi.Add(new DataGridView());
+
+            tabControl1.TabPages[0].Controls.Add(gridovi[0]);
+
+            gridovi[0].Dock = DockStyle.Fill;
+            for (int i = 65; i <= 90; i++)
+            {
+                DataGridViewColumn newCol = new DataGridViewColumn();
+                newCol.HeaderText = Convert.ToChar(i).ToString();
+                newCol.Visible = true;
+                newCol.Width = 100;
+                DataGridViewCell cell = new DataGridViewTextBoxCell();
+                newCol.CellTemplate = cell;
+                gridovi[0].Columns.Add(newCol);
+            }
+            string[] red = { };
+            for (int i = 1; i < 100; i++)
+            {
+                gridovi[0].Rows.Add(red);
+                gridovi[0].Rows[i - 1].HeaderCell.Value = i.ToString();
+            }
+            broj_gridova++;
+
+
             // popunjavam tablicu praznom redovima
       /*      string[] red = {};
             for (int i = 1; i < 100; i++)
@@ -205,7 +230,32 @@ namespace MyExcel
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
+            TabPage newPage = new TabPage("New Page");
+            tabControl1.TabPages.Add(newPage);
+            gridovi.Add(new DataGridView());
 
+            gridovi.Add(new DataGridView());
+
+            tabControl1.TabPages[broj_gridova].Controls.Add(gridovi[broj_gridova]);
+
+            gridovi[broj_gridova].Dock = DockStyle.Fill;
+            for (int i = 65; i <= 90; i++)
+            {
+                DataGridViewColumn newCol = new DataGridViewColumn();
+                newCol.HeaderText = Convert.ToChar(i).ToString();
+                newCol.Visible = true;
+                newCol.Width = 100;
+                DataGridViewCell cell = new DataGridViewTextBoxCell();
+                newCol.CellTemplate = cell;
+                gridovi[broj_gridova].Columns.Add(newCol);
+            }
+            string[] red = { };
+            for (int i = 1; i < 100; i++)
+            {
+                gridovi[broj_gridova].Rows.Add(red);
+                gridovi[broj_gridova].Rows[i - 1].HeaderCell.Value = i.ToString();
+            }
+            broj_gridova++;
         }
 
     
