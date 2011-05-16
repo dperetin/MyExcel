@@ -15,10 +15,10 @@ namespace MyExcel
         List<DataGridView> gridovi = new List<DataGridView>();
         int broj_gridova = 0;
 
-        Celije ListaCelija = new Celije();
+        List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
-        int brojRedaka = 1; //ima ih n, od 0 do n-1
-        int brojStupaca = 25; //isto od 0
+        //int brojRedaka = 1; //ima ih n, od 0 do n-1
+        //int brojStupaca = 25; //isto od 0
         
         public Form1()
         {
@@ -27,8 +27,15 @@ namespace MyExcel
             gridovi.Add(new DataGridView());
 
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
+            gridovi[0].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
+            gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
+
+            Celije noviTab = new Celije();
+            ListaCelija.Add(noviTab);
 
             gridovi[0].Dock = DockStyle.Fill;
+            tabControl1.TabPages[0].Text = "Sheet1";
+            gridovi[0].RowHeadersWidth = 60;
             for (int i = 65; i <= 90; i++)
             {
                 DataGridViewColumn newCol = new DataGridViewColumn();
@@ -46,32 +53,13 @@ namespace MyExcel
                 gridovi[0].Rows[i - 1].HeaderCell.Value = i.ToString();
             }
             broj_gridova++;
-
-
-            // popunjavam tablicu praznom redovima
-      /*      string[] red = {};
-            for (int i = 1; i < 100; i++)
-            {
-                tablica.Rows.Add(red);
-                tablica.Rows[i-1].HeaderCell.Value = i.ToString();
-            }
-            */
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tablica_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-           
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            int indexTaba = tabControl1.SelectedIndex;
             string s = "";
-            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija[indexTaba].sveCelije)
             {
                 s += c.Value.sadrzaj + " ";
             }
@@ -81,24 +69,25 @@ namespace MyExcel
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
-           /* KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (ListaCelija.sveCelije.ContainsKey(index))
+            int indexTaba = tabControl1.SelectedIndex;
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
             {
-                toolStripTextBox1.Text = ListaCelija.sveCelije[index].formula;
+                toolStripTextBox1.Text = ListaCelija[indexTaba].sveCelije[index].formula;
 
-
-                if (ListaCelija.sveCelije[index].DajVrijednostCelije() != "")
+                if (ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije() != "")
                     statusLabel.Text = "Sadrzaj celije (" + e.RowIndex.ToString() + ", "
-                        + e.ColumnIndex.ToString() + "): " + ListaCelija.sveCelije[index].DajVrijednostCelije();
+                        + e.ColumnIndex.ToString() + "): " + ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije();
                 else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() +
                     ", " + e.ColumnIndex.ToString() + ")";
             }
             else
             {
                 statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " + e.ColumnIndex.ToString() + ")";
-
                 toolStripTextBox1.Text = "";
             }
+
+            /*
             //izbrisi boju svih celija koje su prije bile kliknute
             for (int i = 0; i < brojStupaca; i++)
                 for (int j = 0; j < brojRedaka; j++) 
@@ -114,18 +103,19 @@ namespace MyExcel
 
         void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-          /*  if (tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+            int indexTaba = tabControl1.SelectedIndex;
+            if (gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
 
             //stvori novu celiju ako vec ne postoji
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (!ListaCelija.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+            if (!ListaCelija[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                ListaCelija.Dodaj(e.RowIndex, e.ColumnIndex);
+                ListaCelija[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
             }
            
             //spremam podatke upisane u celiju
-            string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            ListaCelija.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);*/
+            string s = gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            ListaCelija[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -159,16 +149,6 @@ namespace MyExcel
                 for (int j = 0; j < brojRedaka; j++)
                     if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
                     else tablica.Rows[j].Cells[i].Style.BackColor = Color.White; */
-        }
-
-        private void toolStripTextBox1_Validated(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
-        {
-
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -230,13 +210,18 @@ namespace MyExcel
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            TabPage newPage = new TabPage("New Page");
+            string s = "Sheet" + (broj_gridova + 1);
+            TabPage newPage = new TabPage(s);
             tabControl1.TabPages.Add(newPage);
             gridovi.Add(new DataGridView());
 
-            gridovi.Add(new DataGridView());
-
+            gridovi[broj_gridova].RowHeadersWidth = 60;
             tabControl1.TabPages[broj_gridova].Controls.Add(gridovi[broj_gridova]);
+            gridovi[broj_gridova].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
+            gridovi[broj_gridova].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
+
+            Celije noviTab = new Celije();
+            ListaCelija.Add(noviTab);
 
             gridovi[broj_gridova].Dock = DockStyle.Fill;
             for (int i = 65; i <= 90; i++)
@@ -257,13 +242,5 @@ namespace MyExcel
             }
             broj_gridova++;
         }
-
-    
-
     }
 }
-
-// ovo mi treba
-// string s = tablica.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-// tablica.Columns[i].HeaderCell.Style.BackColor = Control.DefaultBackColor;
-
