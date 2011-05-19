@@ -33,6 +33,15 @@ namespace MyExcel
         {
             return sadrzaj;
         }
+
+        public void DodajVrijednostFormuli(string f)
+        {
+            formula = f;
+        }
+        public string DajVrijednostFormule()
+        {
+            return formula;
+        }
     }
 
     class Celije
@@ -51,12 +60,16 @@ namespace MyExcel
             sveCelije[index].DodajVrijednostCeliji(v);
         }
 
+        public void DodajFormulu(int r, int s, string f)
+        {
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
+            sveCelije[index].DodajVrijednostFormuli(f);
+        }
+
         //public  parsiraj(string s)
         public List<Cell> parsiraj(string s)
         {
-            
             string slovo, broj;
-
             List<Cell> celije = new List<Cell>();
             string[] koordinate = s.Split(';');
             foreach (string k in koordinate)
@@ -80,7 +93,7 @@ namespace MyExcel
                         for (int i = r1; i <= r2; i++)
                         {
                             KeyValuePair<int, int> index = new KeyValuePair<int, int>(i, c1);
-                            celije.Add(sveCelije[index]);
+                            if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
                         }
                     }
                     else if (r1 == r2)
@@ -88,7 +101,7 @@ namespace MyExcel
                         for (int i = c1; i <= c2; i++)
                         {
                             KeyValuePair<int, int> index = new KeyValuePair<int, int>(r1, i);
-                            celije.Add(sveCelije[index]);
+                            if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
                         }
                     }
                 }
