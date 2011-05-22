@@ -70,6 +70,7 @@ namespace MyExcel
         public List<Cell> parsiraj(string s)
         {
             string slovo, broj;
+            double rez; 
             List<Cell> celije = new List<Cell>();
             string[] koordinate = s.Split(';');
             foreach (string k in koordinate)
@@ -87,8 +88,8 @@ namespace MyExcel
                     broj = Regex.Match(oddo[1], "[0-9]+").Value;
                     int c2 = slovo[0] - 97;
                     int r2 = Convert.ToInt32(broj) - 1;
-
-                    if (c1 == c2)
+                        
+                    if (c1 == c2 && r1 != r2)
                     {
                         for (int i = r1; i <= r2; i++)
                         {
@@ -96,13 +97,27 @@ namespace MyExcel
                             if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
                         }
                     }
-                    else if (r1 == r2)
+                    else if (r1 == r2 && c1 != c2)
                     {
                         for (int i = c1; i <= c2; i++)
                         {
                             KeyValuePair<int, int> index = new KeyValuePair<int, int>(r1, i);
-                            if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
+                            if (sveCelije.ContainsKey(index) &&
+                                System.Double.TryParse(sveCelije[index].sadrzaj, out rez)) 
+                                    celije.Add(sveCelije[index]);
                         }
+                    }
+                    else
+                    {
+                        for (int i = r1; i <= r2; i++)
+                            for (int j = c1; j <= c2; j++)
+                            {
+                                KeyValuePair<int, int> index = new KeyValuePair<int, int>(i, j);
+                                //if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
+                                if (sveCelije.ContainsKey(index) &&
+                                    System.Double.TryParse(sveCelije[index].sadrzaj, out rez))
+                                        celije.Add(sveCelije[index]);
+                            }
                     }
                 }
                 else
@@ -113,7 +128,10 @@ namespace MyExcel
                     int c = slovo[0] - 97;
                     int r = Convert.ToInt32(broj) - 1;
                     KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, c);
-                    celije.Add(sveCelije[index]);
+                    //celije.Add(sveCelije[index]);
+                    if (sveCelije.ContainsKey(index) &&
+                        System.Double.TryParse(sveCelije[index].sadrzaj, out rez))
+                            celije.Add(sveCelije[index]);
                 }
             }
             return celije;

@@ -33,13 +33,10 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.LabelSuma = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +59,6 @@
             this.toolStripButton2,
             this.toolStripSeparator1,
             this.toolStripButton3,
-            this.toolStripLabel1,
             this.toolStripTextBox1,
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
@@ -88,18 +84,13 @@
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "toolStripButton3";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(27, 22);
-            this.toolStripLabel1.Text = "f(x) ";
+            this.toolStripButton3.Size = new System.Drawing.Size(28, 22);
+            this.toolStripButton3.Text = "f(x)";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // toolStripTextBox1
             // 
@@ -122,36 +113,18 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel,
-            this.toolStripStatusLabel1,
-            this.LabelSuma});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 474);
+            this.statusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 476);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(653, 24);
+            this.statusStrip1.Size = new System.Drawing.Size(653, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(101, 19);
+            this.statusLabel.Size = new System.Drawing.Size(101, 17);
             this.statusLabel.Text = "Koordinate celije: ";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(43, 19);
-            this.toolStripStatusLabel1.Text = "Suma: ";
-            // 
-            // LabelSuma
-            // 
-            this.LabelSuma.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.LabelSuma.Name = "LabelSuma";
-            this.LabelSuma.Size = new System.Drawing.Size(41, 19);
-            this.LabelSuma.Text = "          ";
-            this.LabelSuma.ToolTipText = "Suma vrijednosti u selektiranim celijama";
             // 
             // menuStrip1
             // 
@@ -218,7 +191,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 74);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(653, 400);
+            this.tabControl1.Size = new System.Drawing.Size(653, 402);
             this.tabControl1.TabIndex = 5;
             // 
             // tabPage1
@@ -226,7 +199,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(645, 374);
+            this.tabPage1.Size = new System.Drawing.Size(645, 376);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -270,16 +243,13 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel LabelSuma;
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
 
     }
 }

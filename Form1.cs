@@ -31,14 +31,17 @@ namespace MyExcel
             gridovi[0].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[0].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
-            gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
-
+            //gridovi[0].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
+            gridovi[0].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
+            
+            
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
 
             gridovi[0].Dock = DockStyle.Fill;
             tabControl1.TabPages[0].Text = "Sheet1";
             gridovi[0].RowHeadersWidth = 60;
+            gridovi[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
             for (int i = 65; i <= 90; i++)
             {
                 DataGridViewColumn newCol = new DataGridViewColumn();
@@ -56,6 +59,11 @@ namespace MyExcel
                 gridovi[0].Rows[i - 1].HeaderCell.Value = i.ToString();
             }
             broj_gridova++;
+
+            //kad se otvori tablica, stavi fokus na (0, 0)
+            //gridovi[0].Focus();
+            //gridovi[0].CurrentCell = gridovi[0][0, 0];
+            //gridovi[0].BeginEdit(false);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -71,7 +79,7 @@ namespace MyExcel
 
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj, inace samo koordinate
+            //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj i formula, inace samo koordinate
             int indexTaba = tabControl1.SelectedIndex;
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
@@ -114,7 +122,7 @@ namespace MyExcel
             */
         }
 
-        void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int indexTaba = tabControl1.SelectedIndex;
             if (gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
@@ -141,6 +149,12 @@ namespace MyExcel
                 string s = gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 ListaCelija[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
             }
+
+            //poravnjanje brojeva i teksta
+            double r; 
+            if (System.Double.TryParse(gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
+                gridovi[0].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+            else gridovi[0].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -210,7 +224,7 @@ namespace MyExcel
                 gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
         }
 
-        private void tablica_SelectionChanged(object sender, EventArgs e)
+        /*private void tablica_SelectionChanged(object sender, EventArgs e)
         {
             List<Cell> argument = new List<Cell>();
             int indexTaba = tabControl1.SelectedIndex;
@@ -221,12 +235,13 @@ namespace MyExcel
                                                 gridovi[indexTaba].SelectedCells[c].ColumnIndex);
                 if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
                 {
+                    if (System.Convert.ToDecimal(ListaCelija[indexTaba].sveCelije[index].sadrzaj) != 0)
                     argument.Add(ListaCelija[indexTaba].sveCelije[index]);
                 }
 
             }
             LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); 
-        }
+        }*/
 
         private void toolStripButton4_Click(object sender, EventArgs e) //novi tab
         {
@@ -240,7 +255,8 @@ namespace MyExcel
             gridovi[broj_gridova].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[broj_gridova].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             gridovi[broj_gridova].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
-            gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
+            //gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
+            gridovi[broj_gridova].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
 
@@ -291,6 +307,17 @@ namespace MyExcel
             //statusLabel.Text = e.RowIndex + " " + e.ColumnIndex;
         }
 
-        
+        private void tablica_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+             tablica_CellClick(null, e);
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {   
+            myexcel.Form2 funkcije = new myexcel.Form2();
+            funkcije.excel = this;
+            if (funkcije.ShowDialog() == DialogResult.OK)
+            { }
+        }
     }
 }
