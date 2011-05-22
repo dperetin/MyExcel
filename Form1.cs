@@ -31,7 +31,7 @@ namespace MyExcel
             gridovi[0].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[0].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
-            //gridovi[0].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
+            gridovi[0].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
             gridovi[0].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
             
             
@@ -42,6 +42,7 @@ namespace MyExcel
             tabControl1.TabPages[0].Text = "Sheet1";
             gridovi[0].RowHeadersWidth = 60;
             gridovi[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomRight;
+           
             for (int i = 65; i <= 90; i++)
             {
                 DataGridViewColumn newCol = new DataGridViewColumn();
@@ -174,16 +175,16 @@ namespace MyExcel
 
         private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-        /*    tablica.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < brojRedaka; i++)
-                for (int j = 0; j < brojStupaca; j++)
-                    if (j == e.ColumnIndex) tablica.Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[i].Cells[j].Style.BackColor = Color.White;*/
+            gridovi[0].Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            for (int i = 0; i < 99; i++)
+                for (int j = 0; j < 25; j++)
+                    if (j == e.ColumnIndex) gridovi[0].Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
+                    else gridovi[0].Rows[i].Cells[j].Style.BackColor = Color.White;
         }
 
         private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-         /*   tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            /*tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
             for (int i = 0; i < brojStupaca; i++)
                 for (int j = 0; j < brojRedaka; j++)
                     if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
@@ -224,7 +225,7 @@ namespace MyExcel
                 gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
         }
 
-        /*private void tablica_SelectionChanged(object sender, EventArgs e)
+        private void tablica_SelectionChanged(object sender, EventArgs e)
         {
             List<Cell> argument = new List<Cell>();
             int indexTaba = tabControl1.SelectedIndex;
@@ -241,7 +242,7 @@ namespace MyExcel
 
             }
             LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); 
-        }*/
+        }
 
         private void toolStripButton4_Click(object sender, EventArgs e) //novi tab
         {
@@ -255,7 +256,7 @@ namespace MyExcel
             gridovi[broj_gridova].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[broj_gridova].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             gridovi[broj_gridova].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
-            //gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
+            gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
             gridovi[broj_gridova].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
@@ -314,10 +315,15 @@ namespace MyExcel
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {   
+            
             myexcel.Form2 funkcije = new myexcel.Form2();
             funkcije.excel = this;
             if (funkcije.ShowDialog() == DialogResult.OK)
-            { }
+            {
+                toolStripTextBox1.Text = funkcije.textBox1.Text;
+                toolStripButton1_Click(null, null);
+                toolStripTextBox1.Clear();
+            }
         }
     }
 }

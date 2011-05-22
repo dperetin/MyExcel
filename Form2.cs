@@ -19,13 +19,13 @@ namespace myexcel
         {
             InitializeComponent();
             listaFunkcija.Add("MIN");
-            opisiFunkcija.Add("Minimum \n\nKorištenje \nMIN(x1; x2; ..., xn) ili \nMIN(x1:xn)");
+            opisiFunkcija.Add("Minimum \n\nKorištenje \nMIN(x1; x2; ..., xn) ili \nMIN(x1: xn)");
             listaFunkcija.Add("MAX");
-            opisiFunkcija.Add("Maksimum \n\nKorištenje \nMIN(x1; x2; ..., xn) ili \nMIN(x1:xn)");
+            opisiFunkcija.Add("Maksimum \n\nKorištenje \nMAX(x1; x2; ..., xn) ili \nMAX(x1: xn)");
             listaFunkcija.Add("SUM");
-            opisiFunkcija.Add("Suma \n\nKorištenje \nMIN(x1; x2; ..., xn) ili \nMIN(x1:xn)");
+            opisiFunkcija.Add("Suma \n\nKorištenje \nSUM(x1; x2; ..., xn) ili \nSUM(x1: xn)");
             listaFunkcija.Add("AVERAGE");
-            opisiFunkcija.Add("Prosjek \n\nKorištenje \nMIN(x1; x2; ..., xn) ili \nMIN(x1:xn)");
+            opisiFunkcija.Add("Prosjek \n\nKorištenje \nAVERAGE(x1; x2; ..., xn) ili \nAVERAGE(x1: xn)");
             foreach (string fja in listaFunkcija)
                 listBox1.Items.Add(fja);
         }
@@ -33,12 +33,7 @@ namespace myexcel
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             label4.Text = opisiFunkcija[listBox1.SelectedIndex];
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        }     
     }
 }
 //listBox1.Items[i].ToString());
