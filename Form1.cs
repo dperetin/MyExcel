@@ -337,5 +337,22 @@ namespace MyExcel
             }
         }
 
+        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int indexTaba = tabControl1.SelectedIndex;
+            fontDialog1.ShowColor = true;
+            fontDialog1.Font = gridovi[indexTaba].SelectedCells[0].Style.Font;
+            fontDialog1.Color = gridovi[indexTaba].SelectedCells[0].Style.ForeColor;
+            
+            if (fontDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                for (int i = 0; i < gridovi[indexTaba].SelectedCells.Count; i++ )
+                {
+                    gridovi[indexTaba].SelectedCells[i].Style.Font = fontDialog1.Font;
+                    gridovi[indexTaba].SelectedCells[i].Style.ForeColor = fontDialog1.Color;
+                }
+            }
+        }
+
     }
 }
