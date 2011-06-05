@@ -18,9 +18,6 @@ namespace MyExcel
         List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
         
-        //int brojRedaka = 1; //ima ih n, od 0 do n-1
-        //int brojStupaca = 25; //isto od 0
-        
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +30,9 @@ namespace MyExcel
             gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             gridovi[0].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
             gridovi[0].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
-            
+            //gridovi[0].ColumnHeaderMouseClick += new DataGridViewCellMouseEventHandler(tablica_ColumnHeaderMouseClick);
+            //gridovi[0].RowHeaderMouseClick += new DataGridViewCellMouseEventHandler(tablica_RowHeaderMouseClick);
+            gridovi[0].RowsAdded += new DataGridViewRowsAddedEventHandler(tablica_RowsAdded);
             
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
@@ -161,8 +160,8 @@ namespace MyExcel
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             //kad se doda novi redak, ispisi redni broj u header
-          /*  tablica.Rows[brojRedaka - 1].HeaderCell.Value = brojRedaka.ToString();
-            brojRedaka++;*/
+            int indexTaba = tabControl1.SelectedIndex;
+            gridovi[indexTaba].Rows[gridovi[indexTaba].RowCount - 1].HeaderCell.Value = gridovi[indexTaba].RowCount.ToString();
         }
 
         private void tablica_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -175,20 +174,22 @@ namespace MyExcel
 
         private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            gridovi[0].Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < 99; i++)
-                for (int j = 0; j < 25; j++)
-                    if (j == e.ColumnIndex) gridovi[0].Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
-                    else gridovi[0].Rows[i].Cells[j].Style.BackColor = Color.White;
+            int indexTaba = tabControl1.SelectedIndex;
+            gridovi[indexTaba].Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            for (int i = 0; i < gridovi[indexTaba].RowCount; i++)
+                for (int j = 0; j < gridovi[indexTaba].ColumnCount; j++)
+                    if (j == e.ColumnIndex) gridovi[indexTaba].Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
+                    else gridovi[indexTaba].Rows[i].Cells[j].Style.BackColor = Color.White;
         }
 
         private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            /*tablica.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < brojStupaca; i++)
-                for (int j = 0; j < brojRedaka; j++)
-                    if (j == e.RowIndex) tablica.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
-                    else tablica.Rows[j].Cells[i].Style.BackColor = Color.White; */
+            int indexTaba = tabControl1.SelectedIndex;
+            gridovi[indexTaba].Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            for (int i = 0; i < gridovi[indexTaba].ColumnCount; i++)
+                for (int j = 0; j < gridovi[indexTaba].RowCount; j++)
+                    if (j == e.RowIndex) gridovi[indexTaba].Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
+                    else gridovi[indexTaba].Rows[j].Cells[i].Style.BackColor = Color.White; 
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
@@ -204,9 +205,16 @@ namespace MyExcel
             }
 
             Cell celija = ListaCelija[indexTaba].sveCelije[koordinate];
-            //gridovi[indexTaba].SelectedCells[0].Value = celija.sadrzaj;
-
             string formula = toolStripTextBox1.Text.ToLower();
+            
+            double rez;
+            if (System.Double.TryParse(formula, out rez))
+            {
+                ListaCelija[indexTaba].sveCelije[koordinate].sadrzaj = Convert.ToString(rez);
+                gridovi[indexTaba].SelectedCells[0].Value = rez.ToString();
+                return;
+            }
+            
             celija.formula = formula;
 
             string fja = Regex.Match(formula, @"=\w*[(]").Value;
@@ -229,6 +237,7 @@ namespace MyExcel
         {
             List<Cell> argument = new List<Cell>();
             int indexTaba = tabControl1.SelectedIndex;
+            double rez;
             for (int c = 0; c < gridovi[indexTaba].SelectedCells.Count; c++ )
             {
                 KeyValuePair<int, int> index =
@@ -236,7 +245,7 @@ namespace MyExcel
                                                 gridovi[indexTaba].SelectedCells[c].ColumnIndex);
                 if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
                 {
-                    if (System.Convert.ToDecimal(ListaCelija[indexTaba].sveCelije[index].sadrzaj) != 0)
+                    if (System.Double.TryParse(ListaCelija[indexTaba].sveCelije[index].sadrzaj, out rez))
                     argument.Add(ListaCelija[indexTaba].sveCelije[index]);
                 }
 
@@ -258,6 +267,8 @@ namespace MyExcel
             gridovi[broj_gridova].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             gridovi[broj_gridova].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
             gridovi[broj_gridova].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
+            gridovi[broj_gridova].RowsAdded += new DataGridViewRowsAddedEventHandler(tablica_RowsAdded);
+            
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
 
@@ -316,7 +327,7 @@ namespace MyExcel
         private void toolStripButton3_Click(object sender, EventArgs e)
         {   
             
-            myexcel.Form2 funkcije = new myexcel.Form2();
+            MyExcel.Form2 funkcije = new MyExcel.Form2();
             funkcije.excel = this;
             if (funkcije.ShowDialog() == DialogResult.OK)
             {
@@ -325,5 +336,6 @@ namespace MyExcel
                 toolStripTextBox1.Clear();
             }
         }
+
     }
 }

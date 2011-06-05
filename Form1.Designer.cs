@@ -37,6 +37,9 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Suma = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LabelSuma = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,9 +49,7 @@
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.LabelSuma = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.Suma = new System.Windows.Forms.ToolStripStatusLabel();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -132,6 +133,23 @@
             this.statusLabel.Size = new System.Drawing.Size(101, 17);
             this.statusLabel.Text = "Koordinate celije: ";
             // 
+            // Suma
+            // 
+            this.Suma.Name = "Suma";
+            this.Suma.Size = new System.Drawing.Size(40, 17);
+            this.Suma.Text = "Suma:";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(0, 17);
+            // 
+            // LabelSuma
+            // 
+            this.LabelSuma.Name = "LabelSuma";
+            this.LabelSuma.Size = new System.Drawing.Size(13, 17);
+            this.LabelSuma.Text = "0";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -210,23 +228,6 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // LabelSuma
-            // 
-            this.LabelSuma.Name = "LabelSuma";
-            this.LabelSuma.Size = new System.Drawing.Size(13, 17);
-            this.LabelSuma.Text = "0";
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(0, 17);
-            // 
-            // Suma
-            // 
-            this.Suma.Name = "Suma";
-            this.Suma.Size = new System.Drawing.Size(40, 17);
-            this.Suma.Text = "Suma:";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -276,6 +277,7 @@
         private System.Windows.Forms.ToolStripStatusLabel LabelSuma;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel Suma;
+        private System.Windows.Forms.FontDialog fontDialog1;
 
     }
 }

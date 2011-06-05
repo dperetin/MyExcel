@@ -1,4 +1,4 @@
-﻿namespace myexcel
+﻿namespace MyExcel
 {
     partial class Form2
     {

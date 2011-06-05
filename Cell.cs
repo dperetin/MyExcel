@@ -94,7 +94,9 @@ namespace MyExcel
                         for (int i = r1; i <= r2; i++)
                         {
                             KeyValuePair<int, int> index = new KeyValuePair<int, int>(i, c1);
-                            if (sveCelije.ContainsKey(index)) celije.Add(sveCelije[index]);
+                            if (sveCelije.ContainsKey(index) &&
+                                System.Double.TryParse(sveCelije[index].sadrzaj, out rez))
+                                celije.Add(sveCelije[index]);
                         }
                     }
                     else if (r1 == r2 && c1 != c2)
