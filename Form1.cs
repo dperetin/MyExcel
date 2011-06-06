@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Schema;
+using System.IO;
 
 namespace MyExcel
 {
@@ -14,6 +17,7 @@ namespace MyExcel
     {
         List<DataGridView> gridovi = new List<DataGridView>();
         int broj_gridova = 0;
+        string imeFilea;
 
         List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
@@ -153,8 +157,8 @@ namespace MyExcel
             //poravnjanje brojeva i teksta
             double r; 
             if (System.Double.TryParse(gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
-                gridovi[0].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
-            else gridovi[0].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+                gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+            else gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -339,6 +343,9 @@ namespace MyExcel
 
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //klik na Font u izborniku
+            //primijeni odabrano formatiranje na odabrane celije
+
             int indexTaba = tabControl1.SelectedIndex;
             fontDialog1.ShowColor = true;
             fontDialog1.Font = gridovi[indexTaba].SelectedCells[0].Style.Font;
@@ -351,6 +358,143 @@ namespace MyExcel
                     gridovi[indexTaba].SelectedCells[i].Style.Font = fontDialog1.Font;
                     gridovi[indexTaba].SelectedCells[i].Style.ForeColor = fontDialog1.Color;
                 }
+            }
+        }
+
+        // dovrsiti praznjenje
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //klik na New u izborniku
+
+            //pitaj korisnika zeli li spremiti promjene prije izlaza iz trenutne tablice
+            MyExcel.Form3 izlaz = new MyExcel.Form3();
+            izlaz.excel = this;
+            DialogResult rez = izlaz.ShowDialog();
+            if (rez == DialogResult.Yes)
+            {
+                //napravi saveAs ili save pa izadji
+                if (imeFilea == null) saveAsToolStripMenuItem_Click(null, null);
+                else saveToolStripMenuItem_Click(null, null);
+            }
+
+            //otvori novu praznu tablicu
+            for (int i = 0; i < broj_gridova; i++)
+            {
+                ListaCelija[i].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                for (int j = 0; j < gridovi[i].Rows.Count; j++)
+                    for (int k = 0; k < gridovi[i].Columns.Count; k++)
+                    {
+                        gridovi[i].Rows[j].Cells[k].Value = null;
+                    }
+                //if (i > 1) tabControl1.TabPages[i - 1].Dispose();
+            }
+            broj_gridova = 1;
+            imeFilea = "";
+            gridovi[0].ClearSelection();
+        }
+
+        // dovrsiti xml
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //klik na Open u izborniku
+
+            //pitaj korisnika zeli li spremiti promjene prije izlaza iz trenutne tablice
+            //otvori novu praznu tablicu
+            newToolStripMenuItem_Click(null, null);
+
+            //otvori open dialog
+            //procitaj i prepisi tablicu iz xml-a
+            openFileDialog1.Filter = "Extensible Markup Language|*.xml";
+            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                imeFilea = openFileDialog1.FileName;
+                XmlTextReader reader = new XmlTextReader(imeFilea);
+                while (reader.Read())
+                {
+                    //if (reader.NodeType == XmlNodeType.Element)
+                    if (reader.Name == "grid")
+                    {
+                        //tabPrefix = new string('\t', reader.Depth);
+                        //writer.WriteLine("{0}<{1}>", tabPrefix, reader.Name);
+                    }
+                }
+                reader.Close();
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //klik na Save As u izborniku
+            //pitaj korisnika gdje zeli spremiti tablicu
+            //spremi tablicu u xml
+
+            saveFileDialog1.Filter = "Extensible Markup Language|*.xml";
+            saveFileDialog1.Title = "Save As";
+            if (saveFileDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                //ako je za ime file-a upisano nesto razlicito od praznog stringa, spremi tablicu u xml
+                if (saveFileDialog1.FileName != "")
+                {
+                    imeFilea = saveFileDialog1.FileName;
+                    saveToolStripMenuItem_Click(null, null);
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //klik na Save u izborniku
+            //spremi tablicu u xml naziva imeFilea
+
+            if (imeFilea == null)
+            {
+                saveAsToolStripMenuItem_Click(null, null);
+                return;
+            }
+            XmlTextWriter xmlw = new XmlTextWriter(imeFilea, null);
+            xmlw.Formatting = Formatting.Indented;
+            xmlw.WriteStartDocument();
+            xmlw.WriteStartElement("tablica");
+            for (int i = 0; i < broj_gridova; i++)
+            {
+                xmlw.WriteStartElement("grid"); 
+                foreach (KeyValuePair<KeyValuePair<int, int>, Cell> par in ListaCelija[i].sveCelije)
+                {
+                    Cell c = par.Value;
+                    xmlw.WriteStartElement("celija");
+                    xmlw.WriteAttributeString("red", c.red.ToString());
+                    xmlw.WriteAttributeString("stupac", c.stupac.ToString());
+                    xmlw.WriteAttributeString("sadrzaj", c.sadrzaj);
+                    xmlw.WriteAttributeString("formula", c.formula);
+                    xmlw.WriteEndElement();
+                }
+                xmlw.WriteEndElement();
+            }
+            xmlw.WriteEndElement();
+            xmlw.WriteEndDocument();
+            xmlw.Close();
+        }
+        
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //klik na Exit u izborniku
+            //pitaj korisnika zeli li spremiti promjene prije izlaza
+            //izadji iz programa
+
+            MyExcel.Form3 izlaz = new MyExcel.Form3();
+            izlaz.excel = this;
+            DialogResult rez = izlaz.ShowDialog();
+            if (rez == DialogResult.Yes)
+            {
+                //napravi saveAs ili save pa izadji
+                if (imeFilea == null) saveAsToolStripMenuItem_Click(null, null);
+                else saveToolStripMenuItem_Click(null, null);
+                Form1.ActiveForm.Close();
+            }
+            else if (rez == DialogResult.No)
+            {
+                //samo izadji
+                Form1.ActiveForm.Close();
             }
         }
 

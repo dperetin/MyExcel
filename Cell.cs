@@ -8,8 +8,8 @@ namespace MyExcel
 {
     public class Cell
     {
-        private int red;
-        private int stupac;
+        public int red;
+        public int stupac;
         public string sadrzaj;
         public string formula;
 
@@ -42,6 +42,7 @@ namespace MyExcel
         {
             return formula;
         }
+
     }
 
     class Celije

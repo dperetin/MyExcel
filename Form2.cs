@@ -36,4 +36,3 @@ namespace MyExcel
         }     
     }
 }
-//listBox1.Items[i].ToString());
