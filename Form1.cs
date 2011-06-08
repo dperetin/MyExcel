@@ -386,7 +386,14 @@ namespace MyExcel
                     {
                         gridovi[i].Rows[j].Cells[k].Value = null;
                     }
-                //if (i > 1) tabControl1.TabPages[i - 1].Dispose();
+                if (i > 0) 
+                {
+                    //izbaci sve tabove osim nultog
+
+                    //tabControl1.TabPages[i].Controls.Remove(gridovi[i]);
+                    //Controls.Remove(tabControl1.TabPages[i - 1]);
+                }
+
             }
             broj_gridova = 1;
             imeFilea = "";
