@@ -609,5 +609,73 @@ namespace MyExcel
            // g.DrawPath(pen, path);
         }
 
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            int tab = tabControl1.SelectedIndex;
+            List<double> vrijednosti = new List<double>(); ;
+
+            Panel graf = new Panel();
+            graf.Size = new Size(330, 330);
+            graf.BorderStyle = BorderStyle.FixedSingle;
+            graf.Location = new Point(ClientSize.Width - 400, 50);
+            graf.Parent = gridovi[tab];
+            graf.MouseDown += new MouseEventHandler(vuci);
+            graf.MouseUp += new MouseEventHandler(vuci);
+            graf.MouseMove += new MouseEventHandler(pomakni);
+
+            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            {
+                double r;
+
+                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
+                if (ListaCelija[tab].sveCelije.ContainsKey(index))
+                {
+                    if (!Double.TryParse(c.Value.ToString(), out r))
+                        continue;
+                    vrijednosti.Add(r);
+                }
+            }
+
+            
+            List<Color> boje = new List<Color>();
+            boje.Add(Color.FromArgb(62, 87, 145));
+            boje.Add(Color.FromArgb(186, 61, 59));
+            boje.Add(Color.FromArgb(74, 122, 69));
+            boje.Add(Color.FromArgb(197, 97, 68));
+            boje.Add(Color.FromArgb(111, 145, 62));
+            boje.Add(Color.FromArgb(214, 154, 80));
+            boje.Add(Color.FromArgb(203, 193, 76));
+
+
+            Graphics g = graf.CreateGraphics();
+
+            int n = (int)vrijednosti.Sum();
+            Rectangle rect = new Rectangle(50, 50, 230, 230);
+            int i = 0;
+            float startAngle = 0.0F;
+            float sweepAngle = 360.0F / n * (float)vrijednosti[0];
+            for (int k = 1; k < vrijednosti.Count; k++ )
+            {
+                Brush myBrush = new SolidBrush(boje[i % boje.Count]);
+
+
+
+                // Fill pie to screen.
+                g.FillPie(myBrush, rect, startAngle, sweepAngle);
+
+                i++;
+                startAngle += sweepAngle;
+                sweepAngle = 360.0F / n * (float)vrijednosti[k];
+            }
+            Brush myBrush2 = new SolidBrush(boje[i % boje.Count]);
+            
+
+
+            // Fill pie to screen.
+            g.FillPie(myBrush2, rect, startAngle, sweepAngle);
+            //GraphicsPath path = new GraphicsPath();
+           
+        }
+
     }
 }
