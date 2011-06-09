@@ -533,6 +533,12 @@ namespace MyExcel
             }
         }
 
+        void zagasi(object o, EventArgs e)
+        {
+            Button b = (Button)o;
+            b.Parent.Dispose();
+        }
+
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             int tab = tabControl1.SelectedIndex;
@@ -546,6 +552,14 @@ namespace MyExcel
             graf.MouseDown += new MouseEventHandler(vuci);
             graf.MouseUp += new MouseEventHandler(vuci);
             graf.MouseMove += new MouseEventHandler(pomakni);
+
+
+            Button close = new Button();
+            close.Size = new Size(10, 10);
+            close.FlatStyle = FlatStyle.Flat;
+            close.Parent = graf;
+            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Click += new EventHandler(zagasi);
 
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
@@ -599,16 +613,9 @@ namespace MyExcel
                 g.FillRectangle(myBrush, r);
                 g.DrawRectangle(pen, r);
             }
-            //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
-
             
            
             
-           // g.DrawString("Hello C#", myFont, myBrush, 30, 30);
-
-            //g.DrawRectangle(pen, myRectangle);
-            
-           // g.DrawPath(pen, path);
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
@@ -624,6 +631,13 @@ namespace MyExcel
             graf.MouseDown += new MouseEventHandler(vuci);
             graf.MouseUp += new MouseEventHandler(vuci);
             graf.MouseMove += new MouseEventHandler(pomakni);
+
+            Button close = new Button();
+            close.Size = new Size(10, 10);
+            close.FlatStyle = FlatStyle.Flat;
+            close.Parent = graf;
+            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Click += new EventHandler(zagasi);
 
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
@@ -692,6 +706,13 @@ namespace MyExcel
             graf.MouseDown += new MouseEventHandler(vuci);
             graf.MouseUp += new MouseEventHandler(vuci);
             graf.MouseMove += new MouseEventHandler(pomakni);
+
+            Button close = new Button();
+            close.Size = new Size(10, 10);
+            close.FlatStyle = FlatStyle.Flat;
+            close.Parent = graf;
+            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Click += new EventHandler(zagasi);
 
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
