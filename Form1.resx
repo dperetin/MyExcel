@@ -224,6 +224,29 @@
         AzRZiFzyAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="toolStripButton5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPRSURBVEhLpdRrTFNnHAZwvjFjjJeom07d5NtCMjM/LEKC
+        M0ogDkYA3YqyKlFDBUHRmKhb2GCBTsG54AcCcSRk9kYhLgQWJkJNjJSLQMEQtBYpRazQGxTKbSQ8O8/R
+        wik2i4knedKT9/J7/+/7njQkZPkJFV7XvGdoLD99fX3pMzMzLxcWFvA+oUHLL6/yer12oRE+n28p09PT
+        eJdI59CgJcCriK+bn5/H1NQUqqur38ot7XUES7CxNGjRJLx+bm4Ok5OTIspOaRVNj/R47mkLCNukY/xF
+        0aBFk/CG2dnZpYqlE/j+LjDH+YuiRZPwRp4NV9Pr9TCZTAG596gKwbJyHOfSoEWT8CZeknDoqKqqEjul
+        aezQweI2BoRtK8dxLg1aNAlv5lYmJiZEmJ3SNLbr8MxlDAjbVo7jXBq0aBL+kIfPxnJNMThJmooHOQiW
+        rq4uSOOHadEk/BG3NT4+jnJ1EZ45W17nTZVE/xkpEPO37RfUW/NR3pQNh8MBl8sFt9stFqXT6USDFk3C
+        W9nh8XhQpiqC2fFwGRcWIEzsbssVPCnJwWjuOfiyM+DLzIQjJwfDhYWwtbZCpVKJBi2ahD/mSly5THUN
+        d1u1ASltPANjoQKL589j8exZ/KtQYDYtDb4jR+BNToYnLg7O6GgYhLaRkRGxapqEt3ElwlqtVuzwZ2xs
+        DD1FRYBQ2UJGBuZOnMB0aiomDx/GeEICXLGxGNu3D/aICLzYvRumS5cwOjpKeBvh7TwrRqPRiNvxZ3Bw
+        EG4BnD91CjNyOaZkMkwkJsJ98CDs0TF4sfcrWL/cA8uuL/D0s3B0f74LAwMDhLcT3sGLcDqdItzR0SGm
+        vb0d9fX1cKenv7Xt4e+/wc3ScnyrbEF8bhMOXKxD5Bk9jmfdQk9PD+FPCH/KLRNXq9Vi5QwX6u3tRadw
+        ht7Tp+GKiVnadmtxEtQPU5CUb0Ds5QbsPXcHh3LrcPRkCbq7uwnvJLxTChP04xaLBSX796NXuBxXVhZe
+        JSVhOCoKt+/H4qp5DwpvpEP+azOyfzdAcfI3yOMy0d/fvwSH8cCJ85ORprKyEkqlEsrwcPy1di26IiNh
+        ksejov87/PE4GRV1X+OC4gYi4vOREHUczc0G2Gw2wmHiURiNRifxYLFarTAYDCjLy0OpcPvFEVuQWhCK
+        Yz+HIu2n1TgafQzXf8hDW1sbhoaGQIsm4Q9SUlL+FC7LIz0Gfn7+r4Pnzy+ks7MTDQ0N4l9kTU0Namtr
+        CcFsNsNut/PCPTKZ7DZNwnzChfwohI3q/4lG6NMK0b355TvbOIdzadAK+Q/UYyechonFyQAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
   <metadata name="fontDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>458, 17</value>
   </metadata>

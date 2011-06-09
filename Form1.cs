@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using System.Drawing.Drawing2D;
 
 namespace MyExcel
 {
@@ -68,6 +69,9 @@ namespace MyExcel
             //gridovi[0].Focus();
             //gridovi[0].CurrentCell = gridovi[0][0, 0];
             //gridovi[0].BeginEdit(false);
+            gridovi[0].TabIndex = 0;
+            gridovi[0].CurrentCell = gridovi[0][0, 0];
+            //gridovi[0].BeginEdit(true);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -395,7 +399,7 @@ namespace MyExcel
                 }
 
             }
-            broj_gridova = 1;
+            //broj_gridova = 1;
             imeFilea = "";
             gridovi[0].ClearSelection();
         }
@@ -503,6 +507,88 @@ namespace MyExcel
                 //samo izadji
                 Form1.ActiveForm.Close();
             }
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+      
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            int tab = tabControl1.SelectedIndex;
+            List<double> vrijednosti = new List<double>(); ;
+
+            Panel graf = new Panel();
+            graf.Size = new Size(330, 330);           
+            graf.BorderStyle = BorderStyle.FixedSingle;
+            graf.Location = new Point(ClientSize.Width - 400, 50);
+            graf.Parent = gridovi[tab];
+
+            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            {
+                double r; 
+            
+                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
+                if (ListaCelija[tab].sveCelije.ContainsKey(index))
+                {
+                    if(!Double.TryParse(c.Value.ToString(), out r)) 
+                        continue;
+                    vrijednosti.Add(r);
+                }
+            }
+
+            int hStep = 270 / (int)vrijednosti.Max();
+            int sirina = 270 / vrijednosti.Count;
+
+            List<Color> boje = new List<Color>();
+            boje.Add(Color.FromArgb(62, 87, 145));
+            boje.Add(Color.FromArgb(186, 61, 59));
+            boje.Add(Color.FromArgb(74, 122, 69));
+            boje.Add(Color.FromArgb(197, 97, 68));
+            boje.Add(Color.FromArgb(111, 145, 62));
+            boje.Add(Color.FromArgb(214, 154, 80));
+            boje.Add(Color.FromArgb(203, 193, 76));
+       
+
+            Graphics g = graf.CreateGraphics();
+            
+            //GraphicsPath path = new GraphicsPath();
+            Pen pen = new Pen(Color.Black, 1);
+            Pen myPen = new Pen(Color.Gray, 1);
+            g.DrawLine(pen, 20, 300, 310, 300);
+            g.DrawLine(pen, 20, 300, 20, 20);
+            int broj = 0;
+            Brush crni = new SolidBrush(Color.Black);
+            Font myFont = new System.Drawing.Font("Helvetica", 10);
+            for (int j = 300; j >= 30; j-=hStep)
+            {
+                g.DrawLine(myPen, 20, j, 310, j);
+                g.DrawString(broj.ToString(), myFont, crni, 10-7*(broj/10), j-8);
+                broj++;
+            }
+
+            int i = 0;
+            foreach (double d in vrijednosti)
+            {
+                 Brush myBrush = new SolidBrush(boje[i%boje.Count]);
+                Rectangle r = new Rectangle(30 + (i*sirina),300 - (int)d * hStep, sirina, (int)d * hStep);
+                i++;
+                g.FillRectangle(myBrush, r);
+                g.DrawRectangle(pen, r);
+            }
+            //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
+
+            
+           
+            
+           // g.DrawString("Hello C#", myFont, myBrush, 30, 30);
+
+            //g.DrawRectangle(pen, myRectangle);
+            
+           // g.DrawPath(pen, path);
         }
 
     }
