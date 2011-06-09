@@ -584,7 +584,7 @@ namespace MyExcel
             for (int j = 300; j >= 30; j-=hStep)
             {
                 g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10-7*(broj/10), j-8);
+                g.DrawString(broj.ToString(), myFont, crni, 10-7*((int)Math.Floor(Math.Log10(broj))), j-8);
                 broj++;
             }
 
