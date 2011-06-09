@@ -513,8 +513,23 @@ namespace MyExcel
         {
 
         }
+        bool smijesVuci = false;
+        void vuci(object o, EventArgs e)
+        {
+            if(!smijesVuci)
+                smijesVuci = true;
+            else 
+                smijesVuci = false;
+        }
 
-      
+        void pomakni(object o, EventArgs e)
+        {
+            if (smijesVuci)
+            {
+                Panel tGraf = (Panel)o;
+                tGraf.Location = new Point(MousePosition.X - Location.X - (150), MousePosition.Y - Location.Y - 300);
+            }
+        }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
@@ -526,6 +541,9 @@ namespace MyExcel
             graf.BorderStyle = BorderStyle.FixedSingle;
             graf.Location = new Point(ClientSize.Width - 400, 50);
             graf.Parent = gridovi[tab];
+            graf.MouseDown += new MouseEventHandler(vuci);
+            graf.MouseUp += new MouseEventHandler(vuci);
+            graf.MouseMove += new MouseEventHandler(pomakni);
 
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
