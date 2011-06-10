@@ -539,6 +539,7 @@ namespace MyExcel
             b.Parent.Dispose();
         }
 
+      
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             int tab = tabControl1.SelectedIndex;
@@ -555,12 +556,14 @@ namespace MyExcel
 
 
             Button close = new Button();
-            close.Size = new Size(10, 10);
+            close.Size = new Size(16, 16);
             close.FlatStyle = FlatStyle.Flat;
+            
             close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Location = new Point(close.Parent.Width - 19, 1);
             close.Click += new EventHandler(zagasi);
-
+            close.BackgroundImage = imageList1.Images[0];
+            close.FlatAppearance.BorderSize = 0;
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
                 double r; 
@@ -633,12 +636,13 @@ namespace MyExcel
             graf.MouseMove += new MouseEventHandler(pomakni);
 
             Button close = new Button();
-            close.Size = new Size(10, 10);
+            close.Size = new Size(16, 16);
             close.FlatStyle = FlatStyle.Flat;
             close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Location = new Point(close.Parent.Width - 19, 1);
             close.Click += new EventHandler(zagasi);
-
+            close.BackgroundImage = imageList1.Images[0];
+            close.FlatAppearance.BorderSize = 0;
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
                 double r;
@@ -706,14 +710,17 @@ namespace MyExcel
             graf.MouseDown += new MouseEventHandler(vuci);
             graf.MouseUp += new MouseEventHandler(vuci);
             graf.MouseMove += new MouseEventHandler(pomakni);
-
+            
             Button close = new Button();
-            close.Size = new Size(10, 10);
+            close.Size = new Size(16, 16);
             close.FlatStyle = FlatStyle.Flat;
             close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 13, 1);
+            close.Location = new Point(close.Parent.Width - 19, 1);
             close.Click += new EventHandler(zagasi);
-
+            close.BackgroundImage = imageList1.Images[0];
+            close.FlatAppearance.BorderSize = 0;
+         
+     
             foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
             {
                 double r;
