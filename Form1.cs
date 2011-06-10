@@ -30,6 +30,8 @@ namespace MyExcel
             gridovi.Add(new DataGridView());
 
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
+            gridovi[0].BorderStyle = BorderStyle.None;
+            tabControl1.TabPages[0].BorderStyle = BorderStyle.None;
             gridovi[0].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[0].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
             gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
@@ -54,6 +56,7 @@ namespace MyExcel
                 newCol.Visible = true;
                 newCol.Width = 100;
                 DataGridViewCell cell = new DataGridViewTextBoxCell();
+                
                 newCol.CellTemplate = cell;
                 gridovi[0].Columns.Add(newCol);
             }
@@ -270,6 +273,7 @@ namespace MyExcel
 
             gridovi[broj_gridova].RowHeadersWidth = 60;
             tabControl1.TabPages[broj_gridova].Controls.Add(gridovi[broj_gridova]);
+            gridovi[broj_gridova].BorderStyle = BorderStyle.None;
             gridovi[broj_gridova].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
             gridovi[broj_gridova].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             gridovi[broj_gridova].CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellValueChanged);
