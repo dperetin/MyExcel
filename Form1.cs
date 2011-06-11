@@ -378,24 +378,26 @@ namespace MyExcel
             }
 
             //otvori novu praznu tablicu
-            for (int i = 0; i < broj_gridova; i++)
+            while (broj_gridova > 1)
             {
-                ListaCelija[i].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
-                for (int j = 0; j < gridovi[i].Rows.Count; j++)
-                    for (int k = 0; k < gridovi[i].Columns.Count; k++)
-                    {
-                        gridovi[i].Rows[j].Cells[k].Value = null;
-                    }
-                if (i > 0) 
-                {
-                    //izbaci sve tabove osim nultog
-
-                    //tabControl1.TabPages[i].Controls.Remove(gridovi[i]);
-                    //Controls.Remove(tabControl1.TabPages[i - 1]);
-                }
-
+                //izbaci sve tabove osim nultog
+                ListaCelija[broj_gridova - 1].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                ListaCelija.Remove(ListaCelija[broj_gridova - 1]);
+                gridovi[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
+                tabControl1.TabPages[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
+                tabControl1.TabPages.Remove(tabControl1.TabPages[broj_gridova - 1]);
+                gridovi.Remove(gridovi[broj_gridova - 1]);
+                broj_gridova--;
             }
-            broj_gridova = 1;
+            //isprazni tablicu prvog taba
+            for (int j = 0; j < gridovi[0].Rows.Count; j++)
+                for (int k = 0; k < gridovi[0].Columns.Count; k++)
+                {
+                    gridovi[0].Rows[j].Cells[k].Value = null;
+                }
+            ListaCelija[0].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+            //vratiti fokus na (0,0)    
+            toolStripTextBox1.Text = "";
             imeFilea = "";
             gridovi[0].ClearSelection();
         }
