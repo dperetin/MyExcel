@@ -33,6 +33,11 @@ namespace MyExcel
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             label4.Text = opisiFunkcija[listBox1.SelectedIndex];
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }     
     }
 }
