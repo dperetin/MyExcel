@@ -422,7 +422,6 @@ namespace MyExcel
             
         }
         
-        // dovrsiti xml
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //klik na Open u izborniku
@@ -434,18 +433,49 @@ namespace MyExcel
             //otvori open dialog
             //procitaj i prepisi tablicu iz xml-a
             openFileDialog1.Filter = "Extensible Markup Language|*.xml";
+            broj_gridova = 1;
+            bool vise_gridova = false;
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 imeFilea = openFileDialog1.FileName;
-                XmlTextReader reader = new XmlTextReader(imeFilea);
-                while (reader.Read())
+                //XmlTextReader reader = new XmlTextReader(imeFilea);
+                XmlReader reader = XmlReader.Create(imeFilea);
+                while (reader.Read()) 
                 {
-                    //if (reader.NodeType == XmlNodeType.Element)
-                    if (reader.Name == "grid")
+                    if (reader.IsStartElement() && reader.Name == "tablica") reader.Read(); // Read the start tag.
+                    if (reader.IsStartElement() && reader.Name == "grid") 
                     {
-                        //tabPrefix = new string('\t', reader.Depth);
-                        //writer.WriteLine("{0}<{1}>", tabPrefix, reader.Name);
+                        if (vise_gridova)
+                            //napravi novi tab
+                            toolStripButton4_Click(null, null);
+                        while (reader.Read())
+                        {
+                            if (reader.IsStartElement() && reader.Name == "celija")
+                            {
+                                //prepisi elemente u celije
+                                int red = Convert.ToInt32(reader.GetAttribute(0));
+                                int stupac = Convert.ToInt32(reader.GetAttribute(1));
+                                string sadrzaj = reader.GetAttribute(2);
+                                string formula = reader.GetAttribute(3);
+                                KeyValuePair<int, int> index = new KeyValuePair<int, int>(red, stupac);
+                                ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
+                                ListaCelija[broj_gridova - 1].DodajVrijednost(red, stupac, sadrzaj);
+                                ListaCelija[broj_gridova - 1].DodajFormulu(red, stupac, formula);
+                                gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Value = sadrzaj;
+
+                                double r;
+                                if (System.Double.TryParse(sadrzaj, out r))
+                                    gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+                                else gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+                            }
+                            else
+                            {
+                                vise_gridova = true;
+                                break;
+                            }
+                        }
                     }
+                    
                 }
                 reader.Close();
             }
