@@ -19,14 +19,14 @@ namespace MyExcel
         List<DataGridView> gridovi = new List<DataGridView>();
         int broj_gridova = 0;
         string imeFilea;
-
+        
         List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
         
         public Form1()
         {
             InitializeComponent();
-
+            //DoubleBuffered = true;
             gridovi.Add(new DataGridView());
 
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
@@ -517,110 +517,15 @@ namespace MyExcel
         {
 
         }
-        bool smijesVuci = false;
-        void vuci(object o, EventArgs e)
-        {
-            if(!smijesVuci)
-                smijesVuci = true;
-            else 
-                smijesVuci = false;
-            Panel p = (Panel)o;
-            p.BringToFront();
-        }
-
-        void pomakni(object o, EventArgs e)
-        {
-            if (smijesVuci)
-            {
-                Panel tGraf = (Panel)o;
-                tGraf.Location = new Point(MousePosition.X - Location.X - (150), MousePosition.Y - Location.Y - 300);
-            }
-        }
-
-        void zagasi(object o, EventArgs e)
-        {
-            Button b = (Button)o;
-            b.Parent.Dispose();
-        }
+       
 
       
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             int tab = tabControl1.SelectedIndex;
-            List<double> vrijednosti = new List<double>(); ;
-
-            Panel graf = new Panel();
-            graf.Size = new Size(330, 330);           
-            graf.BorderStyle = BorderStyle.FixedSingle;
-            graf.Location = new Point(ClientSize.Width - 400, 50);
-            graf.Parent = gridovi[tab];
-            graf.MouseDown += new MouseEventHandler(vuci);
-            graf.MouseUp += new MouseEventHandler(vuci);
-            graf.MouseMove += new MouseEventHandler(pomakni);
-
-
-            Button close = new Button();
-            close.Size = new Size(16, 16);
-            close.FlatStyle = FlatStyle.Flat;
-            
-            close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 19, 1);
-            close.Click += new EventHandler(zagasi);
-            close.BackgroundImage = imageList1.Images[0];
-            close.FlatAppearance.BorderSize = 0;
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
-            {
-                double r; 
-            
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index))
-                {
-                    if(!Double.TryParse(c.Value.ToString(), out r)) 
-                        continue;
-                    vrijednosti.Add(r);
-                }
-            }
-
-            int hStep = 270 / (int)vrijednosti.Max();
-            int sirina = 270 / vrijednosti.Count;
-
-            List<Color> boje = new List<Color>();
-            boje.Add(Color.FromArgb(62, 87, 145));
-            boje.Add(Color.FromArgb(186, 61, 59));
-            boje.Add(Color.FromArgb(74, 122, 69));
-            boje.Add(Color.FromArgb(197, 97, 68));
-            boje.Add(Color.FromArgb(111, 145, 62));
-            boje.Add(Color.FromArgb(214, 154, 80));
-            boje.Add(Color.FromArgb(203, 193, 76));
-       
-
-            Graphics g = graf.CreateGraphics();
-            
-            //GraphicsPath path = new GraphicsPath();
-            Pen pen = new Pen(Color.Black, 1);
-            Pen myPen = new Pen(Color.Gray, 1);
-            g.DrawLine(pen, 20, 300, 310, 300);
-            g.DrawLine(pen, 20, 300, 20, 20);
-            int broj = 0;
-            Brush crni = new SolidBrush(Color.Black);
-            Font myFont = new System.Drawing.Font("Helvetica", 10);
-            for (int j = 300; j >= 30; j-=hStep)
-            {
-                g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10-7*((int)Math.Floor(Math.Log10(broj))), j-8);
-                broj++;
-            }
-
-            int i = 0;
-            foreach (double d in vrijednosti)
-            {
-                 Brush myBrush = new SolidBrush(boje[i%boje.Count]);
-                Rectangle r = new Rectangle(30 + (i*sirina),300 - (int)d * hStep, sirina, (int)d * hStep);
-                i++;
-                g.FillRectangle(myBrush, r);
-                g.DrawRectangle(pen, r);
-            }
-            
+            grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+            Slika.drawHistogram();
+     
            
             
         }
@@ -628,181 +533,17 @@ namespace MyExcel
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
             int tab = tabControl1.SelectedIndex;
-            List<double> vrijednosti = new List<double>(); ;
-
-            Panel graf = new Panel();
-            graf.Size = new Size(330, 330);
-            graf.BorderStyle = BorderStyle.FixedSingle;
-            graf.Location = new Point(ClientSize.Width - 400, 50);
-            graf.Parent = gridovi[tab];
-            graf.MouseDown += new MouseEventHandler(vuci);
-            graf.MouseUp += new MouseEventHandler(vuci);
-            graf.MouseMove += new MouseEventHandler(pomakni);
-
-            Button close = new Button();
-            close.Size = new Size(16, 16);
-            close.FlatStyle = FlatStyle.Flat;
-            close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 19, 1);
-            close.Click += new EventHandler(zagasi);
-            close.BackgroundImage = imageList1.Images[0];
-            close.FlatAppearance.BorderSize = 0;
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
-            {
-                double r;
-
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index))
-                {
-                    if (!Double.TryParse(c.Value.ToString(), out r))
-                        continue;
-                    vrijednosti.Add(r);
-                }
-            }
-
-            
-            List<Color> boje = new List<Color>();
-            boje.Add(Color.FromArgb(62, 87, 145));
-            boje.Add(Color.FromArgb(186, 61, 59));
-            boje.Add(Color.FromArgb(74, 122, 69));
-            boje.Add(Color.FromArgb(197, 97, 68));
-            boje.Add(Color.FromArgb(111, 145, 62));
-            boje.Add(Color.FromArgb(214, 154, 80));
-            boje.Add(Color.FromArgb(203, 193, 76));
-
-
-            Graphics g = graf.CreateGraphics();
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            int n = (int)vrijednosti.Sum();
-            Rectangle rect = new Rectangle(50, 50, 230, 230);
-            int i = 0;
-            float startAngle = 0.0F;
-            float sweepAngle = 360.0F / n * (float)vrijednosti[0];
-            for (int k = 1; k < vrijednosti.Count; k++ )
-            {
-                Brush myBrush = new SolidBrush(boje[i % boje.Count]);
-
-
-
-                // Fill pie to screen.
-                g.FillPie(myBrush, rect, startAngle, sweepAngle);
-
-                i++;
-                startAngle += sweepAngle;
-                sweepAngle = 360.0F / n * (float)vrijednosti[k];
-            }
-            Brush myBrush2 = new SolidBrush(boje[i % boje.Count]);
-            
-
-
-            // Fill pie to screen.
-            g.FillPie(myBrush2, rect, startAngle, sweepAngle);
-            //GraphicsPath path = new GraphicsPath();
-           
+            grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+            Slika.drawPieChart();
+        
         }
 
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
             int tab = tabControl1.SelectedIndex;
-            List<double> vrijednosti = new List<double>(); ;
-
-            Panel graf = new Panel();
-            graf.Size = new Size(330, 330);
-            graf.BorderStyle = BorderStyle.FixedSingle;
-            graf.Location = new Point(ClientSize.Width - 400, 50);
-            graf.Parent = gridovi[tab];
-            graf.MouseDown += new MouseEventHandler(vuci);
-            graf.MouseUp += new MouseEventHandler(vuci);
-            graf.MouseMove += new MouseEventHandler(pomakni);
+            grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+            Slika.drawLineChart();
             
-            Button close = new Button();
-            close.Size = new Size(16, 16);
-            close.FlatStyle = FlatStyle.Flat;
-            close.Parent = graf;
-            close.Location = new Point(close.Parent.Width - 19, 1);
-            close.Click += new EventHandler(zagasi);
-            close.BackgroundImage = imageList1.Images[0];
-            close.FlatAppearance.BorderSize = 0;
-         
-     
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
-            {
-                double r;
-
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index))
-                {
-                    if (!Double.TryParse(c.Value.ToString(), out r))
-                        continue;
-                    vrijednosti.Add(r);
-                }
-            }
-
-            int hStep = 270 / (int)vrijednosti.Max();
-            int sirina = 270 / vrijednosti.Count;
-
-            List<Color> boje = new List<Color>();
-            boje.Add(Color.FromArgb(62, 87, 145));
-            boje.Add(Color.FromArgb(186, 61, 59));
-            boje.Add(Color.FromArgb(74, 122, 69));
-            boje.Add(Color.FromArgb(197, 97, 68));
-            boje.Add(Color.FromArgb(111, 145, 62));
-            boje.Add(Color.FromArgb(214, 154, 80));
-            boje.Add(Color.FromArgb(203, 193, 76));
-
-
-            Graphics g = graf.CreateGraphics();
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            //GraphicsPath path = new GraphicsPath();
-            Pen pen = new Pen(Color.Black, 1);
-            Pen myPen = new Pen(Color.Gray, 1);
-            g.DrawLine(pen, 20, 300, 310, 300);
-            g.DrawLine(pen, 20, 300, 20, 20);
-            int broj = 0;
-            Brush crni = new SolidBrush(Color.Black);
-            Font myFont = new System.Drawing.Font("Helvetica", 10);
-            for (int j = 300; j >= 30; j -= hStep)
-            {
-                g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10 - 7 * ((int)Math.Floor(Math.Log10(broj))), j - 8);
-                broj++;
-            }
-
-            int i = 0;
-            for(int d = 0; d < vrijednosti.Count-1; d++)
-            {
-                Pen crta = new Pen(boje[0], 3);
-                //Pen tocka = new Pen(boje[1], 5);
-                g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)vrijednosti[d] * hStep, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrijednosti[d + 1] * hStep);
-                
-                //g.DrawEllipse(tocka, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrijednosti[d + 1] * hStep, 5, 5);
-                i++;
-                //g.FillRectangle(myBrush, r);
-                //g.DrawRectangle(pen, r);
-            }
-            //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
-            i = 0;
-            Pen tocka = new Pen(boje[1], 4);
-            g.DrawEllipse(tocka, 28 + (sirina / 2) + (i * sirina), 298 - (int)vrijednosti[0] * hStep, 4, 4);
-            for (int d = 0; d < vrijednosti.Count - 1; d++)
-            {
-               
-               
-               
-
-                g.DrawEllipse(tocka, 28 + (sirina / 2) + ((i + 1) * sirina), 298 - (int)vrijednosti[d + 1] * hStep, 4, 4);
-                i++;
-                //g.FillRectangle(myBrush, r);
-                //g.DrawRectangle(pen, r);
-            }
-
-
-
-            // g.DrawString("Hello C#", myFont, myBrush, 30, 30);
-
-            //g.DrawRectangle(pen, myRectangle);
-
-            // g.DrawPath(pen, path);
         }
 
     }

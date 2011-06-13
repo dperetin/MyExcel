@@ -12,8 +12,8 @@ C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.pdb
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\bin\Debug\MyExcel.exe
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\bin\Debug\MyExcel.pdb
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form1.resources
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form2.resources
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Properties.Resources.resources
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\myexcel.csproj.GenerateResource.Cache
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form3.resources
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form1.resources
