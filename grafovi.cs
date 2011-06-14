@@ -25,7 +25,7 @@ namespace MyExcel
 
         // celije ciji sadrzaj se crta
         public Celije ListaCelija;
-
+        private List<Cell> CelijeZaPlot = new List<Cell>();
         // forma na kojoj se prikazuje panel
         public Form1 f;
 
@@ -44,9 +44,9 @@ namespace MyExcel
             b.Parent.Dispose();
         }
 
-        public grafovi(Form1 f, DataGridView grid, Celije ListaCelija)
+        public grafovi(Form1 f, DataGridView grid, Celije celije)
         {
-            this.ListaCelija = ListaCelija;
+            this.ListaCelija = celije;
             this.f = f;
             // inicijaliziramo boje
             boje.Add(Color.FromArgb(62, 87, 145));
@@ -82,9 +82,10 @@ namespace MyExcel
                 KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
                 if (ListaCelija.sveCelije.ContainsKey(index))
                 {
-                    if (!Double.TryParse(c.Value.ToString(), out r))
+                    if (ListaCelija.sveCelije[index].Numerical == false)
                         continue;
-                    vrijednosti.Add(r);
+                    vrijednosti.Add(Double.Parse(ListaCelija.sveCelije[index].sadrzaj));
+                    CelijeZaPlot.Add(ListaCelija.sveCelije[index]);
                 }
             }
         }
@@ -122,8 +123,26 @@ namespace MyExcel
         }
         void line(object o, EventArgs e)
         {
+            List<int> stupci = new List<int>();
+            List<int> brojTocaka = new List<int>();
+            stupci.Add(CelijeZaPlot[0].stupac);
+            brojTocaka.Add(1);
+            foreach (Cell c in CelijeZaPlot)
+            {
+                if (stupci.Contains(c.stupac))
+                {
+                    brojTocaka[stupci.IndexOf(c.stupac)]++;
+                    continue;
+                }
+                else
+                {
+                    stupci.Add(c.stupac);
+                    brojTocaka.Add(1);
+                }
+            }
+
             int hStep = 270 / (int)vrijednosti.Max();
-            int sirina = 270 / vrijednosti.Count;
+            int sirina = 270 / brojTocaka.Max();
             Graphics g = graf.CreateGraphics();
             g.SmoothingMode = SmoothingMode.AntiAlias;
             //GraphicsPath path = new GraphicsPath();
@@ -141,41 +160,40 @@ namespace MyExcel
                 broj++;
             }
 
-            int i = 0;
-            for (int d = 0; d < vrijednosti.Count - 1; d++)
+            
+            int k = 0;
+            foreach (int stupac in stupci)
             {
-                Pen crta = new Pen(boje[0], 3);
-                //Pen tocka = new Pen(boje[1], 5);
-                g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)vrijednosti[d] * hStep, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrijednosti[d + 1] * hStep);
+                Pen crta = new Pen(boje[k%boje.Count], 3); k++;
+                List<double> vrStup = new List<double>();
 
-                //g.DrawEllipse(tocka, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrijednosti[d + 1] * hStep, 5, 5);
-                i++;
-                //g.FillRectangle(myBrush, r);
-                //g.DrawRectangle(pen, r);
+                for (int In = CelijeZaPlot.Count - 1; In >= 0; In--)
+                {
+                    if (CelijeZaPlot[In].stupac == stupac)
+                    {
+                        vrStup.Add(Double.Parse(CelijeZaPlot[In].sadrzaj));
+                    }
+                }
+                int i = 0;
+                for (int d = 0; d < vrStup.Count - 1; d++)
+                {
+
+                    g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)vrStup[d] * hStep, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrStup[d + 1] * hStep);
+
+                    i++;
+
+                }
+                //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
+                i = 0;
+                Pen tocka = new Pen(Color.Black, 4);
+                g.DrawEllipse(tocka, 28 + (sirina / 2) + (i * sirina), 298 - (int)vrStup[0] * hStep, 4, 4);
+                for (int d = 0; d < vrStup.Count - 1; d++)
+                {
+                    g.DrawEllipse(tocka, 28 + (sirina / 2) + ((i + 1) * sirina), 298 - (int)vrStup[d + 1] * hStep, 4, 4);
+                    i++;
+
+                }
             }
-            //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
-            i = 0;
-            Pen tocka = new Pen(boje[1], 4);
-            g.DrawEllipse(tocka, 28 + (sirina / 2) + (i * sirina), 298 - (int)vrijednosti[0] * hStep, 4, 4);
-            for (int d = 0; d < vrijednosti.Count - 1; d++)
-            {
-
-
-
-
-                g.DrawEllipse(tocka, 28 + (sirina / 2) + ((i + 1) * sirina), 298 - (int)vrijednosti[d + 1] * hStep, 4, 4);
-                i++;
-                //g.FillRectangle(myBrush, r);
-                //g.DrawRectangle(pen, r);
-            }
-
-
-
-            // g.DrawString("Hello C#", myFont, myBrush, 30, 30);
-
-            //g.DrawRectangle(pen, myRectangle);
-
-            // g.DrawPath(pen, path);*/
         }
 
         void pieChart(object o, EventArgs e)
