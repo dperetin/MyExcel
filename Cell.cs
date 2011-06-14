@@ -13,6 +13,14 @@ namespace MyExcel
         public string sadrzaj;
         public string formula;
 
+        private bool numerical = false;
+
+        public bool Numerical
+        {
+            set { numerical = value; }
+            get { return numerical; } 
+        }
+
         private Cell(int r, int s)
         {
             red = r;
