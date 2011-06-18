@@ -1,0 +1,10 @@
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\bin\Release\MyExcel.exe
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\bin\Release\MyExcel.pdb
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.Form1.resources
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.Form2.resources
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.Form3.resources
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.Properties.Resources.resources
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\myexcel.csproj.GenerateResource.Cache
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.exe
+C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Release\MyExcel.pdb

@@ -88,6 +88,7 @@ namespace MyExcel
                     CelijeZaPlot.Add(ListaCelija.sveCelije[index]);
                 }
             }
+            CelijeZaPlot.Sort();
         }
         void histogram(object o, EventArgs e)
         {
@@ -123,8 +124,14 @@ namespace MyExcel
         }
         void line(object o, EventArgs e)
         {
+            // lista stupaca u kojima se nalaze vrijednosti koje crtamo
             List<int> stupci = new List<int>();
+
+            // broj tocaka u svakom od tih stupaca, da znamo odrediti
+            // koliko ce graf biti sirok
             List<int> brojTocaka = new List<int>();
+
+            // popunjavanje gornjih listi
             stupci.Add(CelijeZaPlot[0].stupac);
             brojTocaka.Add(1);
             foreach (Cell c in CelijeZaPlot)
@@ -141,30 +148,36 @@ namespace MyExcel
                 }
             }
 
-            int hStep = 270 / (int)vrijednosti.Max();
-            int sirina = 270 / brojTocaka.Max();
+            //double absMin = Math.Abs()
+            double span = vrijednosti.Max() - vrijednosti.Min(); // raspon vrijednosti
+            if (span == 0) span = 1;
+            double pixelStep = 270 / span;                          // koliko vrijednosi nosi jedan pixel na grafu
+            int sirina = 270 / brojTocaka.Max();                 // razmak izmedu tocaka
+            
             Graphics g = graf.CreateGraphics();
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            //GraphicsPath path = new GraphicsPath();
+            
             Pen pen = new Pen(Color.Black, 1);
             Pen myPen = new Pen(Color.Gray, 1);
             g.DrawLine(pen, 20, 300, 310, 300);
             g.DrawLine(pen, 20, 300, 20, 20);
-            int broj = 0;
+            double broj = vrijednosti.Min();
             Brush crni = new SolidBrush(Color.Black);
             Font myFont = new System.Drawing.Font("Helvetica", 10);
-            for (int j = 300; j >= 30; j -= hStep)
+           /* for (int j = 300; j >= 30; j -= 60)
             {
                 g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10 - 7 * ((int)Math.Floor(Math.Log10(broj))), j - 8);
-                broj++;
-            }
+                g.DrawString(broj.ToString(), myFont, crni, 10 - 7 * broj.ToString().Length, j - 8);
+                broj += (span / 5);
+            } */
 
             
             int k = 0;
             foreach (int stupac in stupci)
             {
                 Pen crta = new Pen(boje[k%boje.Count], 3); k++;
+
+                // vrijednosti u stupcu koji se trenutno crta
                 List<double> vrStup = new List<double>();
 
                 for (int In = CelijeZaPlot.Count - 1; In >= 0; In--)
@@ -178,7 +191,8 @@ namespace MyExcel
                 for (int d = 0; d < vrStup.Count - 1; d++)
                 {
 
-                    g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)vrStup[d] * hStep, 30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)vrStup[d + 1] * hStep);
+                    g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)((vrStup[d] - vrijednosti.Min()) * pixelStep),
+                        30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)((vrStup[d + 1] - vrijednosti.Min()) * pixelStep));
 
                     i++;
 
@@ -186,10 +200,10 @@ namespace MyExcel
                 //Rectangle myRectangle = new Rectangle(20, 20, 250, 200);
                 i = 0;
                 Pen tocka = new Pen(Color.Black, 4);
-                g.DrawEllipse(tocka, 28 + (sirina / 2) + (i * sirina), 298 - (int)vrStup[0] * hStep, 4, 4);
+                g.DrawEllipse(tocka, 28 + (sirina / 2) + (i * sirina), 298 - (int)((vrStup[0] - vrijednosti.Min()) * pixelStep), 4, 4);
                 for (int d = 0; d < vrStup.Count - 1; d++)
                 {
-                    g.DrawEllipse(tocka, 28 + (sirina / 2) + ((i + 1) * sirina), 298 - (int)vrStup[d + 1] * hStep, 4, 4);
+                    g.DrawEllipse(tocka, 28 + (sirina / 2) + ((i + 1) * sirina), 298 - (int)((vrStup[d+1] - vrijednosti.Min()) * pixelStep), 4, 4);
                     i++;
 
                 }

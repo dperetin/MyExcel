@@ -75,6 +75,7 @@ namespace MyExcel
             gridovi[0].TabIndex = 0;
             gridovi[0].CurrentCell = gridovi[0][0, 0];
             //gridovi[0].BeginEdit(true);
+            toolStripTextBox1.Anchor = AnchorStyles.Right;
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -562,6 +563,11 @@ namespace MyExcel
                 Slika.drawLineChart();
             }
             
+        }
+
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

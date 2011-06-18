@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace MyExcel
 {
-    public class Cell
+    public class Cell : IComparable
     {
         public int red;
         public int stupac;
@@ -19,6 +19,18 @@ namespace MyExcel
         {
             set { numerical = value; }
             get { return numerical; } 
+        }
+
+        int IComparable.CompareTo(object obj)
+        {
+            Cell o = (Cell)obj;
+
+            if (this.red > o.red)
+                return -1;
+            if (this.red < o.red)
+                return 1;
+
+            return 0;
         }
 
         private Cell(int r, int s)
