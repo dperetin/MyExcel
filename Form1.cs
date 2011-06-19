@@ -527,10 +527,23 @@ namespace MyExcel
       
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
+            bool numTest = false;
             int tab = tabControl1.SelectedIndex;
-            grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
-            Slika.drawHistogram();
-     
+            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            {
+
+                KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
+                if (ListaCelija[tab].sveCelije.ContainsKey(index) && ListaCelija[tab].sveCelije[index].Numerical)
+                {
+                    numTest = true;
+                    break;
+                }
+            }
+            if (numTest)
+            {
+                grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Slika.drawHistogram();
+            }
            
             
         }
