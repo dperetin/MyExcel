@@ -311,6 +311,25 @@ namespace MyExcel
         }
         void line(object o, EventArgs e)
         {
+            List<Cell> oznakeXosi = new List<Cell>();
+            bool stringOznake = false;
+            if (prviStupacOznake)
+            {
+                foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+                {
+                    if (c.Value.stupac == prviStupac)
+                    {
+                        oznakeXosi.Add(c.Value);
+                        if (c.Value.Numerical == false)
+                        {
+                            stringOznake = true;
+                        }
+                    }
+                }
+            }
+
+            oznakeXosi.Sort();
+
             // lista stupaca u kojima se nalaze vrijednosti koje crtamo
             List<int> stupci = new List<int>();
             
@@ -400,7 +419,17 @@ namespace MyExcel
                 for (int i = 1; i < brojTocaka.Max(); i++)
                 {
                     g.DrawString(i.ToString(), textFont, crni,
-                        56 + sirina * (i-1) + (sirina / 2), 304);
+                        56 + sirina * (i - 1) + (sirina / 2), 304);
+                }
+            }
+            else
+            {
+                int i = 1;
+                foreach (Cell c in oznakeXosi)
+                {
+                    g.DrawString(c.sadrzaj, textFont, crni,
+                        56 + sirina * (i - 1) + (sirina / 2), 304);
+                    i++;
                 }
             }
             int k = 0;
