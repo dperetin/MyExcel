@@ -74,6 +74,7 @@
       <DependentUpon>Form4.cs</DependentUpon>
     </Compile>
     <Compile Include="grafovi.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

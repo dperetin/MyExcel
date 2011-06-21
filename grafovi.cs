@@ -15,7 +15,13 @@ using System.Drawing.Drawing2D;
 
 namespace MyExcel
 {
-   
+    public class MyPictureBox : PictureBox
+    {
+        
+        public MyPictureBox(){
+            DoubleBuffered = true;
+        }
+    }
     class grafovi
     {
         Point mouseDownPoint;
@@ -39,9 +45,14 @@ namespace MyExcel
         public Form1 f;
         public Form4 svojstva = new Form4();
         //panel na kojem se crta graf
-        Panel graf = new Panel();
-        
+        MyPictureBox graf = new MyPictureBox();
+        //PictureBox slika = new PictureBox();
+        Bitmap slikaGrafa;
         // gumb za gasenje panela
+        
+            
+
+
         Button close = new Button();
 
         // boje koje koristimo u crtanju grafova
@@ -89,6 +100,7 @@ namespace MyExcel
         }
         public grafovi(Form1 f, DataGridView grid, Celije celije)
         {
+            
             this.ListaCelija = celije;
             this.f = f;
             // inicijaliziramo boje
@@ -110,7 +122,9 @@ namespace MyExcel
             graf.Location = new Point(f.ClientSize.Width - 500, 50);
             graf.Parent = grid;
             graf.MouseClick += new MouseEventHandler(desniKlikMeni);
-            
+           // graf.Container.Add(slika);
+            //slika.Dock = DockStyle.Fill;
+
             strip.Items.Add("stavka 1");
             strip.Items.Add("stavka 2");
             strip.Items.Add("stavka 3");
@@ -146,6 +160,14 @@ namespace MyExcel
         }
         void histogram(object o, EventArgs e)
         {
+            Bitmap B = new Bitmap(430, 350);
+            Graphics g;
+            g = Graphics.FromImage(B);
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+            //Graphics g = graf.CreateGraphics();
+            graf.Image = B;
+
             //int stupacOznaka = ;
             List<int> stupci = new List<int>();
 
@@ -208,9 +230,9 @@ namespace MyExcel
             if (span == 0) span = 1;
             double pixelStep = 270 / span;                          // koliko vrijednosi nosi jedan pixel na grafu
             int sirina = (270 - brojTocaka.Max() * 10) / ((brojTocaka.Max() - 1) * brojTocaka.Count);                 // razmak izmedu tocaka
-
             
-            Graphics g = graf.CreateGraphics();
+            
+            //graf.double
             Brush crni = new SolidBrush(Color.Black);
             Font naslovFont = new System.Drawing.Font("Helvetica", 10);
             Font textFont = new System.Drawing.Font("Helvetica", 8);
@@ -519,7 +541,7 @@ namespace MyExcel
 
         private void _MouseDown(object sender, MouseEventArgs e)
         {
-            Panel p = (Panel)sender;
+            MyPictureBox p = (MyPictureBox)sender;
             dragging = true;
             mouseDownPoint = new Point(e.X, e.Y);
             p.BringToFront();
