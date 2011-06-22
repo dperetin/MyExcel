@@ -72,8 +72,8 @@ namespace MyExcel
 
         void zagasi(object o, EventArgs e)
         {
-            Button b = (Button)o;
-            b.Parent.Dispose();
+            //Button b = (Button)o;
+            graf.Dispose();
         }
 
         void desniKlikMeni(object o, MouseEventArgs e)
@@ -127,6 +127,24 @@ namespace MyExcel
         {
             Clipboard.SetImage(b);
         }
+
+        void spremi(object o, EventArgs e)
+        {
+            SaveFileDialog s = new SaveFileDialog();
+            s.FileName = naslov + ".bmp";
+            s.Title = "Spremanje slike";
+            s.Filter = "Bitmap slika|*.bmp";
+
+            if (s.ShowDialog() != DialogResult.Cancel)
+            {
+                //ako je za ime file-a upisano nesto razlicito od praznog stringa, spremi tablicu u xml
+                if (s.FileName != "")
+                {
+                    b.Save(s.FileName);
+                }
+            }
+        }
+
         public grafovi(Form1 f, DataGridView grid, Celije celije)
         {
             this.ListaCelija = celije;
@@ -155,12 +173,16 @@ namespace MyExcel
             strip.Items.Add("Kopiraj");
             strip.Items.Add("Spremi u datoteku");
             strip.Items.Add("Izbrisi");
-            strip.Items[0].Click += new EventHandler(izbor);
+            
             strip.Items[0].Image = f.imageList1.Images[1];
             strip.Items[1].Image = f.imageList1.Images[2];
             strip.Items[2].Image = f.imageList1.Images[3];
             strip.Items[3].Image = f.imageList1.Images[0];
+
+            strip.Items[0].Click += new EventHandler(izbor);
             strip.Items[1].Click += new EventHandler(kopiraj);
+            strip.Items[2].Click += new EventHandler(spremi);
+            strip.Items[3].Click += new EventHandler(zagasi);
            // graf.Controls.Add(strip);
 
             close.Size = new Size(16, 16);
