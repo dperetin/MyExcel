@@ -15,11 +15,15 @@ using System.Drawing.Drawing2D;
 
 namespace MyExcel
 {
-   
+  
+    
     class grafovi
     {
+        // za pomicanje grafa
         Point mouseDownPoint;
         bool dragging;
+
+        // labele
         public string naslov = "";
         public string xOs = "";
         public string yOs = "";
@@ -27,25 +31,44 @@ namespace MyExcel
         bool prviRedakOznake = false;
         int prviStupac = 1000;
         int prviRedak  = 1000;
+
         // vrijednosti koje se crtaju na grafu
         List<double> vrijednosti = new List<double>();
+
+        // desni klik meni
         ContextMenuStrip strip = new ContextMenuStrip();
+
         // celije ciji sadrzaj se crta
         public Celije ListaCelija;
         private List<Cell> CelijeZaPlot = new List<Cell>();
         List<Cell> Kategorije = new List<Cell>();
         List<string> imenaKategorija = new List<string>();
+
         // forma na kojoj se prikazuje panel
         public Form1 f;
+
+        // forma za odabir svojstava grafa
         public Form4 svojstva = new Form4();
-        //panel na kojem se crta graf
-        Panel graf = new Panel();
+
+        // PictureBox na kojem se crta graf
+        PictureBox graf = new PictureBox();
+
+        // sama slika
+        Bitmap b;
+        Graphics g;
         
         // gumb za gasenje panela
         Button close = new Button();
 
         // boje koje koristimo u crtanju grafova
         List<Color> boje = new List<Color>();
+
+        // fja za crtanje grafa, postavlja se u odnosu na tip grafa,
+        // da se prilikom osvjezavanja uvijek nacrta pravi graf
+
+        nacrtajGraf fjaZaCrtanje;
+
+        public delegate void nacrtajGraf();
 
         void zagasi(object o, EventArgs e)
         {
@@ -67,6 +90,9 @@ namespace MyExcel
         void izbor(object o, EventArgs e)
         {
             svojstva = new Form4();
+            svojstva.textBox1.Text = naslov;
+            svojstva.textBox2.Text = xOs;
+            svojstva.textBox3.Text = yOs;
             svojstva.Show();
             svojstva.button1.Click += new EventHandler(postaviNaslov);
             svojstva.checkBox1.CheckedChanged += new EventHandler(kvacica);
@@ -84,8 +110,22 @@ namespace MyExcel
             naslov = svojstva.textBox1.Text;
             xOs = svojstva.textBox2.Text;
             yOs = svojstva.textBox3.Text;
-            graf.Refresh();
+            
             svojstva.Close();
+            //g.Restore(stanjePrijeOznaka);
+            g.Clear(Color.White);
+            fjaZaCrtanje();
+            Brush crni = new SolidBrush(Color.Black);
+            Font naslovFont = new System.Drawing.Font("Helvetica", 10);
+            Font textFont = new System.Drawing.Font("Helvetica", 8);
+            g.DrawString(naslov, naslovFont, crni, 215 - naslov.Length * 5 / 2, 10);
+            g.DrawString(xOs, textFont, crni, 60 + 135 - xOs.Length * 5 / 2, 314);
+            g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new StringFormat(StringFormatFlags.DirectionVertical));
+            graf.Refresh();
+        }
+        void kopiraj(object o, EventArgs e)
+        {
+            Clipboard.SetImage(b);
         }
         public grafovi(Form1 f, DataGridView grid, Celije celije)
         {
@@ -111,10 +151,16 @@ namespace MyExcel
             graf.Parent = grid;
             graf.MouseClick += new MouseEventHandler(desniKlikMeni);
             
-            strip.Items.Add("stavka 1");
-            strip.Items.Add("stavka 2");
-            strip.Items.Add("stavka 3");
+            strip.Items.Add("Postavke");
+            strip.Items.Add("Kopiraj");
+            strip.Items.Add("Spremi u datoteku");
+            strip.Items.Add("Izbrisi");
             strip.Items[0].Click += new EventHandler(izbor);
+            strip.Items[0].Image = f.imageList1.Images[1];
+            strip.Items[1].Image = f.imageList1.Images[2];
+            strip.Items[2].Image = f.imageList1.Images[3];
+            strip.Items[3].Image = f.imageList1.Images[0];
+            strip.Items[1].Click += new EventHandler(kopiraj);
            // graf.Controls.Add(strip);
 
             close.Size = new Size(16, 16);
@@ -134,18 +180,22 @@ namespace MyExcel
                     if (ListaCelija.sveCelije[index].Numerical == false)
                     {
                         Kategorije.Add(ListaCelija.sveCelije[index]);
-                        if (ListaCelija.sveCelije[index].stupac < prviStupac)
-                            prviStupac = ListaCelija.sveCelije[index].stupac;
+                        //if (ListaCelija.sveCelije[index].stupac < prviStupac)
+                            //prviStupac = ListaCelija.sveCelije[index].stupac;
                         continue;
                     }
                     vrijednosti.Add(Double.Parse(ListaCelija.sveCelije[index].sadrzaj));
                     CelijeZaPlot.Add(ListaCelija.sveCelije[index]);
+                    if (ListaCelija.sveCelije[index].stupac < prviStupac)
+                        prviStupac = ListaCelija.sveCelije[index].stupac;
                 }
             }
             CelijeZaPlot.Sort();
         }
-        void histogram(object o, EventArgs e)
+        public void drawHistogram()
         {
+
+            fjaZaCrtanje = new nacrtajGraf(drawHistogram);
             //int stupacOznaka = ;
             List<int> stupci = new List<int>();
 
@@ -210,16 +260,21 @@ namespace MyExcel
             int sirina = (270 - brojTocaka.Max() * 10) / ((brojTocaka.Max() - 1) * brojTocaka.Count);                 // razmak izmedu tocaka
 
             
-            Graphics g = graf.CreateGraphics();
+            //Graphics g = graf.CreateGraphics();
             Brush crni = new SolidBrush(Color.Black);
             Font naslovFont = new System.Drawing.Font("Helvetica", 10);
             Font textFont = new System.Drawing.Font("Helvetica", 8);
-            g.DrawString(naslov, naslovFont, crni, 215 - naslov.Length * 5 / 2, 10);
-            g.DrawString(xOs, textFont, crni, 60 + 135 - xOs.Length * 5 / 2, 310);
-            g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new System.Drawing.StringFormat(StringFormatFlags.DirectionVertical));
+            //g.DrawString(naslov, naslovFont, crni, 215 - naslov.Length * 5 / 2, 10);
+            //g.DrawString(xOs, textFont, crni, 60 + 135 - xOs.Length * 5 / 2, 310);
+            //g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new System.Drawing.StringFormat(StringFormatFlags.DirectionVertical));
             //GraphicsPath path = new GraphicsPath();
             Pen pen = new Pen(Color.Black, 1);
             Pen myPen = new Pen(Color.Gray, 1);
+            b = new Bitmap(430, 350);
+            //Graphics g = graf.CreateGraphics();
+            g = Graphics.FromImage(b);
+            graf.Image = b;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.DrawLine(pen, 50, 300, 310, 300);
             g.DrawLine(pen, 50, 300, 50, 20);
             int broj = 0;
@@ -295,7 +350,7 @@ namespace MyExcel
                     //g.DrawLine(crta, 30 + (sirina / 2) + (i * sirina), 300 - (int)((vrStup[d] - vrijednosti.Min()) * pixelStep),
                         //30 + (sirina / 2) + ((i + 1) * sirina), 300 - (int)((vrStup[d + 1] - vrijednosti.Min()) * pixelStep));
                 }
-                Rectangle legend = new Rectangle(330, 100 + k * 15, 10, 10);
+                
                 string naziv = "";
                /* if (k < imenaKategorija.Count)
                 {
@@ -303,14 +358,17 @@ namespace MyExcel
                 }
                 else
                     naziv = "Stupac " + (k+1).ToString();*/
-
+                Rectangle legend = new Rectangle(330, 100 + k * 15, 10, 10);
                 g.DrawString(imenaKategorija[k], textFont, crni, 345, 98 + k * 15);
                 g.FillRectangle(myBrush, legend);
                 k++;
             }
         }
-        void line(object o, EventArgs e)
+        public void drawLineChart()
         {
+            
+            fjaZaCrtanje = new  nacrtajGraf(drawLineChart);
+
             List<Cell> oznakeXosi = new List<Cell>();
             bool stringOznake = false;
             if (prviStupacOznake)
@@ -390,14 +448,14 @@ namespace MyExcel
             if (span == 0) span = 1;
             double pixelStep = 270 / span;                          // koliko vrijednosi nosi jedan pixel na grafu
             int sirina = 270 / (brojTocaka.Max()-1);                 // razmak izmedu tocaka
-
-            Graphics g = graf.CreateGraphics();
+            b = new Bitmap(430, 350);
+            //Graphics g = graf.CreateGraphics();
+            g = Graphics.FromImage(b);
+            graf.Image = b;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             Brush crni = new SolidBrush(Color.Black);
             Font naslovFont = new System.Drawing.Font("Helvetica", 10);
             Font textFont = new System.Drawing.Font("Helvetica", 8);
-            g.DrawString(naslov, naslovFont, crni, 215 - naslov.Length * 5 / 2, 10);
-            g.DrawString(xOs, textFont, crni, 60 + 135 - xOs.Length * 5 / 2, 314);
-            g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new System.Drawing.StringFormat(StringFormatFlags.DirectionVertical));
             g.SmoothingMode = SmoothingMode.AntiAlias;
             
             Pen pen = new Pen(Color.Black, 1);
@@ -481,21 +539,45 @@ namespace MyExcel
                 g.FillRectangle(myBrush, legend);
                 k++;
             }
-            
+            //stanjePrijeOznaka = g.Save();
         }
 
-        void pieChart(object o, EventArgs e)
+        public void drawPieChart()
         {
-            Panel graf = (Panel)o;
-     
-            Graphics g = graf.CreateGraphics();
+            fjaZaCrtanje = new nacrtajGraf(drawPieChart);
+            List<Cell> oznake = new List<Cell>();
+            bool stringOznake = false;
+           
+            foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+            {
+                if (c.Value.stupac == prviStupac)
+                {
+                    oznake.Add(c.Value);
+                    if (c.Value.Numerical == false)
+                    {
+                        stringOznake = true;
+                    }
+                }
+            }
+            oznake.Sort();
+
+            b = new Bitmap(430, 350);
+            //Graphics g = graf.CreateGraphics();
+            g = Graphics.FromImage(b);
+            graf.Image = b;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             int n = (int)vrijednosti.Sum();
             Rectangle rect = new Rectangle(50, 50, 230, 230);
             int i = 0;
             float startAngle = 0.0F;
             float sweepAngle = 360.0F / n * (float)vrijednosti[0];
-            for (int k = 1; k < vrijednosti.Count; k++)
+            Brush crni = new SolidBrush(Color.Black);
+            Font naslovFont = new System.Drawing.Font("Helvetica", 10);
+            Font textFont = new System.Drawing.Font("Helvetica", 8);
+            Rectangle legend;
+            int k;
+            for (k = 1; k < vrijednosti.Count; k++)
             {
                 Brush myBrush = new SolidBrush(boje[i % boje.Count]);
 
@@ -504,22 +586,30 @@ namespace MyExcel
                 // Fill pie to screen.
                 g.FillPie(myBrush, rect, startAngle, sweepAngle);
 
-                i++;
+                
                 startAngle += sweepAngle;
                 sweepAngle = 360.0F / n * (float)vrijednosti[k];
-            }
-            Brush myBrush2 = new SolidBrush(boje[i % boje.Count]);
 
+                legend = new Rectangle(330, 100 + k * 15, 10, 10);
+                g.DrawString(oznake[i].sadrzaj, textFont, crni, 345, 98 + k * 15);
+                g.FillRectangle(myBrush, legend);
+                i++;
+            }
+            legend = new Rectangle(330, 100 + k * 15, 10, 10);
+            Brush myBrush2 = new SolidBrush(boje[i % boje.Count]);
+            g.DrawString(oznake[i].sadrzaj, textFont, crni, 345, 98 + k * 15);
+            g.FillRectangle(myBrush2, legend);
 
 
             // Fill pie to screen.
             g.FillPie(myBrush2, rect, startAngle, sweepAngle);
             //GraphicsPath path = new GraphicsPath();
+
         }
 
         private void _MouseDown(object sender, MouseEventArgs e)
         {
-            Panel p = (Panel)sender;
+            PictureBox p = (PictureBox)sender;
             dragging = true;
             mouseDownPoint = new Point(e.X, e.Y);
             p.BringToFront();
@@ -533,22 +623,8 @@ namespace MyExcel
 
         private void _MouseUp(object sender, MouseEventArgs e)
         {
-            
             dragging = false;
 
-        }
-
-        public void drawPieChart()
-        {
-            graf.Paint += new PaintEventHandler(pieChart);
-        }
-        public void drawHistogram()
-        {
-            graf.Paint += new PaintEventHandler(histogram);          
-        }
-        public void drawLineChart()
-        {
-            graf.Paint += new PaintEventHandler(line);
         }
     }
 }
