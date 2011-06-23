@@ -17,7 +17,7 @@ namespace MyExcel
 {
   
     
-    class grafovi
+    class Grafovi
     {
         // za pomicanje grafa
         Point mouseDownPoint;
@@ -145,7 +145,7 @@ namespace MyExcel
             }
         }
 
-        public grafovi(Form1 f, DataGridView grid, Celije celije)
+        public Grafovi(Form1 f, DataGridView grid, Celije celije)
         {
             this.ListaCelija = celije;
             this.f = f;

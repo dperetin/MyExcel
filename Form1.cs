@@ -918,7 +918,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
                 Slika.drawHistogram();
             }
            
@@ -941,7 +941,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
                 Slika.drawPieChart();
             }
         
@@ -963,7 +963,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                grafovi Slika = new grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
                 Slika.drawLineChart();
             }
             
@@ -972,6 +972,12 @@ namespace MyExcel
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form5 about = new Form5();
+            about.ShowDialog();
         }
 
     }
