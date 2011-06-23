@@ -60,9 +60,30 @@ namespace MyExcel.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap dialog_info {
+            get {
+                object obj = ResourceManager.GetObject("dialog-info", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dialog_question {
+            get {
+                object obj = ResourceManager.GetObject("dialog-question", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap gtk_new16 {
             get {
                 object obj = ResourceManager.GetObject("gtk-new16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap stock_dialog_question {
+            get {
+                object obj = ResourceManager.GetObject("stock_dialog-question", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
