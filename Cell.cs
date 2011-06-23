@@ -167,56 +167,83 @@ namespace MyExcel
         public Dictionary<string, izracunaj> SveFunkcije = new Dictionary<string, izracunaj>();
         public Funkcije()
         {
-           
+
             SveFunkcije.Add("average", new izracunaj(Average));
             SveFunkcije.Add("min", new izracunaj(Minimum));
             SveFunkcije.Add("max", new izracunaj(Maximum));
             SveFunkcije.Add("sum", new izracunaj(Suma));
+            SveFunkcije.Add("+", new izracunaj(Suma));
+            SveFunkcije.Add("-", new izracunaj(Razlika));
+            SveFunkcije.Add("*", new izracunaj(Produkt));
+            SveFunkcije.Add("/", new izracunaj(Kvocjent));
+            SveFunkcije.Add("^", new izracunaj(Potencija));
         }
 
-        private static double Average(List<Cell> celije)
+        private static double Average(List<double> celije)
         {
             double suma = 0;
 
-            foreach (Cell c in celije)
+            foreach (double c in celije)
             {
-                suma += Double.Parse(c.sadrzaj);
+                suma += c;
             }
             return suma / celije.Count;
         }
-        private static double Maximum(List<Cell> celije)
+        private static double Maximum(List<double> celije)
         {
-            double max = Double.Parse(celije.First().sadrzaj);
+            double max = celije[0];
 
-            foreach (Cell c in celije)
+            foreach (double c in celije)
             {
-                if (Double.Parse(c.sadrzaj) > max)
-                    max = Double.Parse(c.sadrzaj);
+                if (c > max)
+                    max = c;
             }
             return max;
         }
-        private static double Minimum(List<Cell> celije)
+        private static double Minimum(List<double> celije)
         {
-            double min = Double.Parse(celije.First().sadrzaj);
+            double min = celije[0];
 
-            foreach (Cell c in celije)
+            foreach (double c in celije)
             {
-                if (Double.Parse(c.sadrzaj) < min)
-                    min = Double.Parse(c.sadrzaj);
+                if (c < min)
+                    min = c;
             }
             return min;
         }
-        private static double Suma(List<Cell> celije)
+        private static double Suma(List<double> celije)
         {
             double suma = 0;
 
-            foreach (Cell c in celije)
+            foreach (double c in celije)
             {
-                suma += Double.Parse(c.sadrzaj);
+                suma += c;
             }
             return suma;
         }
+        private static double Razlika(List<double> celije)
+        {
+            return celije[1] - celije[0];
+        }
+        private static double Produkt(List<double> celije)
+        {
+            double prod = 1;
+
+            foreach (double c in celije)
+            {
+                prod *= c;
+            }
+            return prod;
+        }
+        private static double Kvocjent(List<double> celije)
+        {
+            return celije[1] / celije[0];
+        }
+        private static double Potencija(List<double> celije)
+        {
+            return Math.Pow(celije[1], celije[0]);
+        }
 
     }
-    public delegate double izracunaj(List<Cell> o);
+    public delegate double izracunaj(List<double> o);
 }

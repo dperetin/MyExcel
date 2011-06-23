@@ -236,7 +236,261 @@ namespace MyExcel
             
             celija.formula = formula;
 
-            string fja = Regex.Match(formula, @"=\s*\w*\s*[(]").Value;
+            // zamjenjujem oznake celija konkretnim vrijednostima
+            // PRETPOSTAVKA: nema razmaka nije dosega
+            formula = formula.Replace(" ", "");
+            while (true)
+            {
+                Match m = Regex.Match(formula, @"[a-z]+[0-9]+");
+                if (m.Success)
+                {
+                    string cel = m.Value;
+                    string slovo = Regex.Match(cel, @"[a-z]+").Value;
+                    string broj = Regex.Match(cel, "[0-9]+").Value;
+                    int c1 = slovo[0] - 97;
+                    int r1 = Convert.ToInt32(broj) - 1;
+                    KeyValuePair<int, int> koo = new KeyValuePair<int, int>(r1, c1);
+
+                    if (ListaCelija[indexTaba].sveCelije.ContainsKey(koo) && ListaCelija[indexTaba].sveCelije[koo].Numerical)
+                    {
+                        formula = formula.Replace(cel, ListaCelija[indexTaba].sveCelije[koo].sadrzaj);
+                    }
+                    else
+                    {
+                        int aa = 0;
+                        formula = formula.Replace(cel, aa.ToString());
+                    }
+
+
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            //MessageBox.Show(formula);
+            // razdvajam formulu na tokene
+
+            List<Token> listaTokena = new List<Token>();
+            string s = formula.TrimStart('=');
+            string function_token = "";
+            string zagrada_token = "";
+            string separator_token = "";
+            string celija_token = "";
+            string op_token = "";
+            Queue<Token> q = new Queue<Token>();
+            Stack<Token> st = new Stack<Token>();
+            while (s != "")
+            {
+                Match m1 = Regex.Match(s, @"^\s*[a-zA-Z]+\s*");
+                if (m1.Success) // FUNKCIJA
+                {
+                    function_token = m1.Value;
+                    s = s.Substring(function_token.Length, s.Length - function_token.Length);
+                    listaTokena.Add(new Token("funk", function_token));
+                    continue;
+                }
+
+                Match m2 = Regex.Match(s, @"^[)(]");
+                if (m2.Success) // ZAGRADA
+                {
+                    zagrada_token = m2.Value;
+                    s = s.Substring(zagrada_token.Length, s.Length - zagrada_token.Length);
+                    listaTokena.Add(new Token("zagr", zagrada_token));
+                    continue;
+                }
+
+
+                Match m3 = Regex.Match(s, @"^;");
+                if (m3.Success) // SEPARATOR
+                {
+                    separator_token = m3.Value;
+                    s = s.Substring(separator_token.Length, s.Length - separator_token.Length);
+                    listaTokena.Add(new Token("sepa", separator_token));
+                    continue;
+                }
+
+                Match m4 = Regex.Match(s, @"^[0-9.]+");
+                if (m4.Success)
+                {
+                    celija_token = m4.Value;
+                    s = s.Substring(celija_token.Length, s.Length - celija_token.Length);
+                    listaTokena.Add(new Token("broj", celija_token));
+                    continue;
+                }
+                Match m5 = Regex.Match(s, @"^[\+\-\*\/\^]");
+                if (m5.Success) // FUNKCIJA
+                {
+                    op_token = m5.Value;
+                    //st.Push(function_token);
+                    s = s.Substring(op_token.Length, s.Length - op_token.Length);
+                    Token op = new Token("oper", op_token);
+                    op.brArg = 2;
+                    if (op_token == "+")
+                    {
+                        op.prioritet = 0;
+                        op.asoc = "L";
+                    }
+                    else if (op_token == "-")
+                    {
+                        op.prioritet = 0;
+                        op.asoc = "L";
+                    }
+                    else if (op_token == "*")
+                    {
+                        op.prioritet = 1;
+                        op.asoc = "L";
+                    }
+                    else if (op_token == "/")
+                    {
+                        op.prioritet = 1;
+                        op.asoc = "L";
+                    }
+                    else if (op_token == "^")
+                    {
+                        op.prioritet = 2;
+                        op.asoc = "D";
+                    }
+                    listaTokena.Add(op);
+                    continue;
+                }
+            }
+
+            // brojim argumente fja jer imaju varijabilan broj argumenata
+            for (int i = 0; i < listaTokena.Count; i++)
+            {
+                if (listaTokena[i].tip == "funk")
+                {
+                    int smijemBrojat = -1;
+                    for (int j = i + 1; j < listaTokena.Count; j++)
+                    {
+                        if (smijemBrojat == 0 && listaTokena[j].tip == "sepa")
+                        {
+                            listaTokena[i].brArg++;
+                        }
+                        if (listaTokena[j].value == "(")
+                        {
+                            smijemBrojat++;
+
+                        }
+                        if (listaTokena[j].value == ")")
+                        {
+                            smijemBrojat--;
+                        }
+                        if (smijemBrojat == -1)
+                            break;
+                    }
+                }
+            }
+
+            // Shunting-yard
+
+            foreach (Token t in listaTokena)
+            {
+                if (t.tip == "oper") // OPERATOR
+                {
+
+                    while (st.Count != 0 && st.Peek().tip == "oper" &&
+                          ((t.asoc == "L" && t.prioritet <= st.Peek().prioritet) ||
+                          (t.asoc == "R" && t.prioritet < st.Peek().prioritet)))
+                    {
+                        q.Enqueue(st.Pop());
+                    }
+                    st.Push(t);
+                    continue;
+                }
+                if (t.tip == "funk") // FUNKCIJA
+                {
+
+                    st.Push(t);
+
+                    continue;
+                }
+
+
+                if (t.tip == "zagr") // ZAGRADA
+                {
+
+                    if (t.value == "(")
+                    {
+                        st.Push(t);
+                    }
+                    else if (t.value == ")")
+                    {
+                        while (st.Peek().value != "(")
+                        {
+                            q.Enqueue(st.Pop());
+                        }
+                        st.Pop();
+
+                        if (st.Count != 0 && st.Peek().tip == "funk")
+                        {
+                            q.Enqueue(st.Pop());
+                        }
+                    }
+
+                    continue;
+                }
+
+
+
+                if (t.tip == "sepa") // SEPARATOR
+                {
+
+                    while (st.Peek().value != "(")
+                    {
+                        q.Enqueue(st.Pop());
+                    }
+
+                    continue;
+                }
+
+
+                if (t.tip == "broj")
+                {
+
+                    q.Enqueue(t);
+
+                    continue;
+                }
+            }
+
+            while (st.Count != 0)
+            {
+                q.Enqueue(st.Pop());
+            }
+
+            // racunanje izraza
+
+            Stack<double> tmp = new Stack<double>();
+
+            while (q.Count != 0)
+            {
+                List<double> arg = new List<double>();
+                if (q.Peek().tip == "broj")
+                {
+                    tmp.Push(Double.Parse(q.Dequeue().value));
+                    continue;
+                }
+                if (q.Peek().tip == "funk" || q.Peek().tip == "oper")
+                {
+                    for (int i = 0; i < q.Peek().brArg; i++)
+                    {
+                        if(tmp.Count != 0)
+                            arg.Add(tmp.Pop());
+                    }
+                    tmp.Push(fje.SveFunkcije[q.Dequeue().value](arg));
+                }
+            }
+            //Console.WriteLine(tmp.Pop().ToString());
+            celija.sadrzaj = tmp.Pop().ToString();
+            gridovi[indexTaba].SelectedCells[0].Value = celija.sadrzaj;
+            ListaCelija[indexTaba].DodajVrijednost(gridovi[indexTaba].SelectedCells[0].RowIndex,
+                    gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.sadrzaj);
+            ListaCelija[indexTaba].DodajFormulu(gridovi[indexTaba].SelectedCells[0].RowIndex,
+                gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
+ /*           string fja = Regex.Match(formula, @"=\s*\w*\s*[(]").Value;
             string rje = Regex.Match(formula, "[(].*[)]").Value;
             string a, b;
             char[] zaMaknut = { '=', ' ' };
@@ -256,7 +510,7 @@ namespace MyExcel
             catch
             {
                 MessageBox.Show("Formula NEVALJA!!");
-            }
+            }*/
         }
 
         private void tablica_SelectionChanged(object sender, EventArgs e)
@@ -276,7 +530,7 @@ namespace MyExcel
                 }
 
             }
-            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); 
+           // LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); 
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e) //novi tab
