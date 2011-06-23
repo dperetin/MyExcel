@@ -9,18 +9,23 @@ using System.Windows.Forms;
 
 namespace MyExcel
 {
-    public partial class Form3 : Form
+    public partial class Form4 : Form
     {
-        public MyExcel.Form1 excel;
-
-        public Form3()
+        public Form4()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+       
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            
         }
     }
 }

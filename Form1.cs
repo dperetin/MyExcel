@@ -210,6 +210,9 @@ namespace MyExcel
 
         private void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
         {
+            // klik na kvacicu (ili enter) nakon unosa formule u textbox
+            if (toolStripTextBox1.Text == "") return;
+
             int indexTaba = tabControl1.SelectedIndex;
             int stupac = gridovi[indexTaba].SelectedCells[0].ColumnIndex;
             int redak = gridovi[indexTaba].SelectedCells[0].RowIndex;
@@ -233,20 +236,27 @@ namespace MyExcel
             
             celija.formula = formula;
 
-            string fja = Regex.Match(formula, @"=\w*[(]").Value;
+            string fja = Regex.Match(formula, @"=\s*\w*\s*[(]").Value;
             string rje = Regex.Match(formula, "[(].*[)]").Value;
             string a, b;
+            char[] zaMaknut = { '=', ' ' };
             a = rje.TrimEnd(')');
             a = a.TrimStart('(');
             b = fja.TrimEnd('(');
-            b = b.TrimStart('=');
-
-            celija.sadrzaj = fje.SveFunkcije[b](ListaCelija[indexTaba].parsiraj(a)).ToString();
-            gridovi[indexTaba].SelectedCells[0].Value = celija.sadrzaj;
-            ListaCelija[indexTaba].DodajVrijednost(gridovi[indexTaba].SelectedCells[0].RowIndex, 
-                gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.sadrzaj);
-            ListaCelija[indexTaba].DodajFormulu(gridovi[indexTaba].SelectedCells[0].RowIndex,
-                gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
+            b = Regex.Match(b, @"\w+").Value;
+            try
+            {
+                celija.sadrzaj = fje.SveFunkcije[b](ListaCelija[indexTaba].parsiraj(a)).ToString();
+                gridovi[indexTaba].SelectedCells[0].Value = celija.sadrzaj;
+                ListaCelija[indexTaba].DodajVrijednost(gridovi[indexTaba].SelectedCells[0].RowIndex,
+                    gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.sadrzaj);
+                ListaCelija[indexTaba].DodajFormulu(gridovi[indexTaba].SelectedCells[0].RowIndex,
+                    gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
+            }
+            catch
+            {
+                MessageBox.Show("Formula NEVALJA!!");
+            }
         }
 
         private void tablica_SelectionChanged(object sender, EventArgs e)
@@ -391,29 +401,43 @@ namespace MyExcel
             }
 
             //otvori novu praznu tablicu
-            for (int i = 0; i < broj_gridova; i++)
-            {
-                ListaCelija[i].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
-                for (int j = 0; j < gridovi[i].Rows.Count; j++)
-                    for (int k = 0; k < gridovi[i].Columns.Count; k++)
-                    {
-                        gridovi[i].Rows[j].Cells[k].Value = null;
-                    }
-                if (i > 0) 
-                {
-                    //izbaci sve tabove osim nultog
 
-                    //tabControl1.TabPages[i].Controls.Remove(gridovi[i]);
-                    //Controls.Remove(tabControl1.TabPages[i - 1]);
+            while (broj_gridova > 1)
+            {
+                //izbaci sve tabove osim nultog
+                ListaCelija[broj_gridova - 1].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                ListaCelija.Remove(ListaCelija[broj_gridova - 1]);
+                gridovi[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
+                tabControl1.TabPages[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
+                tabControl1.TabPages.Remove(tabControl1.TabPages[broj_gridova - 1]);
+                gridovi.Remove(gridovi[broj_gridova - 1]);
+                broj_gridova--;
+            }
+            //isprazni tablicu prvog taba
+            for (int j = 0; j < gridovi[0].Rows.Count; j++)
+                for (int k = 0; k < gridovi[0].Columns.Count; k++)
+                {
+
+
+
+
+                    gridovi[0].Rows[j].Cells[k].Value = null;
                 }
 
-            }
-            //broj_gridova = 1;
+
+
+            ListaCelija[0].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+            //vratiti fokus na (0,0)    
+            toolStripTextBox1.Text = "";
+            statusLabel.Text = "Koordinate celije: (0, 0)";
             imeFilea = "";
             gridovi[0].ClearSelection();
+            gridovi[0].CurrentCell = gridovi[0][0, 0];
+
         }
 
-        // dovrsiti xml
+
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //klik na Open u izborniku
@@ -425,18 +449,52 @@ namespace MyExcel
             //otvori open dialog
             //procitaj i prepisi tablicu iz xml-a
             openFileDialog1.Filter = "Extensible Markup Language|*.xml";
+            broj_gridova = 1;
+            bool vise_gridova = false;
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 imeFilea = openFileDialog1.FileName;
-                XmlTextReader reader = new XmlTextReader(imeFilea);
+                //XmlTextReader reader = new XmlTextReader(imeFilea);
+                XmlReader reader = XmlReader.Create(imeFilea);
                 while (reader.Read())
                 {
-                    //if (reader.NodeType == XmlNodeType.Element)
-                    if (reader.Name == "grid")
+
+                    if (reader.IsStartElement() && reader.Name == "tablica") reader.Read(); // Read the start tag.
+                    if (reader.IsStartElement() && reader.Name == "grid")
                     {
-                        //tabPrefix = new string('\t', reader.Depth);
-                        //writer.WriteLine("{0}<{1}>", tabPrefix, reader.Name);
+
+
+                        if (vise_gridova)
+                            //napravi novi tab
+                            toolStripButton4_Click(null, null);
+                        while (reader.Read())
+                        {
+                            if (reader.IsStartElement() && reader.Name == "celija")
+                            {
+                                //prepisi elemente u celije
+                                int red = Convert.ToInt32(reader.GetAttribute(0));
+                                int stupac = Convert.ToInt32(reader.GetAttribute(1));
+                                string sadrzaj = reader.GetAttribute(2);
+                                string formula = reader.GetAttribute(3);
+                                KeyValuePair<int, int> index = new KeyValuePair<int, int>(red, stupac);
+                                ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
+                                ListaCelija[broj_gridova - 1].DodajVrijednost(red, stupac, sadrzaj);
+                                ListaCelija[broj_gridova - 1].DodajFormulu(red, stupac, formula);
+                                gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Value = sadrzaj;
+
+                                double r;
+                                if (System.Double.TryParse(sadrzaj, out r))
+                                    gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+                                else gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+                            }
+                            else
+                            {
+                                vise_gridova = true;
+                                break;
+                            }
+                        }
                     }
+
                 }
                 reader.Close();
             }
