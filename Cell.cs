@@ -12,7 +12,7 @@ namespace MyExcel
         public int stupac;
         public string sadrzaj;
         public string formula;
-
+        public List<Cell> uFormuli = new List<Cell>();
         private bool numerical = false;
 
         public bool Numerical
@@ -140,11 +140,14 @@ namespace MyExcel
                         if (sveCelije.ContainsKey(koo) && sveCelije[koo].Numerical)
                         {
                             formula = formula.Replace(cel, sveCelije[koo].sadrzaj);
+                            if ( sveCelije[koo].uFormuli.Contains(this) == false)
+                                sveCelije[koo].uFormuli.Add(this);
                         }
                         else
                         {
-                            int aa = 0;
+                            //int aa = 0;
                             formula = formula.Replace(cel, /*aa.ToString()*/"");
+                            throw new Exception();
                         }
 
 

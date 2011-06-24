@@ -37,6 +37,7 @@ namespace MyExcel
             gridovi[0].CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellEndEdit);
             gridovi[0].SelectionChanged += new EventHandler(this.tablica_SelectionChanged);
             gridovi[0].CellEnter += new DataGridViewCellEventHandler(this.tablica_CellEnter);
+            //gridovi[0].KeyUp +=new KeyEventHandler(keyUp);
             //gridovi[0].ColumnHeaderMouseClick += new DataGridViewCellMouseEventHandler(tablica_ColumnHeaderMouseClick);
             //gridovi[0].RowHeaderMouseClick += new DataGridViewCellMouseEventHandler(tablica_RowHeaderMouseClick);
             gridovi[0].RowsAdded += new DataGridViewRowsAddedEventHandler(tablica_RowsAdded);
@@ -136,6 +137,7 @@ namespace MyExcel
 
         private void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             int indexTaba = tabControl1.SelectedIndex;
             if (gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
 
@@ -151,7 +153,7 @@ namespace MyExcel
             else
             {
                 //stvori novu celiju ako vec ne postoji
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+                //KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
                 if (!ListaCelija[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
                 {
                     ListaCelija[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
@@ -166,11 +168,16 @@ namespace MyExcel
             double r;
             if (System.Double.TryParse(gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
             {
-                KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+                //KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
                 gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
                 ListaCelija[indexTaba].sveCelije[index].Numerical = true; 
             }
             else gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            foreach (Cell c in ListaCelija[indexTaba].sveCelije[index].uFormuli)
+            {
+                c.evaluateFormula(ListaCelija[indexTaba].sveCelije, fje);
+                gridovi[indexTaba].Rows[c.red].Cells[c.stupac].Value = c.sadrzaj;
+            }
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -353,12 +360,30 @@ namespace MyExcel
             gridovi[indexTaba].Rows[r + 1].Cells[s].Selected = true;
             
         }
-
+      /*  private void keyUp(object sender, EventArgs e)
+        {
+            DataGridView d = (DataGridView)sender;
+            if (d.SelectedCells.Count != 0)
+            {
+                DataGridViewCell c = d.SelectedCells[0];
+                //nesto ne valja s ovim e
+                int indexTaba = tabControl1.SelectedIndex;
+                if (c.RowIndex != -1 && c.ColumnIndex != -1 && c.Value != null)
+                    MessageBox.Show(c.Value.ToString());
+            }
+        }*/
         private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e) //ne radi
         {
-            //nesto ne valja s ovim e
-            int indexTaba = tabControl1.SelectedIndex;
-            //toolStripTextBox1.Text = gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].ToString();
+ /*           DataGridView d = (DataGridView)sender;
+            if (d.SelectedCells.Count != 0)
+            {
+                DataGridViewCell c = d.SelectedCells[0];
+                //nesto ne valja s ovim e
+                int indexTaba = tabControl1.SelectedIndex;
+                if (c.RowIndex != -1 && c.ColumnIndex != -1&&c.Value!=null)
+                    MessageBox.Show(c.Value.ToString());
+            }*/
+            //toolStripTextBox1.Text = "d";//gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].ToString();
             //statusLabel.Text = e.RowIndex + " " + e.ColumnIndex;
         }
 
