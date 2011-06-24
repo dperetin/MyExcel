@@ -14,7 +14,7 @@ namespace MyExcel
         public List<string> listaFunkcija = new List<string>();
         public List<string> opisiFunkcija = new List<string>();
         public MyExcel.Form1 excel;
-
+        DataGridViewCell odabrana;
         public Form2()
         {
             
@@ -30,39 +30,45 @@ namespace MyExcel
             foreach (string fja in listaFunkcija)
                 listBox1.Items.Add(fja);
             listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
+               
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            label4.Text = opisiFunkcija[listBox1.SelectedIndex];
-            string t = "= " + listaFunkcija[listBox1.SelectedIndex] + "( )";
-            textBox1.Text = t;
-            textBox1.Select(1,5);
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            if (listaFunkcija.Count > listBox1.SelectedIndex && listBox1.SelectedIndex != -1)
+            {
+                label4.Text = opisiFunkcija[listBox1.SelectedIndex];
+                string t = "= " + listaFunkcija[listBox1.SelectedIndex] + "( )";
+                textBox1.Text = t;
+            }
+            //textBox1.Select(1,5);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            excel.celijaIzForme = odabrana;
+            excel.toolStripTextBox1.Text = textBox1.Text;
+            excel.toolStripButton1_Click(null, null);
+            excel.toolStripTextBox1.Clear();
+            Close();
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            excel.otvorenaFormula = false;
+            Close();
+        }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            excel.otvorenIzbor = false;
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-
+            odabrana = excel.tGrid.SelectedCells[0];    
         }
 
-        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }     
+     
     }
 }

@@ -23,11 +23,15 @@ namespace MyExcel
         List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
 
-        DataGridView tGrid; // trenutno aktivni grid
+        public DataGridView tGrid; // trenutno aktivni grid
         Celije tCell;       // trenutno aktivni skup celija
+        public DataGridViewCell celijaIzForme;
+
+        public bool otvorenIzbor = false;
+        public bool otvorenaFormula = false;
 
         bool smijemZagasiti = false;
-
+        MyExcel.Form2 funkcije;
         public Form1()
         {
             InitializeComponent();
@@ -243,17 +247,26 @@ namespace MyExcel
                         tGrid.Rows[j].Cells[i].Style.BackColor = Color.White; 
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
+        public void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
         {
             // klik na kvacicu (ili enter) nakon unosa formule u textbox
             if (toolStripTextBox1.Text == "")
             {
                 return;
             }
-
+            int redak, stupac;
             //int indexTaba = tabControl1.SelectedIndex;
-            int stupac = tGrid.SelectedCells[0].ColumnIndex;
-            int redak = tGrid.SelectedCells[0].RowIndex;
+            if (otvorenaFormula)
+            {
+                stupac = celijaIzForme.ColumnIndex;
+                redak = celijaIzForme.RowIndex;
+                //otvorenaFormula = false;
+            }
+            else
+            {
+                stupac = tGrid.SelectedCells[0].ColumnIndex;
+                redak = tGrid.SelectedCells[0].RowIndex;
+            }
             KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
 
             if (!tCell.sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
@@ -268,7 +281,14 @@ namespace MyExcel
             if (formula.StartsWith("=") == false)
             {
                 tCell.sveCelije[koordinate].Sadrzaj = formula;
-                tGrid.SelectedCells[0].Value = formula;
+                if (otvorenaFormula)
+                {
+                    celijaIzForme.Value = formula;
+                }
+                else
+                {
+                    tGrid.SelectedCells[0].Value = formula;
+                }
                 return;
             }
 
@@ -285,7 +305,15 @@ namespace MyExcel
                 MessageBox.Show("Neispravna formula!");
             }
                 //celija.sadrzaj = tmp.Pop().ToString();
-               tGrid.SelectedCells[0].Value = celija.Sadrzaj;
+            if (otvorenaFormula)
+            {
+                celijaIzForme.Value = celija.Sadrzaj;
+                otvorenaFormula = false;
+            }
+            else
+            {
+                tGrid.SelectedCells[0].Value = celija.Sadrzaj;
+            }
 
                /*tCell.DodajVrijednost(tGrid.SelectedCells[0].RowIndex,
                         tGrid.SelectedCells[0].ColumnIndex, celija.Sadrzaj);
@@ -332,7 +360,22 @@ namespace MyExcel
                 }
 
             }
-            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString(); 
+            LabelSuma.Text = fje.SveFunkcije["sum"](argument).ToString();
+            if (otvorenIzbor)
+            {
+                int index = funkcije.textBox1.Text.IndexOf("(");
+                string arg = "";
+                if (index > 0)
+                {
+                    foreach(DataGridViewCell c in tGrid.SelectedCells)
+                    {
+                        arg += Char.ConvertFromUtf32(c.ColumnIndex + 65) + (c.RowIndex + 1).ToString() + ";";
+                    }
+                    arg = arg.TrimEnd(';');
+                    Match m = Regex.Match(funkcije.textBox1.Text, @"\(.*\)");
+                    funkcije.textBox1.Text = funkcije.textBox1.Text.Replace(m.Value, "("+arg+")");
+                }
+            }
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e) //novi tab
@@ -428,16 +471,24 @@ namespace MyExcel
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
-        {   
-            
-            MyExcel.Form2 funkcije = new MyExcel.Form2();
-            funkcije.excel = this;
-            if (funkcije.ShowDialog() == DialogResult.OK)
+        {
+            if (!otvorenIzbor)
+            {
+
+                otvorenIzbor = true;
+                otvorenaFormula = true;
+                funkcije = new MyExcel.Form2();
+                funkcije.excel = this;
+
+                funkcije.Show();
+                
+            }
+            /*if (funkcije.ShowDialog() == DialogResult.OK)
             {
                 toolStripTextBox1.Text = funkcije.textBox1.Text;
                 toolStripButton1_Click(null, null);
                 toolStripTextBox1.Clear();
-            }
+            }*/
         }
 
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
