@@ -846,5 +846,21 @@ namespace MyExcel
             about.ShowDialog();
         }
 
+        private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            TabControl t = (TabControl)sender;
+            //MessageBox.Show(t.TabPages[t.SelectedIndex].Text);
+            if (t.SelectedIndex != 0)
+            {
+                ListaCelija[t.SelectedIndex].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                ListaCelija.Remove(ListaCelija[t.SelectedIndex]);
+                gridovi[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+                tabControl1.TabPages[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+                tabControl1.TabPages.Remove(tabControl1.TabPages[t.SelectedIndex]);
+                gridovi.Remove(gridovi[t.SelectedIndex]);
+                broj_gridova--;
+            }
+        }
+
     }
 }
