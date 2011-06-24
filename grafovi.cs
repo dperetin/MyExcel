@@ -206,7 +206,7 @@ namespace MyExcel
                             //prviStupac = ListaCelija.sveCelije[index].stupac;
                         continue;
                     }
-                    vrijednosti.Add(Double.Parse(ListaCelija.sveCelije[index].sadrzaj));
+                    vrijednosti.Add(Double.Parse(ListaCelija.sveCelije[index].Sadrzaj));
                     CelijeZaPlot.Add(ListaCelija.sveCelije[index]);
                     if (ListaCelija.sveCelije[index].stupac < prviStupac)
                         prviStupac = ListaCelija.sveCelije[index].stupac;
@@ -265,7 +265,7 @@ namespace MyExcel
                 {
                     if (c.stupac == i)
                     {
-                        imenaKategorija.Add(c.sadrzaj);
+                        imenaKategorija.Add(c.Sadrzaj);
                         found = true;
                     }
                 }
@@ -354,7 +354,7 @@ namespace MyExcel
                 {
                     if (CelijeZaPlot[In].stupac == stupac)
                     {
-                        vrStup.Add(Double.Parse(CelijeZaPlot[In].sadrzaj));
+                        vrStup.Add(Double.Parse(CelijeZaPlot[In].Sadrzaj));
                     }
                 }
                 Brush myBrush = new SolidBrush(boje[k % boje.Count]);
@@ -456,7 +456,7 @@ namespace MyExcel
                 {
                     if (c.stupac == i)
                     {
-                        imenaKategorija.Add(c.sadrzaj);
+                        imenaKategorija.Add(c.Sadrzaj);
                         found = true;
                     }
                 }
@@ -507,7 +507,7 @@ namespace MyExcel
                 int i = 1;
                 foreach (Cell c in oznakeXosi)
                 {
-                    g.DrawString(c.sadrzaj, textFont, crni,
+                    g.DrawString(c.Sadrzaj, textFont, crni,
                         56 + sirina * (i - 1) + (sirina / 2), 304);
                     i++;
                 }
@@ -525,7 +525,7 @@ namespace MyExcel
                 {
                     if (CelijeZaPlot[In].stupac == stupac)
                     {
-                        vrStup.Add(Double.Parse(CelijeZaPlot[In].sadrzaj));
+                        vrStup.Add(Double.Parse(CelijeZaPlot[In].Sadrzaj));
                     }
                 }
                 int i = 0;
@@ -613,13 +613,13 @@ namespace MyExcel
                 sweepAngle = 360.0F / n * (float)vrijednosti[k];
 
                 legend = new Rectangle(330, 100 + k * 15, 10, 10);
-                g.DrawString(oznake[i].sadrzaj, textFont, crni, 345, 98 + k * 15);
+                g.DrawString(oznake[i].Sadrzaj, textFont, crni, 345, 98 + k * 15);
                 g.FillRectangle(myBrush, legend);
                 i++;
             }
             legend = new Rectangle(330, 100 + k * 15, 10, 10);
             Brush myBrush2 = new SolidBrush(boje[i % boje.Count]);
-            g.DrawString(oznake[i].sadrzaj, textFont, crni, 345, 98 + k * 15);
+            g.DrawString(oznake[i].Sadrzaj, textFont, crni, 345, 98 + k * 15);
             g.FillRectangle(myBrush2, legend);
 
 

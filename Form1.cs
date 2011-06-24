@@ -22,14 +22,19 @@ namespace MyExcel
         
         List<Celije> ListaCelija = new List<Celije>();
         Funkcije fje = new Funkcije();
-        
+
+        DataGridView tGrid; // trenutno aktivni grid
+        Celije tCell;       // trenutno aktivni skup celija
+
         public Form1()
         {
             InitializeComponent();
-            //DoubleBuffered = true;
+            
             gridovi.Add(new DataGridView());
+            tGrid = gridovi[0];
 
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
+            tabControl1.Selected += new TabControlEventHandler(promjenaTaba);
             gridovi[0].BorderStyle = BorderStyle.None;
             tabControl1.TabPages[0].BorderStyle = BorderStyle.None;
             gridovi[0].CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablica_CellClick);
@@ -44,6 +49,7 @@ namespace MyExcel
             
             Celije noviTab = new Celije();
             ListaCelija.Add(noviTab);
+            tCell = ListaCelija[0];
 
             gridovi[0].Dock = DockStyle.Fill;
             tabControl1.TabPages[0].Text = "Sheet1";
@@ -77,15 +83,24 @@ namespace MyExcel
             gridovi[0].CurrentCell = gridovi[0][0, 0];
             //gridovi[0].BeginEdit(true);
             toolStripTextBox1.Anchor = AnchorStyles.Right;
+
+            
         }
 
+        public void promjenaTaba(object o, EventArgs e)
+        {
+            TabControl tab = (TabControl)o;
+            tGrid = gridovi[tab.SelectedIndex];
+            tCell = ListaCelija[tab.SelectedIndex];
+        }
+        //
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             int indexTaba = tabControl1.SelectedIndex;
             string s = "";
             foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija[indexTaba].sveCelije)
             {
-                s += c.Value.sadrzaj + " ";
+                s += c.Value.Sadrzaj + " ";
             }
             MessageBox.Show(s);
         }
@@ -93,24 +108,25 @@ namespace MyExcel
         private void tablica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //ako kliknuta celija nije prazna, ispisuje se i njen sadrzaj i formula, inace samo koordinate
-            int indexTaba = tabControl1.SelectedIndex;
+            //int indexTaba = tabControl1.SelectedIndex;
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
+            if (tCell.sveCelije.ContainsKey(index))
             {
-                if (ListaCelija[indexTaba].sveCelije[index].DajVrijednostFormule() != null)
-                    toolStripTextBox1.Text = ListaCelija[indexTaba].sveCelije[index].formula;
-                else toolStripTextBox1.Text = ListaCelija[indexTaba].sveCelije[index].sadrzaj;
+                if (tCell.sveCelije[index].Formula != null)
+                    toolStripTextBox1.Text = tCell.sveCelije[index].Formula;
+                else
+                    toolStripTextBox1.Text = tCell.sveCelije[index].Sadrzaj;
 
-                if (ListaCelija[indexTaba].sveCelije[index].DajVrijednostFormule() != null)
+                if (tCell.sveCelije[index].Formula != null)
                         statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " +
                                 e.ColumnIndex.ToString() + "); Sadrzaj celije: " +
-                                ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije() +
-                                "; Formula: " + ListaCelija[indexTaba].sveCelije[index].DajVrijednostFormule();
+                                tCell.sveCelije[index].Sadrzaj +
+                                "; Formula: " + tCell.sveCelije[index].Formula;
 
-                else if (ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije() != "")
+                else if (tCell.sveCelije[index].Sadrzaj != "")
                     statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " +
                                 e.ColumnIndex.ToString() + "); Sadrzaj celije: " +
-                                ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije(); 
+                                tCell.sveCelije[index].Sadrzaj; 
                     
                     else statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() +
                                 ", " + e.ColumnIndex.ToString() + ")";
@@ -138,13 +154,13 @@ namespace MyExcel
         private void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            int indexTaba = tabControl1.SelectedIndex;
-            if (gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+            //int indexTaba = tabControl1.SelectedIndex;
+            if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
 
             //ako se radi o formuli
-            if (gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()[0] == '=')
+            if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()[0] == '=')
             {
-                toolStripTextBox1.Text = gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                toolStripTextBox1.Text = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 toolStripButton1_Click(null, null);
                 toolStripTextBox1.Clear();
             }
@@ -154,37 +170,38 @@ namespace MyExcel
             {
                 //stvori novu celiju ako vec ne postoji
                 //KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-                if (!ListaCelija[indexTaba].sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+                if (!tCell.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
                 {
-                    ListaCelija[indexTaba].Dodaj(e.RowIndex, e.ColumnIndex);
+                    tCell.Dodaj(e.RowIndex, e.ColumnIndex);
                 }
 
                 //spremam podatke upisane u celiju
-                string s = gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                ListaCelija[indexTaba].DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
+                string s = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                tCell.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
             }
 
             //poravnjanje brojeva i teksta
             double r;
-            if (System.Double.TryParse(gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
+            if (System.Double.TryParse(tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
             {
                 //KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-                gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
-                ListaCelija[indexTaba].sveCelije[index].Numerical = true; 
+                tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+                tCell.sveCelije[index].Numerical = true; 
             }
-            else gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
-            foreach (Cell c in ListaCelija[indexTaba].sveCelije[index].uFormuli)
+            else 
+                tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            foreach (Cell c in tCell.sveCelije[index].uFormuli)
             {
-                c.evaluateFormula(ListaCelija[indexTaba].sveCelije, fje);
-                gridovi[indexTaba].Rows[c.red].Cells[c.stupac].Value = c.sadrzaj;
+                c.evaluateFormula(tCell.sveCelije, fje);
+                tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
             }
         }
 
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             //kad se doda novi redak, ispisi redni broj u header
-            int indexTaba = tabControl1.SelectedIndex;
-            gridovi[indexTaba].Rows[gridovi[indexTaba].RowCount - 1].HeaderCell.Value = gridovi[indexTaba].RowCount.ToString();
+            //int indexTaba = tabControl1.SelectedIndex;
+            tGrid.Rows[tGrid.RowCount - 1].HeaderCell.Value = tGrid.RowCount.ToString();
         }
 
         private void tablica_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -197,22 +214,26 @@ namespace MyExcel
 
         private void tablica_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int indexTaba = tabControl1.SelectedIndex;
-            gridovi[indexTaba].Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < gridovi[indexTaba].RowCount; i++)
-                for (int j = 0; j < gridovi[indexTaba].ColumnCount; j++)
-                    if (j == e.ColumnIndex) gridovi[indexTaba].Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
-                    else gridovi[indexTaba].Rows[i].Cells[j].Style.BackColor = Color.White;
+            //int indexTaba = tabControl1.SelectedIndex;
+            tGrid.Columns[e.ColumnIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            for (int i = 0; i < tGrid.RowCount; i++)
+                for (int j = 0; j < tGrid.ColumnCount; j++)
+                    if (j == e.ColumnIndex)
+                        tGrid.Rows[i].Cells[j].Style.BackColor = Color.LightSteelBlue;
+                    else
+                        tGrid.Rows[i].Cells[j].Style.BackColor = Color.White;
         }
 
         private void tablica_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int indexTaba = tabControl1.SelectedIndex;
-            gridovi[indexTaba].Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
-            for (int i = 0; i < gridovi[indexTaba].ColumnCount; i++)
-                for (int j = 0; j < gridovi[indexTaba].RowCount; j++)
-                    if (j == e.RowIndex) gridovi[indexTaba].Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
-                    else gridovi[indexTaba].Rows[j].Cells[i].Style.BackColor = Color.White; 
+            //int indexTaba = tabControl1.SelectedIndex;
+            tGrid.Rows[e.RowIndex].HeaderCell.Style.BackColor = Color.SlateBlue;
+            for (int i = 0; i < tGrid.ColumnCount; i++)
+                for (int j = 0; j < tGrid.RowCount; j++)
+                    if (j == e.RowIndex)
+                        tGrid.Rows[j].Cells[i].Style.BackColor = Color.LightSteelBlue;
+                    else
+                        tGrid.Rows[j].Cells[i].Style.BackColor = Color.White; 
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
@@ -220,44 +241,44 @@ namespace MyExcel
             // klik na kvacicu (ili enter) nakon unosa formule u textbox
             if (toolStripTextBox1.Text == "") return;
 
-            int indexTaba = tabControl1.SelectedIndex;
-            int stupac = gridovi[indexTaba].SelectedCells[0].ColumnIndex;
-            int redak = gridovi[indexTaba].SelectedCells[0].RowIndex;
+            //int indexTaba = tabControl1.SelectedIndex;
+            int stupac = tGrid.SelectedCells[0].ColumnIndex;
+            int redak = tGrid.SelectedCells[0].RowIndex;
             KeyValuePair<int, int> koordinate = new KeyValuePair<int, int>(redak, stupac);
 
-            if (!ListaCelija[indexTaba].sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
+            if (!tCell.sveCelije.ContainsKey(koordinate) && redak != -1 && stupac != -1)
             {
-                ListaCelija[indexTaba].Dodaj(redak, stupac);
+                tCell.Dodaj(redak, stupac);
             }
 
-            Cell celija = ListaCelija[indexTaba].sveCelije[koordinate];
+            Cell celija = tCell.sveCelije[koordinate];
             string formula = toolStripTextBox1.Text.ToUpper();
             
             double rez;
             if (System.Double.TryParse(formula, out rez))
             {
-                ListaCelija[indexTaba].sveCelije[koordinate].sadrzaj = Convert.ToString(rez);
-                gridovi[indexTaba].SelectedCells[0].Value = rez.ToString();
+                tCell.sveCelije[koordinate].Sadrzaj = Convert.ToString(rez);
+                tGrid.SelectedCells[0].Value = rez.ToString();
                 return;
             }
             
-            celija.formula = formula;
+            celija.Formula = formula;
             /////////////////////////////
                 //Console.WriteLine(tmp.Pop().ToString());
             try
             {
-                celija.evaluateFormula(ListaCelija[indexTaba].sveCelije, fje);
+                celija.evaluateFormula(tCell.sveCelije, fje);
             }
             catch
             {
                 MessageBox.Show("Neispravna formula!");
             }
                 //celija.sadrzaj = tmp.Pop().ToString();
-               gridovi[indexTaba].SelectedCells[0].Value = celija.sadrzaj;
-                ListaCelija[indexTaba].DodajVrijednost(gridovi[indexTaba].SelectedCells[0].RowIndex,
-                        gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.sadrzaj);
-                ListaCelija[indexTaba].DodajFormulu(gridovi[indexTaba].SelectedCells[0].RowIndex,
-                    gridovi[indexTaba].SelectedCells[0].ColumnIndex, celija.formula);
+               tGrid.SelectedCells[0].Value = celija.Sadrzaj;
+               tCell.DodajVrijednost(tGrid.SelectedCells[0].RowIndex,
+                        tGrid.SelectedCells[0].ColumnIndex, celija.Sadrzaj);
+               tCell.DodajFormulu(tGrid.SelectedCells[0].RowIndex,
+                    tGrid.SelectedCells[0].ColumnIndex, celija.Formula);
             //}
  /*           string fja = Regex.Match(formula, @"=\s*\w*\s*[(]").Value;
             string rje = Regex.Match(formula, "[(].*[)]").Value;
@@ -285,17 +306,17 @@ namespace MyExcel
         private void tablica_SelectionChanged(object sender, EventArgs e)
         {
             List<double> argument = new List<double>();
-            int indexTaba = tabControl1.SelectedIndex;
+            //int indexTaba = tabControl1.SelectedIndex;
             double rez;
-            for (int c = 0; c < gridovi[indexTaba].SelectedCells.Count; c++ )
+            for (int c = 0; c < tGrid.SelectedCells.Count; c++ )
             {
                 KeyValuePair<int, int> index =
-                    new KeyValuePair<int, int>(gridovi[indexTaba].SelectedCells[c].RowIndex,
-                                                gridovi[indexTaba].SelectedCells[c].ColumnIndex);
-                if (ListaCelija[indexTaba].sveCelije.ContainsKey(index))
+                    new KeyValuePair<int, int>(tGrid.SelectedCells[c].RowIndex,
+                                                tGrid.SelectedCells[c].ColumnIndex);
+                if (tCell.sveCelije.ContainsKey(index))
                 {
-                    if (ListaCelija[indexTaba].sveCelije[index].Numerical)
-                        argument.Add(Double.Parse(ListaCelija[indexTaba].sveCelije[index].sadrzaj));
+                    if (tCell.sveCelije[index].Numerical)
+                        argument.Add(Double.Parse(tCell.sveCelije[index].Sadrzaj));
                 }
 
             }
@@ -344,20 +365,22 @@ namespace MyExcel
 
         private void toolStripTextBox1_KeyPress(object sender, KeyPressEventArgs e) //enter u textboxu
         {
-            if (!(e.KeyChar == (char)Keys.Enter)) return;
+            if (!(e.KeyChar == (char)Keys.Enter)) 
+                return;
+
             toolStripButton1_Click(null, null);
-            int indexTaba = tabControl1.SelectedIndex;
-            KeyValuePair<int, int> index = new KeyValuePair<int, int>
-                (gridovi[indexTaba].SelectedCells[0].RowIndex, gridovi[indexTaba].SelectedCells[0].ColumnIndex);
-            statusLabel.Text = "Koordinate celije: (" + gridovi[indexTaba].SelectedCells[0].ColumnIndex.ToString() + ", " +
-                                gridovi[indexTaba].SelectedCells[0].ColumnIndex.ToString() + "); Sadrzaj celije: " +
-                                ListaCelija[indexTaba].sveCelije[index].DajVrijednostCelije() +
-                                "; Formula: " + ListaCelija[indexTaba].sveCelije[index].DajVrijednostFormule();
+
+            //int indexTaba = tabControl1.SelectedIndex;
+            KeyValuePair<int, int> index = new KeyValuePair<int, int> (tGrid.SelectedCells[0].RowIndex, tGrid.SelectedCells[0].ColumnIndex);
+            statusLabel.Text = "Koordinate celije: (" + tGrid.SelectedCells[0].ColumnIndex.ToString() + ", " +
+                                tGrid.SelectedCells[0].ColumnIndex.ToString() + "); Sadrzaj celije: " +
+                                tCell.sveCelije[index].Sadrzaj +
+                                "; Formula: " + tCell.sveCelije[index].Formula;
             toolStripTextBox1.Text = "";
-            int r = gridovi[indexTaba].SelectedCells[0].RowIndex;
-            int s = gridovi[indexTaba].SelectedCells[0].ColumnIndex;
-            gridovi[indexTaba].ClearSelection();
-            gridovi[indexTaba].Rows[r + 1].Cells[s].Selected = true;
+            int r = tGrid.SelectedCells[0].RowIndex;
+            int s = tGrid.SelectedCells[0].ColumnIndex;
+            tGrid.ClearSelection();
+            tGrid.Rows[r + 1].Cells[s].Selected = true;
             
         }
       /*  private void keyUp(object sender, EventArgs e)
@@ -410,17 +433,17 @@ namespace MyExcel
             //klik na Font u izborniku
             //primijeni odabrano formatiranje na odabrane celije
 
-            int indexTaba = tabControl1.SelectedIndex;
+            //int indexTaba = tabControl1.SelectedIndex;
             fontDialog1.ShowColor = true;
-            fontDialog1.Font = gridovi[indexTaba].SelectedCells[0].Style.Font;
-            fontDialog1.Color = gridovi[indexTaba].SelectedCells[0].Style.ForeColor;
+            fontDialog1.Font = tGrid.SelectedCells[0].Style.Font;
+            fontDialog1.Color = tGrid.SelectedCells[0].Style.ForeColor;
             
             if (fontDialog1.ShowDialog() != DialogResult.Cancel)
             {
-                for (int i = 0; i < gridovi[indexTaba].SelectedCells.Count; i++ )
+                for (int i = 0; i < tGrid.SelectedCells.Count; i++)
                 {
-                    gridovi[indexTaba].SelectedCells[i].Style.Font = fontDialog1.Font;
-                    gridovi[indexTaba].SelectedCells[i].Style.ForeColor = fontDialog1.Color;
+                    tGrid.SelectedCells[i].Style.Font = fontDialog1.Font;
+                    tGrid.SelectedCells[i].Style.ForeColor = fontDialog1.Color;
                 }
             }
         }
@@ -490,8 +513,11 @@ namespace MyExcel
             //otvori open dialog
             //procitaj i prepisi tablicu iz xml-a
             openFileDialog1.Filter = "Extensible Markup Language|*.xml";
-            broj_gridova = 1;
+            broj_gridova = 0;
             bool vise_gridova = false;
+            int red = 0, stupac = 0;
+            string sadrzaj = "", formula = "";
+            bool numerical = false;
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 imeFilea = openFileDialog1.FileName;
@@ -499,8 +525,53 @@ namespace MyExcel
                 XmlReader reader = XmlReader.Create(imeFilea);
                 while (reader.Read())
                 {
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        if (reader.Name == "grid")
+                        {
+                            toolStripButton4_Click(null, null);
+                        }
+                        if (reader.Name == "celija")
+                        {
+                            XmlReader cell = reader.ReadSubtree();
+                            while (cell.Read())
+                            {
+                                if (cell.NodeType == XmlNodeType.Element)
+                                {
+                                    if (cell.Name == "red")
+                                    {
+                                        red = Convert.ToInt32(cell.ReadString());
+                                    }
+                                    if (cell.Name == "stupac")
+                                    {
+                                        stupac = Convert.ToInt32(cell.ReadString());
+                                    }
+                                    if (cell.Name == "sadrzaj")
+                                    {
+                                        sadrzaj = cell.ReadString();
+                                    }
+                                    if (cell.Name == "formula")
+                                    {
+                                        formula = cell.ReadString();
+                                    }
+                                    if (cell.Name == "numerical")
+                                    {
+                                        numerical = Convert.ToBoolean(cell.ReadString());
+                                    }
 
-                    if (reader.IsStartElement() && reader.Name == "tablica") reader.Read(); // Read the start tag.
+                                }
+                            }
+                            ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
+                            ListaCelija[broj_gridova - 1].DodajVrijednost(red, stupac, sadrzaj);
+                            ListaCelija[broj_gridova - 1].DodajFormulu(red, stupac, formula);
+                            gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Value = sadrzaj;
+
+                        }
+                    }
+                }
+                                    
+                                   
+                    /*if (reader.IsStartElement() && reader.Name == "tablica") reader.Read(); // Read the start tag.
                     if (reader.IsStartElement() && reader.Name == "grid")
                     {
 
@@ -534,9 +605,9 @@ namespace MyExcel
                                 break;
                             }
                         }
-                    }
+                    }*/
 
-                }
+                
                 reader.Close();
             }
         }
@@ -581,10 +652,37 @@ namespace MyExcel
                 {
                     Cell c = par.Value;
                     xmlw.WriteStartElement("celija");
-                    xmlw.WriteAttributeString("red", c.red.ToString());
-                    xmlw.WriteAttributeString("stupac", c.stupac.ToString());
-                    xmlw.WriteAttributeString("sadrzaj", c.sadrzaj);
-                    xmlw.WriteAttributeString("formula", c.formula);
+
+                    xmlw.WriteStartElement("red");                  
+                    xmlw.WriteString(c.red.ToString());
+                    xmlw.WriteEndElement();
+
+                    xmlw.WriteStartElement("stupac");
+                    xmlw.WriteString(c.stupac.ToString());
+                    xmlw.WriteEndElement();
+
+                    xmlw.WriteStartElement("sadrzaj");
+                    xmlw.WriteString(c.Sadrzaj);
+                    xmlw.WriteEndElement();
+
+                    xmlw.WriteStartElement("formula");
+                    xmlw.WriteString(c.Formula);
+                    xmlw.WriteEndElement();
+
+                    xmlw.WriteStartElement("numerical");
+                    xmlw.WriteString(c.Numerical.ToString());
+                    xmlw.WriteEndElement();
+
+                    string s="";
+                    foreach (Cell a in c.uFormuli)
+                    {
+                        s += a.ID+";";
+                    }
+                    s = s.TrimEnd(';');
+                    xmlw.WriteStartElement("ovisnosti");
+                    xmlw.WriteString(s);
+                    xmlw.WriteEndElement();
+
                     xmlw.WriteEndElement();
                 }
                 xmlw.WriteEndElement();
@@ -627,12 +725,12 @@ namespace MyExcel
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             bool numTest = false;
-            int tab = tabControl1.SelectedIndex;
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            //int tab = tabControl1.SelectedIndex;
+            foreach (DataGridViewCell c in tGrid.SelectedCells)
             {
 
                 KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index) && ListaCelija[tab].sveCelije[index].Numerical)
+                if (tCell.sveCelije.ContainsKey(index) && tCell.sveCelije[index].Numerical)
                 {
                     numTest = true;
                     break;
@@ -640,7 +738,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, tGrid, tCell);
                 Slika.drawHistogram();
             }
            
@@ -650,12 +748,12 @@ namespace MyExcel
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
             bool numTest = false;
-            int tab = tabControl1.SelectedIndex;
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            //int tab = tabControl1.SelectedIndex;
+            foreach (DataGridViewCell c in tGrid.SelectedCells)
             {
 
                 KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index) && ListaCelija[tab].sveCelije[index].Numerical)
+                if (tCell.sveCelije.ContainsKey(index) && tCell.sveCelije[index].Numerical)
                 {
                     numTest = true;
                     break;
@@ -663,7 +761,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, tGrid, tCell);
                 Slika.drawPieChart();
             }
         
@@ -672,12 +770,12 @@ namespace MyExcel
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
             bool numTest = false;
-            int tab = tabControl1.SelectedIndex;
-            foreach (DataGridViewCell c in gridovi[tab].SelectedCells)
+            //int tab = tabControl1.SelectedIndex;
+            foreach (DataGridViewCell c in tGrid.SelectedCells)
             {
 
                 KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex,c.ColumnIndex);
-                if (ListaCelija[tab].sveCelije.ContainsKey(index) && ListaCelija[tab].sveCelije[index].Numerical)
+                if (tCell.sveCelije.ContainsKey(index) && tCell.sveCelije[index].Numerical)
                 {
                     numTest = true;
                     break;
@@ -685,7 +783,7 @@ namespace MyExcel
             }
             if (numTest)
             {
-                Grafovi Slika = new Grafovi(this, gridovi[tab], ListaCelija[tab]);
+                Grafovi Slika = new Grafovi(this, tGrid, tCell);
                 Slika.drawLineChart();
             }
             

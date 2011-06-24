@@ -81,6 +81,7 @@
     <Compile Include="Form5.Designer.cs">
       <DependentUpon>Form5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Funkcije.cs" />
     <Compile Include="Grafovi.cs">
     </Compile>
     <Compile Include="Program.cs" />
