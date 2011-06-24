@@ -10,7 +10,7 @@ namespace MyExcel
     {
         private string id;
         private string sadrzaj;
-        private string formula;
+        private string formula = "";
 
         public int red;
         public int stupac;
@@ -418,7 +418,6 @@ namespace MyExcel
             Sadrzaj = tmp.Pop().ToString();
 
         }
-
     }
 
     public class Celije

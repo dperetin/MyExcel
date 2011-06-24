@@ -114,12 +114,12 @@ namespace MyExcel
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             if (tCell.sveCelije.ContainsKey(index))
             {
-                if (tCell.sveCelije[index].Formula != null)
+                if (tCell.sveCelije[index].Formula != "")
                     toolStripTextBox1.Text = tCell.sveCelije[index].Formula;
                 else
                     toolStripTextBox1.Text = tCell.sveCelije[index].Sadrzaj;
 
-                if (tCell.sveCelije[index].Formula != null)
+                if (tCell.sveCelije[index].Formula != "")
                         statusLabel.Text = "Koordinate celije: (" + e.RowIndex.ToString() + ", " +
                                 e.ColumnIndex.ToString() + "); Sadrzaj celije: " +
                                 tCell.sveCelije[index].Sadrzaj +
@@ -525,8 +525,8 @@ namespace MyExcel
             //otvori open dialog
             //procitaj i prepisi tablicu iz xml-a
             openFileDialog1.Filter = "Extensible Markup Language|*.xml";
-            broj_gridova = 0;
-            bool vise_gridova = false;
+            broj_gridova = 1;
+            bool pass = false;
             int red = 0, stupac = 0;
             string sadrzaj = "", formula = "";
             bool numerical = false;
@@ -541,7 +541,11 @@ namespace MyExcel
                     {
                         if (reader.Name == "grid")
                         {
-                            toolStripButton4_Click(null, null);
+                            if (pass)
+                            {
+                                toolStripButton4_Click(null, null);
+                            }
+                            pass = true;
                         }
                         if (reader.Name == "celija")
                         {
@@ -573,7 +577,11 @@ namespace MyExcel
 
                                 }
                             }
-                            ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
+                            KeyValuePair<int, int> i = new KeyValuePair<int, int>(red, stupac);
+                            if (ListaCelija[broj_gridova - 1].sveCelije.ContainsKey(i) == false)
+                            {
+                                ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
+                            }
                             ListaCelija[broj_gridova - 1].DodajVrijednost(red, stupac, sadrzaj);
                             ListaCelija[broj_gridova - 1].DodajFormulu(red, stupac, formula);
                             gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Value = sadrzaj;
