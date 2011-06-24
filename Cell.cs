@@ -415,7 +415,7 @@ namespace MyExcel
                     tmp.Push(fje.SveFunkcije[q.Dequeue().value](arg));
                 }
             }
-            sadrzaj = tmp.Pop().ToString();
+            Sadrzaj = tmp.Pop().ToString();
 
         }
 
