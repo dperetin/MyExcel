@@ -14,8 +14,8 @@ namespace MyExcel
 
         public int red;
         public int stupac;
-        
-        
+
+             
         public List<Cell> uFormuli = new List<Cell>();
         private bool numerical = false;
 
@@ -71,6 +71,11 @@ namespace MyExcel
             set
             {
                 sadrzaj = value;
+                double r;
+                if (System.Double.TryParse(sadrzaj, out r))
+                {
+                    Numerical = true;
+                }
 
             }
         }
@@ -87,7 +92,7 @@ namespace MyExcel
         {
             return formula;
         }*/
-        public void evaluateFormula(Dictionary<KeyValuePair<int, int>, Cell> sveCelije, Funkcije fje)
+        public void evaluateFormula(Celije tCell, Funkcije fje)
         {
             string formula;
             formula = this.formula.ToLower();
@@ -162,16 +167,21 @@ namespace MyExcel
                     int r1 = Convert.ToInt32(broj) - 1;
                     KeyValuePair<int, int> koo = new KeyValuePair<int, int>(r1, c1);
 
-                    if (sveCelije.ContainsKey(koo) && sveCelije[koo].Numerical)
+                    if (tCell.sveCelije.ContainsKey(koo) && tCell.sveCelije[koo].Numerical)
                     {
-                        formula = formula.Replace(cel, sveCelije[koo].sadrzaj);
-                        if (sveCelije[koo].uFormuli.Contains(this) == false)
-                            sveCelije[koo].uFormuli.Add(this);
+                        formula = formula.Replace(cel, tCell.sveCelije[koo].sadrzaj);
+                        if (tCell.sveCelije[koo].uFormuli.Contains(this) == false)
+                            tCell.sveCelije[koo].uFormuli.Add(this);
                     }
                     else
                     {
                         //int aa = 0;
                         formula = formula.Replace(cel, /*aa.ToString()*/"");
+                        if (tCell.sveCelije.ContainsKey(koo) == false)
+                        {
+                            tCell.Dodaj(r1, c1);
+                            tCell.sveCelije[koo].uFormuli.Add(this);
+                        }
                         throw new Exception();
                     }
 
@@ -411,7 +421,7 @@ namespace MyExcel
 
     }
 
-    class Celije
+    public class Celije
     {
         public Dictionary<KeyValuePair<int, int>, Cell> sveCelije = new Dictionary<KeyValuePair<int, int>, Cell>();
 
@@ -419,6 +429,7 @@ namespace MyExcel
         {
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
             sveCelije.Add(index, Cell.NapraviCeliju(r, s));
+
         }
 
         public void DodajVrijednost(int r, int s, string v)

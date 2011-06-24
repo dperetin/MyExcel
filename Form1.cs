@@ -26,6 +26,8 @@ namespace MyExcel
         DataGridView tGrid; // trenutno aktivni grid
         Celije tCell;       // trenutno aktivni skup celija
 
+        bool smijemZagasiti = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -153,9 +155,13 @@ namespace MyExcel
 
         private void tablica_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            smijemZagasiti = false;
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
             //int indexTaba = tabControl1.SelectedIndex;
-            if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null) return;
+            if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null)
+            {
+                return;
+            }
 
             //ako se radi o formuli
             if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()[0] == '=')
@@ -177,22 +183,23 @@ namespace MyExcel
 
                 //spremam podatke upisane u celiju
                 string s = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                tCell.DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
+                tCell.sveCelije[index].Sadrzaj = s; //DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
             }
 
             //poravnjanje brojeva i teksta
-            double r;
-            if (System.Double.TryParse(tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out r))
+
+            if (tCell.sveCelije[index].Numerical)
             {
                 //KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
                 tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomRight;
-                tCell.sveCelije[index].Numerical = true; 
             }
-            else 
+            else
+            {
                 tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            }
             foreach (Cell c in tCell.sveCelije[index].uFormuli)
             {
-                c.evaluateFormula(tCell.sveCelije, fje);
+                c.evaluateFormula(tCell, fje);
                 tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
             }
         }
@@ -239,7 +246,10 @@ namespace MyExcel
         private void toolStripButton1_Click(object sender, EventArgs e) // GO! Izracunaj formulu
         {
             // klik na kvacicu (ili enter) nakon unosa formule u textbox
-            if (toolStripTextBox1.Text == "") return;
+            if (toolStripTextBox1.Text == "")
+            {
+                return;
+            }
 
             //int indexTaba = tabControl1.SelectedIndex;
             int stupac = tGrid.SelectedCells[0].ColumnIndex;
@@ -252,22 +262,23 @@ namespace MyExcel
             }
 
             Cell celija = tCell.sveCelije[koordinate];
-            string formula = toolStripTextBox1.Text.ToUpper();
-            
-            double rez;
-            if (System.Double.TryParse(formula, out rez))
+
+            string formula = toolStripTextBox1.Text;
+
+            if (formula.StartsWith("=") == false)
             {
-                tCell.sveCelije[koordinate].Sadrzaj = Convert.ToString(rez);
-                tGrid.SelectedCells[0].Value = rez.ToString();
+                tCell.sveCelije[koordinate].Sadrzaj = formula;
+                tGrid.SelectedCells[0].Value = formula;
                 return;
             }
-            
+
+            formula = formula.ToUpper();
             celija.Formula = formula;
             /////////////////////////////
                 //Console.WriteLine(tmp.Pop().ToString());
             try
             {
-                celija.evaluateFormula(tCell.sveCelije, fje);
+                celija.evaluateFormula(tCell, fje);
             }
             catch
             {
@@ -275,10 +286,11 @@ namespace MyExcel
             }
                 //celija.sadrzaj = tmp.Pop().ToString();
                tGrid.SelectedCells[0].Value = celija.Sadrzaj;
-               tCell.DodajVrijednost(tGrid.SelectedCells[0].RowIndex,
+
+               /*tCell.DodajVrijednost(tGrid.SelectedCells[0].RowIndex,
                         tGrid.SelectedCells[0].ColumnIndex, celija.Sadrzaj);
                tCell.DodajFormulu(tGrid.SelectedCells[0].RowIndex,
-                    tGrid.SelectedCells[0].ColumnIndex, celija.Formula);
+                    tGrid.SelectedCells[0].ColumnIndex, celija.Formula);*/
             //}
  /*           string fja = Regex.Match(formula, @"=\s*\w*\s*[(]").Value;
             string rje = Regex.Match(formula, "[(].*[)]").Value;
@@ -690,13 +702,14 @@ namespace MyExcel
             xmlw.WriteEndElement();
             xmlw.WriteEndDocument();
             xmlw.Close();
+            smijemZagasiti = true;
         }
         
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //klik na Exit u izborniku
-            //pitaj korisnika zeli li spremiti promjene prije izlaza
-            //izadji iz programa
+            // klik na Exit u izborniku
+            // pitaj korisnika zeli li spremiti promjene prije izlaza
+            // izadji iz programa
 
             MyExcel.Form3 izlaz = new MyExcel.Form3();
             izlaz.excel = this;
@@ -704,13 +717,23 @@ namespace MyExcel
             if (rez == DialogResult.Yes)
             {
                 //napravi saveAs ili save pa izadji
-                if (imeFilea == null) saveAsToolStripMenuItem_Click(null, null);
-                else saveToolStripMenuItem_Click(null, null);
-                Form1.ActiveForm.Close();
+                if (imeFilea == null)
+                {
+                    saveAsToolStripMenuItem_Click(null, null);
+                }
+                else
+                {
+                    saveToolStripMenuItem_Click(null, null);
+                }
+                
             }
             else if (rez == DialogResult.No)
             {
                 //samo izadji
+                Form1.ActiveForm.Close();
+            }
+            if (smijemZagasiti)
+            {
                 Form1.ActiveForm.Close();
             }
         }
