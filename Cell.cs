@@ -36,6 +36,34 @@ namespace MyExcel
             get { return id; }
         }
 
+        public void PostaviOvisnosti(Celije cells, string s)
+        {
+            s = s.ToLower();
+            if (s != "")
+            {
+                string[] celije = s.Split(';');
+                foreach (string koo in celije)
+                {
+                    string slovo, broj;
+                    slovo = Regex.Match(koo, @"[a-z]+").Value;
+                    broj = Regex.Match(koo, "[0-9]+").Value;
+                    int c = slovo[0] - 97;
+                    int r = Convert.ToInt32(broj) - 1;
+                    KeyValuePair<int, int> i = new KeyValuePair<int, int>(r, c);
+                    //KeyValuePair<int, int> ova = new KeyValuePair<int, int>(red, stupac);
+                    if (cells.sveCelije.ContainsKey(i))
+                    {
+                        uFormuli.Add(cells.sveCelije[i]);
+                    }
+                    else
+                    {
+                        cells.Dodaj(r, c);
+                        uFormuli.Add(cells.sveCelije[i]);
+                    }
+                }
+            }
+        }
+
         int IComparable.CompareTo(object obj)
         {
             Cell o = (Cell)obj;
@@ -431,17 +459,17 @@ namespace MyExcel
 
         }
 
-        public void DodajVrijednost(int r, int s, string v)
+        /*public void DodajVrijednost(int r, int s, string v)
         {
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
             sveCelije[index].Sadrzaj = v;
-        }
+        }*/
 
-        public void DodajFormulu(int r, int s, string f)
+        /*public void DodajFormulu(int r, int s, string f)
         {
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
             sveCelije[index].Formula = f;
-        }
+        }*/
     }
 }
     

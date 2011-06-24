@@ -528,7 +528,7 @@ namespace MyExcel
             broj_gridova = 1;
             bool pass = false;
             int red = 0, stupac = 0;
-            string sadrzaj = "", formula = "";
+            string sadrzaj = "", formula = "", ovisnosti = "";
             bool numerical = false;
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
@@ -574,6 +574,10 @@ namespace MyExcel
                                     {
                                         numerical = Convert.ToBoolean(cell.ReadString());
                                     }
+                                    if (cell.Name == "ovisnosti")
+                                    {
+                                        ovisnosti = cell.ReadString();
+                                    }
 
                                 }
                             }
@@ -582,9 +586,20 @@ namespace MyExcel
                             {
                                 ListaCelija[broj_gridova - 1].Dodaj(red, stupac);
                             }
-                            ListaCelija[broj_gridova - 1].DodajVrijednost(red, stupac, sadrzaj);
-                            ListaCelija[broj_gridova - 1].DodajFormulu(red, stupac, formula);
+                            ListaCelija[broj_gridova - 1].sveCelije[i].Sadrzaj = sadrzaj;
+                            ListaCelija[broj_gridova - 1].sveCelije[i].Formula = formula;
                             gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Value = sadrzaj;
+                            ListaCelija[broj_gridova - 1].sveCelije[i].PostaviOvisnosti(ListaCelija[broj_gridova - 1], ovisnosti);
+
+                            if (ListaCelija[broj_gridova - 1].sveCelije[i].Numerical)
+                            {
+                                gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+                            }
+                            else
+                            {
+                                gridovi[broj_gridova - 1].Rows[red].Cells[stupac].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+                                
+                            }
 
                         }
                     }
