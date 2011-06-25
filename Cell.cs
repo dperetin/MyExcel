@@ -173,7 +173,7 @@ namespace MyExcel
                                 rep += Char.ConvertFromUtf32(j + 65) + i.ToString() + ";";
                             }
                     }
-                    rep.TrimEnd(';');
+                    rep = rep.TrimEnd(';');
                     formula = formula.Replace(sa, rep);
                 }
                 else
@@ -197,7 +197,13 @@ namespace MyExcel
 
                     if (tCell.sveCelije.ContainsKey(koo) && tCell.sveCelije[koo].Numerical)
                     {
-                        formula = formula.Replace(cel, tCell.sveCelije[koo].sadrzaj);
+                        string arg = tCell.sveCelije[koo].sadrzaj;
+                        double d = double.Parse(arg);
+                        if (d < 0)
+                        {
+                            arg = "0" + arg;
+                        }
+                        formula = formula.Replace(cel, arg);
                         if (tCell.sveCelije[koo].uFormuli.Contains(this) == false)
                             tCell.sveCelije[koo].uFormuli.Add(this);
                     }
@@ -210,7 +216,7 @@ namespace MyExcel
                             tCell.Dodaj(r1, c1);
                             tCell.sveCelije[koo].uFormuli.Add(this);
                         }
-                        throw new Exception();
+                        //throw new Exception();
                     }
 
 

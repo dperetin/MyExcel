@@ -21,7 +21,7 @@ namespace MyExcel
         string imeFilea;
         
         List<Celije> ListaCelija = new List<Celije>();
-        Funkcije fje = new Funkcije();
+        public Funkcije fje = new Funkcije();
 
         public DataGridView tGrid; // trenutno aktivni grid
         Celije tCell;       // trenutno aktivni skup celija
