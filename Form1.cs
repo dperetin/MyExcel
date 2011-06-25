@@ -39,7 +39,7 @@ namespace MyExcel
             
             gridovi.Add(new DataGridView());
             tGrid = gridovi[0];
-            
+            tabControl1.KeyDown += new KeyEventHandler(delete);
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
             tabControl1.Selected += new TabControlEventHandler(promjenaTaba);
             gridovi[0].BorderStyle = BorderStyle.None;
@@ -92,6 +92,27 @@ namespace MyExcel
             toolStripTextBox1.Anchor = AnchorStyles.Right;
 
             
+        }
+
+        public void delete(object o, KeyEventArgs e)
+        {
+            if ((e.KeyValue == (int)Keys.Delete))
+            {
+                foreach (DataGridViewCell c in tGrid.SelectedCells)
+                {
+                    KeyValuePair<int, int> index = new KeyValuePair<int, int>(c.RowIndex, c.ColumnIndex);
+                    if (tCell.sveCelije.ContainsKey(index))
+                    {
+                        tCell.sveCelije[index].Sadrzaj = "";
+                        tCell.sveCelije[index].Formula = "";
+
+                        c.Value = "";
+                        tablica_CellValueChanged(c, new DataGridViewCellEventArgs(c.ColumnIndex, c.RowIndex));
+                        
+                    }
+                }
+            }
+                
         }
 
         public void promjenaTaba(object o, EventArgs e)

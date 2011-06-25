@@ -131,6 +131,7 @@ namespace MyExcel
             // zamjenjujem oznake celija konkretnim vrijednostima
             // PRETPOSTAVKA: nema razmaka nije dosega
             formula = formula.Replace(" ", "");
+            formula = formula.Replace("\r\n", "");
 
             // rasirivanje :
             // try
