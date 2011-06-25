@@ -14,9 +14,7 @@ using System.Drawing.Drawing2D;
 
 
 namespace MyExcel
-{
-  
-    
+{    
     class Grafovi
     {
         // za pomicanje grafa
@@ -379,8 +377,10 @@ namespace MyExcel
                 int i = 1;
                 foreach (Cell c in oznakeXosi)
                 {
+                   // g.DrawString(c.Sadrzaj, textFont, crni,
+                       // 56 + sirina * (i - 1) + (sirina / 2), 304);
                     g.DrawString(c.Sadrzaj, textFont, crni,
-                        56 + sirina * (i - 1) + (sirina / 2), 304);
+                        45 + sirina * stupci.Count / 2 + (i - 1) * sirina * stupci.Count + 10 * i, 300);
                     i++;
                 }
             }

@@ -1003,14 +1003,19 @@ namespace MyExcel
             //MessageBox.Show(t.TabPages[t.SelectedIndex].Text);
             if (t.SelectedIndex != 0)
             {
-                ListaCelija[t.SelectedIndex].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
-                ListaCelija.Remove(ListaCelija[t.SelectedIndex]);
-                gridovi[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
-                tabControl1.TabPages[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
-                tabControl1.TabPages.Remove(tabControl1.TabPages[t.SelectedIndex]);
-                gridovi.Remove(gridovi[t.SelectedIndex]);
+                int tmp = t.SelectedIndex;
+                //ListaCelija[t.SelectedIndex].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                //ListaCelija.Remove(ListaCelija[t.SelectedIndex]);
+                ListaCelija.RemoveAt(tmp);
+                //gridovi[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+                //tabControl1.TabPages[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+
+                tabControl1.TabPages.RemoveAt(tmp);
+                //gridovi.Remove(gridovi[t.SelectedIndex]);
+                gridovi.RemoveAt(tmp);
                 broj_gridova--;
             }
+            //tGrid = gridovi[tabControl1.SelectedIndex];
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
