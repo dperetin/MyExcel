@@ -234,7 +234,9 @@ namespace MyExcel
             // broj tocaka u svakom od tih stupaca, da znamo odrediti
             // koliko ce graf biti sirok
             List<int> brojTocaka = new List<int>();
-
+            List<Cell> oznakeXosi = new List<Cell>();
+            bool stringOznake = false;
+            int pomakniStupac = 0;
             // popunjavanje gornjih listi
             stupci.Add(CelijeZaPlot[0].stupac);
             brojTocaka.Add(1);
@@ -255,7 +257,42 @@ namespace MyExcel
            // bool skip = false;
             if (prviStupacOznake)
             {
-               // stupacOznaka = stupci[0];
+                pomakniStupac = 1;
+                foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
+                {
+                    if (c.Value.stupac == prviStupac)
+                    {
+                        oznakeXosi.Add(c.Value);
+                        if (c.Value.Numerical == false)
+                        {
+                            stringOznake = true;
+                        }
+                    }
+                }
+                if (!stringOznake)
+                {
+                    vrijednosti.Clear();
+                    foreach (Cell c in CelijeZaPlot)
+                    {
+                        if (c.stupac != prviStupac)
+                        {
+                            vrijednosti.Add(Double.Parse(c.Sadrzaj));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Cell c in CelijeZaPlot)
+                {
+
+                    vrijednosti.Add(Double.Parse(c.Sadrzaj));
+
+                }
+            }
+            if (prviStupacOznake)
+            {
+                // stupacOznaka = stupci[0];
                 stupci.RemoveAt(0);
                 brojTocaka.RemoveAt(0);
             }
@@ -281,7 +318,7 @@ namespace MyExcel
                 }
                 if (!found)
                 {
-                    imenaKategorija.Add("Stupac " + Convert.ToChar(i+65).ToString());
+                    imenaKategorija.Add("Stupac " + Convert.ToChar(i + 65 + pomakniStupac).ToString());
                 }
             }
 
@@ -337,29 +374,16 @@ namespace MyExcel
                         45 + sirina * stupci.Count / 2 + (i - 1) * sirina * stupci.Count + 10 * i, 300);
                 }
             }
-            /*else
+            else
             {
-                List<Cell> oznake = new List<Cell>();
                 int i = 1;
-                foreach (Cell c in Kategorije)
+                foreach (Cell c in oznakeXosi)
                 {
-                    
-                    if (c.stupac == prviStupac)
-                    {
-                        oznake.Add(c);
-                    }
-                   
-
-                }
-                oznake.Sort();
-                foreach (Cell c in oznake)
-                {
-                    g.DrawString(c.sadrzaj, textFont, crni,
-                           45 + sirina * stupci.Count / 2 + (i - 1) * sirina * stupci.Count + 10 * i, 300);
+                    g.DrawString(c.Sadrzaj, textFont, crni,
+                        56 + sirina * (i - 1) + (sirina / 2), 304);
                     i++;
                 }
-                
-            }*/
+            }
             
             int k = 0;
             foreach (int stupac in stupci)

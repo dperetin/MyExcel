@@ -222,6 +222,7 @@ namespace MyExcel
                             tCell.sveCelije[koo].uFormuli.Add(this);
                         }
                         //throw new Exception();
+                        Sadrzaj = "ERROR";
                         return;
                     }
 

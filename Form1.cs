@@ -29,7 +29,7 @@ namespace MyExcel
 
         public bool otvorenIzbor = false;
         public bool otvorenaFormula = false;
-
+        public List<DataGridViewCell> roze = new List<DataGridViewCell>();
         bool smijemZagasiti = false;
         MyExcel.Form2 funkcije;
         
@@ -375,6 +375,13 @@ namespace MyExcel
 
         private void tablica_SelectionChanged(object sender, EventArgs e)
         {
+            
+            
+            foreach (DataGridViewCell c in roze)
+            {
+                c.Style.BackColor = Color.White;
+            }
+                        
             List<double> argument = new List<double>();
             //int indexTaba = tabControl1.SelectedIndex;
             double rez;
@@ -406,6 +413,41 @@ namespace MyExcel
                     funkcije.textBox1.Text = funkcije.textBox1.Text.Replace(m.Value, "("+arg+")");
                 }
             }
+            //KeyValuePair<int, int> i = new KeyValuePair<int, int>(tGrid.SelectedCells[0].RowIndex, tGrid.SelectedCells[0].ColumnIndex);
+           /* if (tGrid.SelectedCells.Count == 1)
+            {
+                KeyValuePair<int, int> i = new KeyValuePair<int, int>(tGrid.SelectedCells[0].RowIndex, tGrid.SelectedCells[0].ColumnIndex);
+                if (tCell.sveCelije.ContainsKey(i))
+                {
+                    roze.Clear();
+                    Cell c = tCell.sveCelije[i];
+                    if (c.Formula != "")
+                    {
+                        string formula = c.Formula.ToLower();
+                        while (true)
+                        {
+                            Match m = Regex.Match(formula, @"[a-z]+[0-9]+");
+                            if (m.Success)
+                            {
+                                string cel = m.Value;
+                                string slovo = Regex.Match(cel, @"[a-z]+").Value;
+                                string broj = Regex.Match(cel, "[0-9]+").Value;
+                                int c1 = slovo[0] - 97;
+                                int r1 = Convert.ToInt32(broj) - 1;
+                                KeyValuePair<int, int> koo = new KeyValuePair<int, int>(r1, c1);
+                                roze.Add(tGrid.Rows[r1].Cells[c1]);
+                                tGrid.Rows[r1].Cells[c1].Style.BackColor = Color.Pink;
+                                formula = formula.Replace(cel, "");
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }*/
+            
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e) //novi tab
@@ -482,6 +524,7 @@ namespace MyExcel
         }*/
         private void tablica_CellValueChanged(object sender, DataGridViewCellEventArgs e) //ne radi
         {
+            
  /*           DataGridView d = (DataGridView)sender;
             if (d.SelectedCells.Count != 0)
             {
@@ -503,12 +546,21 @@ namespace MyExcel
                         c.evaluateFormula(tCell, fje);
 
                         tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
+                        if (c.Numerical)
+                        {
+                            tGrid.Rows[c.red].Cells[c.stupac].Style.Alignment = DataGridViewContentAlignment.BottomRight;
+                        }
+                        else
+                        {
+                            tGrid.Rows[c.red].Cells[c.stupac].Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+                        }
                     }
                     catch
                     {
                         MessageBox.Show("Neispravna formula!");
                     }
                 }
+                
             }
         }
 
