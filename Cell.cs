@@ -216,7 +216,7 @@ namespace MyExcel
                             tCell.Dodaj(r1, c1);
                             tCell.sveCelije[koo].uFormuli.Add(this);
                         }
-                        //throw new Exception();
+                        throw new Exception();
                     }
 
 

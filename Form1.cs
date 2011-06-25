@@ -32,13 +32,14 @@ namespace MyExcel
 
         bool smijemZagasiti = false;
         MyExcel.Form2 funkcije;
+        
         public Form1()
         {
             InitializeComponent();
             
             gridovi.Add(new DataGridView());
             tGrid = gridovi[0];
-
+            
             tabControl1.TabPages[0].Controls.Add(gridovi[0]);
             tabControl1.Selected += new TabControlEventHandler(promjenaTaba);
             gridovi[0].BorderStyle = BorderStyle.None;
@@ -203,11 +204,19 @@ namespace MyExcel
             }
             foreach (Cell c in tCell.sveCelije[index].uFormuli)
             {
-                c.evaluateFormula(tCell, fje);
-                tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
+                try {
+                    c.evaluateFormula(tCell, fje);
+                
+                    tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
+                }
+                catch
+            {
+                MessageBox.Show("Neispravna formula!");
+            }
             }
         }
-
+         
+            
         private void tablica_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             //kad se doda novi redak, ispisi redni broj u header
@@ -804,6 +813,7 @@ namespace MyExcel
             else if (rez == DialogResult.No)
             {
                 //samo izadji
+                smijemZagasiti = true;
                 Form1.ActiveForm.Close();
             }
             if (smijemZagasiti)
@@ -912,6 +922,16 @@ namespace MyExcel
                 broj_gridova--;
             }
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (smijemZagasiti == false)
+            {
+                exitToolStripMenuItem_Click(null, null);
+                e.Cancel = true;
+            }
+        }
+
 
     }
 }
