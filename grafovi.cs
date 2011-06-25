@@ -299,14 +299,23 @@ namespace MyExcel
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.DrawLine(pen, 50, 300, 310, 300);
             g.DrawLine(pen, 50, 300, 50, 20);
-            int broj = 0;
+            double broj = vrijednosti.Max();
+            double korak = (vrijednosti.Max()) / 10;
             
-           /* for (int j = 300; j >= 30; j -= hStep)
+            //int brPixela = 270 / (int)((vrijednosti.Max() - vrijednosti.Min()) / 10);
+            int j;
+            for (j = 30; j < 300; j += 27)
             {
-                g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10 - 7 * ((int)Math.Floor(Math.Log10(broj))), j - 8);
-                broj++;
-            }*/
+                string displayBroj = (broj).ToString().Substring(0, Math.Min((broj).ToString().Length, 5));
+                displayBroj = displayBroj.TrimEnd('0');
+                g.DrawLine(myPen, 50, j, 310, j);
+                g.DrawString(displayBroj, textFont, crni, 15, j - 8);
+                broj -= korak;
+              
+            }
+            g.DrawLine(myPen, 50, j, 310, j);
+            g.DrawString((0).ToString(), textFont, crni, 15, j - 8);
+           // g.DrawString((broj).ToString().Substring(0, 4), textFont, crni, 10, j - 8);
 
             if (!prviStupacOznake)
             {
@@ -487,13 +496,30 @@ namespace MyExcel
             double broj = vrijednosti.Min();
             //Brush crni = new SolidBrush(Color.Black);
             Font myFont = new System.Drawing.Font("Helvetica", 10);
-           /* for (int j = 300; j >= 30; j -= 60)
-            {
-                g.DrawLine(myPen, 20, j, 310, j);
-                g.DrawString(broj.ToString(), myFont, crni, 10 - 7 * broj.ToString().Length, j - 8);
-                broj += (span / 5);
-            } */
+            double brojZaPlot = vrijednosti.Max();
+            double korak = (vrijednosti.Max()-vrijednosti.Min()) / 10;
 
+            if (korak != 0)
+            {
+
+
+
+                //int brPixela = 270 / (int)((vrijednosti.Max() - vrijednosti.Min()) / 10);
+                int j;
+                string displayBroj = "";
+                for (j = 30; j < 300; j += 27)
+                {
+                    displayBroj = (brojZaPlot).ToString().Substring(0, Math.Min((brojZaPlot).ToString().Length, 5));
+                    displayBroj = displayBroj.TrimEnd('0');
+                    g.DrawLine(myPen, 50, j, 310, j);
+                    g.DrawString(displayBroj, textFont, crni, 15, j - 8);
+                    brojZaPlot -= korak;
+
+                }
+                displayBroj = vrijednosti.Min().ToString().Substring(0, Math.Min((vrijednosti.Min()).ToString().Length, 5)); ;
+                g.DrawLine(myPen, 50, j, 310, j);
+                g.DrawString(displayBroj, textFont, crni, 15, j - 8);
+            }
             if (!prviStupacOznake)
             {
                 for (int i = 1; i < brojTocaka.Max(); i++)
