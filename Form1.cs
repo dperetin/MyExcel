@@ -210,9 +210,9 @@ namespace MyExcel
                     tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
                 }
                 catch
-            {
-                MessageBox.Show("Neispravna formula!");
-            }
+                {
+                    MessageBox.Show("Neispravna formula!");
+                }
             }
         }
          
@@ -472,6 +472,23 @@ namespace MyExcel
             }*/
             //toolStripTextBox1.Text = "d";//gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].ToString();
             //statusLabel.Text = e.RowIndex + " " + e.ColumnIndex;
+            KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
+            if (tCell.sveCelije.Count != 0 && tCell.sveCelije.ContainsKey(index))
+            {
+                foreach (Cell c in tCell.sveCelije[index].uFormuli)
+                {
+                    try
+                    {
+                        c.evaluateFormula(tCell, fje);
+
+                        tGrid.Rows[c.red].Cells[c.stupac].Value = c.Sadrzaj;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Neispravna formula!");
+                    }
+                }
+            }
         }
 
         private void tablica_CellEnter(object sender, DataGridViewCellEventArgs e)

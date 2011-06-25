@@ -93,6 +93,7 @@ namespace MyExcel
             svojstva.textBox1.Text = naslov;
             svojstva.textBox2.Text = xOs;
             svojstva.textBox3.Text = yOs;
+            svojstva.checkBox1.Checked = prviStupacOznake;
             svojstva.Show();
             svojstva.button1.Click += new EventHandler(postaviNaslov);
             svojstva.checkBox1.CheckedChanged += new EventHandler(kvacica);
@@ -120,7 +121,7 @@ namespace MyExcel
             Font textFont = new System.Drawing.Font("Helvetica", 8);
             g.DrawString(naslov, naslovFont, crni, 215 - naslov.Length * 5 / 2, 10);
             g.DrawString(xOs, textFont, crni, 60 + 135 - xOs.Length * 5 / 2, 314);
-            g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new StringFormat(StringFormatFlags.DirectionVertical));
+            g.DrawString(yOs, textFont, crni, 1, 135 - yOs.Length * 5 / 2, new StringFormat(StringFormatFlags.DirectionVertical));
             graf.Refresh();
         }
         void kopiraj(object o, EventArgs e)
@@ -291,11 +292,13 @@ namespace MyExcel
             //g.DrawString(yOs, textFont, crni, 1, 215 - yOs.Length * 5 / 2, new System.Drawing.StringFormat(StringFormatFlags.DirectionVertical));
             //GraphicsPath path = new GraphicsPath();
             Pen pen = new Pen(Color.Black, 1);
+            Pen pozadina = new Pen(Color.White, 1);
             Pen myPen = new Pen(Color.Gray, 1);
             b = new Bitmap(430, 350);
             //Graphics g = graf.CreateGraphics();
             g = Graphics.FromImage(b);
             graf.Image = b;
+            g.FillRectangle(new SolidBrush(Color.White), 0, 0, 430, 350);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.DrawLine(pen, 50, 300, 310, 300);
             g.DrawLine(pen, 50, 300, 50, 20);
@@ -307,7 +310,7 @@ namespace MyExcel
             for (j = 30; j < 300; j += 27)
             {
                 string displayBroj = (broj).ToString().Substring(0, Math.Min((broj).ToString().Length, 5));
-                displayBroj = displayBroj.TrimEnd('0');
+                displayBroj = displayBroj.TrimEnd('.');
                 g.DrawLine(myPen, 50, j, 310, j);
                 g.DrawString(displayBroj, textFont, crni, 15, j - 8);
                 broj -= korak;
@@ -398,12 +401,14 @@ namespace MyExcel
         public void drawLineChart()
         {
             
-            fjaZaCrtanje = new  nacrtajGraf(drawLineChart);
+            fjaZaCrtanje = new nacrtajGraf(drawLineChart);
 
             List<Cell> oznakeXosi = new List<Cell>();
             bool stringOznake = false;
+            int pomakniStupac = 0;
             if (prviStupacOznake)
             {
+                pomakniStupac = 1;
                 foreach (KeyValuePair<KeyValuePair<int, int>, Cell> c in ListaCelija.sveCelije)
                 {
                     if (c.Value.stupac == prviStupac)
@@ -415,9 +420,29 @@ namespace MyExcel
                         }
                     }
                 }
+                if (!stringOznake)
+                {
+                    vrijednosti.Clear();
+                    foreach (Cell c in CelijeZaPlot)
+                    {
+                        if (c.stupac != prviStupac)
+                        {
+                            vrijednosti.Add(Double.Parse(c.Sadrzaj));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Cell c in CelijeZaPlot)
+                {
+                    
+                        vrijednosti.Add(Double.Parse(c.Sadrzaj));
+                    
+                }
             }
 
-            oznakeXosi.Sort();
+            //oznakeXosi.Sort();
 
             // lista stupaca u kojima se nalaze vrijednosti koje crtamo
             List<int> stupci = new List<int>();
@@ -471,7 +496,7 @@ namespace MyExcel
                 }
                 if (!found)
                 {
-                    imenaKategorija.Add("Stupac " + Convert.ToChar(i + 65).ToString());
+                    imenaKategorija.Add("Stupac " + Convert.ToChar(i + 65 + pomakniStupac).ToString());
                 }
             }
             //double absMin = Math.Abs()
@@ -483,6 +508,7 @@ namespace MyExcel
             //Graphics g = graf.CreateGraphics();
             g = Graphics.FromImage(b);
             graf.Image = b;
+            g.FillRectangle(new SolidBrush(Color.White), 0, 0, 430, 350);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             Brush crni = new SolidBrush(Color.Black);
             Font naslovFont = new System.Drawing.Font("Helvetica", 10);
@@ -510,7 +536,7 @@ namespace MyExcel
                 for (j = 30; j < 300; j += 27)
                 {
                     displayBroj = (brojZaPlot).ToString().Substring(0, Math.Min((brojZaPlot).ToString().Length, 5));
-                    displayBroj = displayBroj.TrimEnd('0');
+                    displayBroj = displayBroj.TrimEnd('.');
                     g.DrawLine(myPen, 50, j, 310, j);
                     g.DrawString(displayBroj, textFont, crni, 15, j - 8);
                     brojZaPlot -= korak;
@@ -583,7 +609,7 @@ namespace MyExcel
                  else
                      naziv = "Stupac " + (k+1).ToString();*/
 
-                g.DrawString(imenaKategorija[k], textFont, crni, 345, 98 + k * 15);
+                g.DrawString(imenaKategorija[k + pomakniStupac], textFont, crni, 345, 98 + k * 15);
                 g.FillRectangle(myBrush, legend);
                 k++;
             }
@@ -613,6 +639,7 @@ namespace MyExcel
             //Graphics g = graf.CreateGraphics();
             g = Graphics.FromImage(b);
             graf.Image = b;
+            g.FillRectangle(new SolidBrush(Color.White), 0, 0, 430, 350);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             int n = (int)vrijednosti.Sum();
