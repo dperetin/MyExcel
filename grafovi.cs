@@ -31,10 +31,10 @@ namespace MyExcel
         bool prviRedakOznake = false;
         int prviStupac = 1000;
         int prviRedak  = 1000;
-
+        int tipGrafa;
         // vrijednosti koje se crtaju na grafu
         List<double> vrijednosti = new List<double>();
-
+        static int brGrafova;
         // desni klik meni
         ContextMenuStrip strip = new ContextMenuStrip();
 
@@ -94,6 +94,12 @@ namespace MyExcel
             svojstva.textBox2.Text = xOs;
             svojstva.textBox3.Text = yOs;
             svojstva.checkBox1.Checked = prviStupacOznake;
+            if (tipGrafa == 3)
+            {
+                svojstva.textBox2.Enabled = false;
+                svojstva.textBox3.Enabled = false;
+                svojstva.checkBox1.Enabled = false;
+            }
             svojstva.Show();
             svojstva.button1.Click += new EventHandler(postaviNaslov);
             svojstva.checkBox1.CheckedChanged += new EventHandler(kvacica);
@@ -148,6 +154,7 @@ namespace MyExcel
 
         public Grafovi(Form1 f, DataGridView grid, Celije celije)
         {
+            
             this.ListaCelija = celije;
             this.f = f;
             // inicijaliziramo boje
@@ -166,10 +173,11 @@ namespace MyExcel
             
             graf.Size = new Size(430, 350);
             graf.BorderStyle = BorderStyle.FixedSingle;
-            graf.Location = new Point(f.ClientSize.Width - 500, 50);
+            graf.Location = new Point(f.ClientSize.Width - 500 - brGrafova * 20, 50 + brGrafova * 20);
             graf.Parent = grid;
             graf.MouseClick += new MouseEventHandler(desniKlikMeni);
-            
+            graf.BringToFront();
+
             strip.Items.Add("Postavke");
             strip.Items.Add("Kopiraj");
             strip.Items.Add("Spremi u datoteku");
@@ -214,10 +222,11 @@ namespace MyExcel
                 }
             }
             CelijeZaPlot.Sort();
+            brGrafova++;
         }
         public void drawHistogram()
         {
-
+            tipGrafa = 1;
             fjaZaCrtanje = new nacrtajGraf(drawHistogram);
             //int stupacOznaka = ;
             List<int> stupci = new List<int>();
@@ -400,7 +409,7 @@ namespace MyExcel
         }
         public void drawLineChart()
         {
-            
+            tipGrafa = 2;
             fjaZaCrtanje = new nacrtajGraf(drawLineChart);
 
             List<Cell> oznakeXosi = new List<Cell>();
@@ -618,6 +627,7 @@ namespace MyExcel
 
         public void drawPieChart()
         {
+            tipGrafa = 3;
             fjaZaCrtanje = new nacrtajGraf(drawPieChart);
             List<Cell> oznake = new List<Cell>();
             bool stringOznake = false;

@@ -116,7 +116,6 @@
             this.checkBox1.TabIndex = 9;
             this.checkBox1.Text = "Prvi stupac kao oznake";
             this.checkBox1.UseVisualStyleBackColor = true;
-            
             // 
             // Form4
             // 
@@ -137,6 +136,7 @@
             this.Name = "Form4";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Svojstva";
+            this.Load += new System.EventHandler(this.Form4_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

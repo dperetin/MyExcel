@@ -90,7 +90,7 @@ namespace MyExcel
             gridovi[0].CurrentCell = gridovi[0][0, 0];
             //gridovi[0].BeginEdit(true);
             toolStripTextBox1.Anchor = AnchorStyles.Right;
-
+            toolStripTextBox1.Dock = DockStyle.Fill;
             
         }
 
