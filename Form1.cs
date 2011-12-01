@@ -22,7 +22,7 @@ namespace MyExcel
         
         List<Celije> ListaCelija = new List<Celije>();
         public Funkcije fje = new Funkcije();
-
+        public bool loading = false;
         public DataGridView tGrid; // trenutno aktivni grid
         Celije tCell;       // trenutno aktivni skup celija
         public DataGridViewCell celijaIzForme;
@@ -111,15 +111,17 @@ namespace MyExcel
                         
                     }
                 }
-            }
-                
+            }                
         }
 
         public void promjenaTaba(object o, EventArgs e)
         {
             TabControl tab = (TabControl)o;
-            tGrid = gridovi[tab.SelectedIndex];
-            tCell = ListaCelija[tab.SelectedIndex];
+            if (tab.SelectedIndex >= 0)
+            {
+                tGrid = gridovi[tab.SelectedIndex];
+                tCell = ListaCelija[tab.SelectedIndex];
+            }
         }
         //
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -192,6 +194,14 @@ namespace MyExcel
             //ako se radi o formuli
             if (tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()[0] == '=')
             {
+                if (!tCell.sveCelije.ContainsKey(index) && e.RowIndex != -1 && e.ColumnIndex != -1)
+                {
+                    tCell.Dodaj(e.RowIndex, e.ColumnIndex);
+                }
+
+                //spremam podatke upisane u celiju
+                //string s = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                //tCell.sveCelije[index].Sadrzaj = s;
                 toolStripTextBox1.Text = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 toolStripButton1_Click(null, null);
                 toolStripTextBox1.Clear();
@@ -210,6 +220,7 @@ namespace MyExcel
                 //spremam podatke upisane u celiju
                 string s = tGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 tCell.sveCelije[index].Sadrzaj = s; //DodajVrijednost(e.RowIndex, e.ColumnIndex, s);
+                //tCell.sveCelije[index].Formula = "";
             }
 
             //poravnjanje brojeva i teksta
@@ -537,7 +548,7 @@ namespace MyExcel
             //toolStripTextBox1.Text = "d";//gridovi[indexTaba].Rows[e.RowIndex].Cells[e.ColumnIndex].ToString();
             //statusLabel.Text = e.RowIndex + " " + e.ColumnIndex;
             KeyValuePair<int, int> index = new KeyValuePair<int, int>(e.RowIndex, e.ColumnIndex);
-            if (tCell.sveCelije.Count != 0 && tCell.sveCelije.ContainsKey(index))
+            if (tCell.sveCelije.Count != 0 && tCell.sveCelije.ContainsKey(index) && !loading)
             {
                 foreach (Cell c in tCell.sveCelije[index].uFormuli)
                 {
@@ -614,7 +625,7 @@ namespace MyExcel
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //klik na New u izborniku
-
+            loading = true;
             //pitaj korisnika zeli li spremiti promjene prije izlaza iz trenutne tablice
             MyExcel.Form3 izlaz = new MyExcel.Form3();
             izlaz.excel = this;
@@ -631,12 +642,22 @@ namespace MyExcel
             while (broj_gridova > 1)
             {
                 //izbaci sve tabove osim nultog
-                ListaCelija[broj_gridova - 1].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                /*ListaCelija[broj_gridova - 1].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
                 ListaCelija.Remove(ListaCelija[broj_gridova - 1]);
                 gridovi[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
                 tabControl1.TabPages[broj_gridova - 1].Controls.Remove(gridovi[broj_gridova - 1]);
                 tabControl1.TabPages.Remove(tabControl1.TabPages[broj_gridova - 1]);
-                gridovi.Remove(gridovi[broj_gridova - 1]);
+                gridovi.Remove(gridovi[broj_gridova - 1]);*/
+                int tmp = broj_gridova - 1;
+                //ListaCelija[t.SelectedIndex].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+                //ListaCelija.Remove(ListaCelija[t.SelectedIndex]);
+                ListaCelija.RemoveAt(tmp);
+                //gridovi[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+                //tabControl1.TabPages[t.SelectedIndex].Controls.Remove(gridovi[t.SelectedIndex]);
+
+                tabControl1.TabPages.RemoveAt(tmp);
+                //gridovi.Remove(gridovi[t.SelectedIndex]);
+                gridovi.RemoveAt(tmp);
                 broj_gridova--;
             }
             //isprazni tablicu prvog taba
@@ -651,27 +672,28 @@ namespace MyExcel
                 }
 
 
-
-            ListaCelija[0].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
+            //toolStripButton4_Click(null, null);
+            //ListaCelija[0].sveCelije.Clear(); //sve Cell ostaju ili nestaju?!!
             //vratiti fokus na (0,0)    
             toolStripTextBox1.Text = "";
             statusLabel.Text = "Koordinate celije: (0, 0)";
             imeFilea = "";
             gridovi[0].ClearSelection();
             gridovi[0].CurrentCell = gridovi[0][0, 0];
-
+            loading = false;
         }
 
 
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
             //klik na Open u izborniku
 
             //pitaj korisnika zeli li spremiti promjene prije izlaza iz trenutne tablice
             //otvori novu praznu tablicu
             newToolStripMenuItem_Click(null, null);
-
+            loading = true;
             //otvori open dialog
             //procitaj i prepisi tablicu iz xml-a
             openFileDialog1.Filter = "Extensible Markup Language|*.xml";
@@ -795,6 +817,7 @@ namespace MyExcel
                 
                 reader.Close();
             }
+            loading = false;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1027,6 +1050,9 @@ namespace MyExcel
             }
         }
 
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
