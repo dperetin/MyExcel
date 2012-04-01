@@ -19,3 +19,17 @@ C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form3.
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form1.resources
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form4.resources
 C:\Users\Dejan\Documents\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form5.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.exe
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.pdb
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\bin\Debug\MyExcel.exe
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\bin\Debug\MyExcel.pdb
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\ResolveAssemblyReference.cache
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form1.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form2.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form3.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form4.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Form5.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\MyExcel.Properties.Resources.resources
+I:\dejan\faks\diplomski\2. godina\Racunarski praktikum 3\MyExcel\obj\Debug\myexcel.csproj.GenerateResource.Cache
+C:\Users\Ivana\Documents\dejan\github_projekti\MyExcel\obj\Debug\MyExcel.exe
+C:\Users\Ivana\Documents\dejan\github_projekti\MyExcel\obj\Debug\MyExcel.pdb

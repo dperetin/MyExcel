@@ -14,8 +14,7 @@ namespace MyExcel
 
         public int red;
         public int stupac;
-
-             
+            
         public List<Cell> uFormuli = new List<Cell>();
         private bool numerical = false;
 
@@ -89,10 +88,6 @@ namespace MyExcel
             return new Cell(r, s);
         }
 
-        /* public void DodajVrijednostCeliji(string v)
-         {
-             sadrzaj = v;
-         }*/
         public string Sadrzaj
         {
             get { return sadrzaj; }
@@ -111,31 +106,19 @@ namespace MyExcel
 
             }
         }
-        /*public string DajVrijednostCelije()
-        {
-            return sadrzaj;
-        }*/
 
-       /* public void DodajVrijednostFormuli(string f)
-        {
-            formula = f;
-        }
-        public string DajVrijednostFormule()
-        {
-            return formula;
-        }*/
         public void evaluateFormula(Celije tCell, Funkcije fje)
         {
+            if (this.formula == "")
+                return;
             string formula;
             formula = this.formula.ToLower();
+            
             // zamjenjujem oznake celija konkretnim vrijednostima
             // PRETPOSTAVKA: nema razmaka nije dosega
             formula = formula.Replace(" ", "");
             formula = formula.Replace("\r\n", "");
 
-            // rasirivanje :
-            // try
-            //{
             while (true)
             {
                 Match m = Regex.Match(formula, @"[a-z]+[0-9]+:[a-z]+[0-9]+");
@@ -186,7 +169,7 @@ namespace MyExcel
                     break;
                 }
             }
-            //MessageBox.Show(formula);
+ 
             formula = formula.ToLower();
             while (true)
             {
@@ -206,7 +189,7 @@ namespace MyExcel
                         double d = double.Parse(arg);
                         if (d < 0)
                         {
-                            arg = "0" + arg;
+                            arg = "(0" + arg+")";
                         }
                         formula = formula.Replace(cel, arg);
                         if (tCell.sveCelije[koo].uFormuli.Contains(this) == false)
@@ -214,15 +197,18 @@ namespace MyExcel
                     }
                     else
                     {
-                        //int aa = 0;
-                        formula = formula.Replace(cel, /*aa.ToString()*/"");
+                        formula = formula.Replace(cel, "");
                         if (tCell.sveCelije.ContainsKey(koo) == false)
                         {
                             tCell.Dodaj(r1, c1);
                             tCell.sveCelije[koo].uFormuli.Add(this);
                         }
-                        //throw new Exception();
-                        Sadrzaj = "ERROR";
+                        else
+                        {
+                            if (tCell.sveCelije[koo].uFormuli.Contains(this) == false)
+                                tCell.sveCelije[koo].uFormuli.Add(this);
+                        }
+                        Sadrzaj = "NaN";
                         return;
                     }
 
@@ -234,7 +220,6 @@ namespace MyExcel
                 }
             }
 
-            //MessageBox.Show(formula);
             // razdvajam formulu na tokene
 
             List<Token> listaTokena = new List<Token>();
@@ -251,7 +236,7 @@ namespace MyExcel
                 Match m1 = Regex.Match(s, @"^\s*[a-zA-Z]+\s*");
                 Match m2 = Regex.Match(s, @"^[)(]");
                 Match m3 = Regex.Match(s, @"^;");
-                Match m4 = Regex.Match(s, @"^[0-9.]+");
+                Match m4 = Regex.Match(s, @"^[0-9.,]+");
                 Match m5 = Regex.Match(s, @"^[\+\-\*\/\^]");
                 if (m1.Success) // FUNKCIJA
                 {
@@ -471,18 +456,6 @@ namespace MyExcel
             sveCelije.Add(index, Cell.NapraviCeliju(r, s));
 
         }
-
-        /*public void DodajVrijednost(int r, int s, string v)
-        {
-            KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
-            sveCelije[index].Sadrzaj = v;
-        }*/
-
-        /*public void DodajFormulu(int r, int s, string f)
-        {
-            KeyValuePair<int, int> index = new KeyValuePair<int, int>(r, s);
-            sveCelije[index].Formula = f;
-        }*/
     }
 }
     

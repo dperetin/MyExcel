@@ -20,14 +20,7 @@ namespace MyExcel
         {
             
             InitializeComponent();
-           /* listaFunkcija.Add("MIN");
-            opisiFunkcija.Add("Minimum \n\nKorištenje \nMIN(x1; x2; ...; xn) ili \nMIN(x1: xn)");
-            listaFunkcija.Add("MAX");
-            opisiFunkcija.Add("Maksimum \n\nKorištenje \nMAX(x1; x2; ...; xn) ili \nMAX(x1: xn)");
-            listaFunkcija.Add("SUM");
-            opisiFunkcija.Add("Suma \n\nKorištenje \nSUM(x1; x2; ...; xn) ili \nSUM(x1: xn)");
-            listaFunkcija.Add("AVERAGE");
-            opisiFunkcija.Add("Prosjek \n\nKorištenje \nAVERAGE(x1; x2; ...; xn) ili \nAVERAGE(x1: xn)");*/
+           
             
             listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
                

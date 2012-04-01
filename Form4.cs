@@ -23,15 +23,7 @@ namespace MyExcel
             Close();
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void Form4_Load(object sender, EventArgs e)
-        {
-           
-        }
+       
 
         
     }
